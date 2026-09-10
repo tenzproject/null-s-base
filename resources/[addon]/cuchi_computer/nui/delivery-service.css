@@ -1,0 +1,439 @@
+/* Styles pour le service de livraison */
+#delivery-service-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+#delivery-main-container {
+    display: flex;
+    height: 100%;
+}
+
+#delivery-items-container {
+    flex: 2;
+    padding: 15px;
+    overflow-y: auto;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#delivery-cart-container {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+#delivery-search-container {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+#delivery-search {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+#delivery-search::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#delivery-search-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+#delivery-search-button:hover {
+    background-color: #45a049;
+}
+
+#delivery-items-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.delivery-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.delivery-item:hover {
+    background-color: rgba(2, 2, 2, 0.15);
+}
+
+.delivery-item.added-to-cart {
+    animation: added-to-cart-animation 0.5s ease;
+}
+
+@keyframes added-to-cart-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); background-color: rgba(76, 175, 80, 0.3); }
+    100% { transform: scale(1); }
+}
+
+.delivery-item-image {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.delivery-item-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.delivery-item-details {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.delivery-item-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.delivery-item-price {
+    color: #4CAF50;
+}
+
+.delivery-add-to-cart {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.delivery-add-to-cart:hover {
+    background-color: #45a049;
+}
+
+#delivery-cart-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#delivery-cart-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.delivery-cart-empty {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
+
+.delivery-cart-item {
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.delivery-cart-item-image {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.delivery-cart-item-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.delivery-cart-item-details {
+    flex-grow: 1;
+}
+
+.delivery-cart-item-name {
+    font-weight: bold;
+}
+
+.delivery-cart-item-price {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.delivery-cart-item-quantity {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.delivery-quantity-button {
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delivery-quantity-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.delivery-cart-item-quantity span {
+    margin: 0 8px;
+}
+
+.delivery-cart-item-total {
+    font-weight: bold;
+    margin-right: 10px;
+    color: #4CAF50;
+}
+
+.delivery-cart-item-remove {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delivery-cart-item-remove:hover {
+    background-color: #d32f2f;
+}
+
+#delivery-cart-summary {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.delivery-cart-subtotal,
+.delivery-cart-shipping,
+.delivery-cart-total {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.delivery-cart-total {
+    font-weight: bold;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.delivery-checkout-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.delivery-checkout-button:hover {
+    background-color: #45a049;
+}
+
+.delivery-checkout-button:disabled {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: not-allowed;
+}
+
+#delivery-checkout-container,
+#delivery-confirmation-container {
+    display: none;
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.delivery-checkout-header,
+.delivery-confirmation-header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delivery-checkout-header h2,
+.delivery-confirmation-header h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.delivery-back-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.delivery-back-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.delivery-checkout-form {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 5px;
+}
+
+.delivery-form-group {
+    margin-bottom: 5px;
+}
+
+.delivery-form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.delivery-form-group input,
+.delivery-form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    box-sizing: border-box;
+}
+
+.delivery-form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+#delivery-order-summary {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding-top: 2px;
+    padding-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.delivery-order-items {
+    margin-bottom: 15px;
+}
+
+.delivery-order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.delivery-order-item:last-child {
+    border-bottom: none;
+}
+
+.delivery-order-subtotal,
+.delivery-order-shipping,
+.delivery-order-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.delivery-order-total {
+    font-weight: bold;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.delivery-place-order {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.delivery-place-order:hover {
+    background-color: #45a049;
+}
+
+#delivery-confirmation-message {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+#delivery-confirmation-message h2 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.delivery-address-confirmation {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+#delivery-service-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+.delivery-no-results,
+.delivery-no-items {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}

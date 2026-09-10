@@ -1,0 +1,639 @@
+@import 'https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap';
+*{margin:0;padding:0;border:0;outline:0;text-decoration:none;line-height:inherit;vertical-align:inherit;}h1,h2,h3,h4,h5,h6{font-weight:normal;}ul{list-style:none;}
+*{font-family: 'Mulish', sans-serif;}
+*{box-sizing: border-box;}
+html{display: none;}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /*background-image: url("../img/bg3.jpg");*/
+}
+
+.buttons button {
+  position: absolute;
+  width: 2.3vw;
+  height: 1.9vw;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0.2vw;
+}
+
+.buttons button:active {
+  background: #00000020;
+  box-shadow: 0px 0px 0.4vw #00000010;
+}
+/*- prop_atm_01 -*/
+body.prop_atm_01 .buttons button{
+
+}
+body.prop_atm_01 .buttons .left-side button:nth-child(1) {left: 33vw;top: 20.5vw;}
+body.prop_atm_01 .buttons .left-side button:nth-child(2) {left: 33vw;top: 23vw;}
+body.prop_atm_01 .buttons .left-side button:nth-child(3) {left: 33.4vw;top: 26.6vw;}
+body.prop_atm_01 .buttons .left-side button:nth-child(4) {left: 33.6vw;top: 29.6vw;}
+body.prop_atm_01 .buttons .right-side button:nth-child(1) {left: 55.8vw;
+    top: 20.4vw;}
+body.prop_atm_01 .buttons .right-side button:nth-child(2) {left: 55.8vw;top: 23.1vw;}
+body.prop_atm_01 .buttons .right-side button:nth-child(3) {left: 55.7vw;
+    top: 26.5vw;}
+body.prop_atm_01 .buttons .right-side button:nth-child(4) {left: 55.6vw;
+    top: 29.5vw;}
+body.prop_atm_01 .buttons .numbers button{
+  transform: none;
+}
+body.prop_atm_01 .buttons .numbers button:nth-child(1) {left: 42.15vw;top: 40.6vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(2) {left: 44.6vw;top: 40.6vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(3) {left: 46.8vw;top: 40.6vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(4) {left: 42.0vw;top: 42.7vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(5) {left: 44.4vw;top: 42.7vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(6) {left: 46.8vw;top: 42.7vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(7) {left: 41.7vw;top: 44.9vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(8) {left: 44.2vw;top: 44.9vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(9) {left: 46.7vw;top: 44.9vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(12) {    left: 46.7vw;
+    top: 47.35vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(11) {left: 44.1vw;
+    top: 47.3vw;}
+body.prop_atm_01 .buttons .numbers button:nth-child(10) {left: 41.5vw;
+    top: 47.3vw;}
+body.prop_atm_01 .card {left: 65.5vw;
+    top: 22.6vw;
+    width: 8vw;
+    height: 5vw;
+}
+body.prop_atm_01 .atm-item{
+  width: 7vw;
+}
+body.prop_atm_01 .atm-item p{
+  font-size: 0.6vw;
+}
+body.prop_atm_01 .atm-item.left{background: linear-gradient(-90deg, #5489b7 0%, rgba(255, 255, 255, 0) 100%);}
+body.prop_atm_01 .atm-item.right{background: linear-gradient(90deg, #5489b7 0%, rgba(255, 255, 255, 0) 100%);}
+
+body.prop_atm_01 .atm-item.left.a{margin-left: -10.7vw;
+    margin-top: -8.0vw;}
+body.prop_atm_01 .atm-item.left.b{margin-left: -11vw;
+    margin-top: -2.7vw;}
+body.prop_atm_01 .atm-item.left.c{margin-left: -11vw;
+    margin-top: 4.3vw;}
+
+body.prop_atm_01 .atm-item.right.d{}
+
+body.prop_atm_01 .atm-item.right.e{
+  margin-left: 11.8vw;
+  margin-top: -8.3vw;
+}
+body.prop_atm_01 .atm-item.right.f{margin-left: 11.6vw;
+    margin-top: -2.65vw;}
+body.prop_atm_01 .atm-item.right.g{margin-left: 11.2vw;
+    margin-top: 3.9vw;}
+body.prop_atm_01 .atm-item.right.h{    margin-left: 11vw;
+    margin-top: 9.9vw;}
+/*- prop_atm_02 -*/
+body.prop_atm_02 .buttons .left-side button:nth-child(1) {left: 28.1vw;top: 19vw;}
+body.prop_atm_02 .buttons .left-side button:nth-child(2) {left: 28.3vw;top: 23vw;}
+body.prop_atm_02 .buttons .left-side button:nth-child(3) {left: 28.7vw;top: 27.4vw;}
+body.prop_atm_02 .buttons .left-side button:nth-child(4) {left: 29vw;top: 31.25vw;}
+body.prop_atm_02 .buttons .right-side button:nth-child(1) {left: 53.6vw;top: 19vw;}
+body.prop_atm_02 .buttons .right-side button:nth-child(2) {left: 53.5vw;top: 23.1vw;}
+body.prop_atm_02 .buttons .right-side button:nth-child(3) {left: 53.4vw;top: 27.3vw;}
+body.prop_atm_02 .buttons .right-side button:nth-child(4) {left: 53.3vw;top: 31.4vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(1) {left: 37.15vw;top: 43vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(2) {left: 39.4vw;top: 43vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(3) {left: 41.6vw;top: 43vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(4) {left: 36.6vw;top: 45.4vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(5) {left: 39vw;top: 45.4vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(6) {left: 41.4vw;top: 45.4vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(7) {left: 35.9vw;top: 48vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(8) {left: 38.4vw;top: 48vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(9) {left: 40.9vw;top: 48vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(10) {left: 44.1vw;top: 43vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(11) {left: 37.8vw;top: 51vw;}
+body.prop_atm_02 .buttons .numbers button:nth-child(12) {left: 43.4vw;top: 48vw;}
+body.prop_atm_02 .card {left: 64vw;top: 20.6vw;}
+
+
+
+
+body.prop_atm_01 .screen img, body.prop_atm_01 .scr {
+    left: 36.3vw;
+    width: 18.3vw;
+    height: 14.8vw;
+    top: 18vw;
+    filter: drop-shadow(0px 0px 2vw #1763e690);
+}
+
+/*- prop_atm_03 -*/
+body.prop_atm_03 .buttons .left-side button:nth-child(1) {
+  left: 27.5vw;
+  top: 19vw;
+}
+
+body.prop_atm_03 .buttons .left-side button:nth-child(2) {
+  left: 27.8vw;
+  top: 23vw;
+}
+
+body.prop_atm_03 .buttons .left-side button:nth-child(3) {
+  left: 28vw;
+  top: 27.4vw;
+}
+
+body.prop_atm_03 .buttons .left-side button:nth-child(4) {
+  left: 28.5vw;
+  top: 31.25vw;
+}
+
+body.prop_atm_03 .buttons .right-side button:nth-child(1) {
+  left: 53.6vw;
+  top: 19vw;
+}
+
+body.prop_atm_03 .buttons .right-side button:nth-child(2) {
+  left: 53.5vw;
+  top: 23.1vw;
+}
+
+body.prop_atm_03 .buttons .right-side button:nth-child(3) {
+  left: 53.4vw;
+  top: 27.3vw;
+}
+
+body.prop_atm_03 .buttons .right-side button:nth-child(4) {
+  left: 53.3vw;
+  top: 31.4vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(1) {
+  left: 37.15vw;
+  top: 43.3vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(2) {
+  left: 39.4vw;
+  top: 43.3vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(3) {
+  left: 41.6vw;
+  top: 43.3vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(4) {
+  left: 36.6vw;
+  top: 45.7vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(5) {
+  left: 39vw;
+  top: 45.7vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(6) {
+  left: 41.4vw;
+  top: 45.7vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(7) {
+  left: 35.9vw;
+  top: 48.3vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(8) {
+  left: 38.4vw;
+  top: 48.3vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(9) {
+  left: 40.9vw;
+  top: 48.3vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(10) {
+  left: 44.1vw;
+  top: 43.3vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(11) {
+  left: 37.8vw;
+  top: 51.3vw;
+}
+
+body.prop_atm_03 .buttons .numbers button:nth-child(12) {
+  left: 43.4vw;
+  top: 48.3vw;
+}
+
+body.prop_atm_03 .card {
+  left: 64.3vw;
+  top: 20.8vw;
+}
+
+/*- prop_fleeca_atm -*/
+body.prop_fleeca_atm .buttons .left-side button:nth-child(1) {
+  left: 28.5vw;
+  top: 19.3vw;
+}
+
+body.prop_fleeca_atm .buttons .left-side button:nth-child(2) {
+  left: 28.8vw;
+  top: 23.2vw;
+}
+
+body.prop_fleeca_atm .buttons .left-side button:nth-child(3) {
+  left: 29vw;
+  top: 26.8vw;
+}
+
+body.prop_fleeca_atm .buttons .left-side button:nth-child(4) {
+  left: 29.3vw;
+  top: 30.25vw;
+}
+
+body.prop_fleeca_atm .buttons .right-side button:nth-child(1) {
+  left: 53vw;
+  top: 19.3vw;
+}
+
+body.prop_fleeca_atm .buttons .right-side button:nth-child(2) {
+  left: 53vw;
+  top: 23.2vw;
+}
+
+body.prop_fleeca_atm .buttons .right-side button:nth-child(3) {
+  left: 52.9vw;
+  top: 27vw;
+}
+
+body.prop_fleeca_atm .buttons .right-side button:nth-child(4) {
+  left: 52.8vw;
+  top: 30.5vw;
+}
+
+.buttons .numbers button {
+  transform: skewX(347deg);
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(1) {
+  left: 37.45vw;
+  top: 42.5vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(2) {
+  left: 39.7vw;
+  top: 42.5vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(3) {
+  left: 42vw;
+  top: 42.5vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(4) {
+  left: 36.9vw;
+  top: 44.8vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(5) {
+  left: 39.2vw;
+  top: 44.8vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(6) {
+  left: 41.7vw;
+  top: 44.8vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(7) {
+  left: 36.25vw;
+  top: 47.4vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(8) {
+  left: 38.75vw;
+  top: 47.4vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(9) {
+  left: 41.25vw;
+  top: 47.4vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(10) {
+  left: 35.5vw;
+  top: 50.2vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(11) {
+  left: 38.2vw;
+  top: 50.2vw;
+}
+
+body.prop_fleeca_atm .buttons .numbers button:nth-child(12) {
+  left: 40.9vw;
+  top: 50.2vw;
+}
+
+body.prop_fleeca_atm .card {
+  left: 63.7vw;
+  top: 21vw;
+}
+
+body.prop_atm_02 .screen img,
+body.prop_atm_02 .scr {
+  left: 31.3vw;
+  width: 21.4vw;
+  top: 18vw;
+}
+
+body.prop_atm_03 .screen img,
+body.prop_atm_03 .scr {
+  left: 30.7vw;
+  top: 17.7vw;
+  width: 22.1vw
+}
+
+body.prop_fleeca_atm .screen img,
+body.prop_fleeca_atm .scr {
+  left: 31.2vw;
+  top: 16.5vw;
+  width: 21.5vw
+}
+
+body.prop_atm_03 .scr {
+  height: 16vw;
+  left: 31.05vw;
+  width: 22vw;
+  top: 17.5vw;
+}
+
+body.prop_atm_02 .scr {
+  top: 17.5vw;
+  height: 15.7vw;
+  left: 31.7vw;
+  width: 20.9vw;
+}
+
+body.prop_atm_02 .screen img {
+  filter: drop-shadow(0px 0px 2vw #1763e690);
+}
+
+.screen {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: -1;
+}
+
+.screen img {
+  position: absolute;
+  display: flex;
+  filter: drop-shadow(0px 0px 2vw #268f3a90);
+}
+
+.card {
+  width: 6vw;
+  height: 3vw;
+  position: absolute;
+  cursor: pointer;
+}
+
+.light {
+  width: 6vw;
+  height: 0.7vw;
+  background: #00ff00b5;
+  position: absolute;
+  left: 64.5vw;
+  top: 18.7vw;
+  border-radius: 100px;
+  box-shadow: 0px 0px 3vw #00ff00;
+  display: none;
+}
+
+.scr {
+  height: 17vw;
+  transform: skewX(2deg);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0px 0px 1vw #00000050;
+  opacity: 0.85;
+  font-size: 1vw;
+}
+
+.scr span {
+  font-weight: 500;
+  font-size: 0.8vw;
+}
+
+.scr h1 {
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+body.prop_atm_03 .scr h1 b {
+  color: #ff4343;
+}
+
+body.prop_atm_03 .screen img {
+  filter: drop-shadow(0px 0px 2vw #ff000050);
+}
+
+body.prop_atm_03 .scr h1 b {
+  color: #ff4343;
+}
+
+body.prop_atm_02 .scr h1 b {
+  color: #3ab2eb;
+}
+
+body.prop_atm_03 .screen img {
+  filter: drop-shadow(0px 0px 2vw #ff000050);
+}
+
+.scr h1 b {
+  color: #35e556;
+  font-weight: 900;
+}
+
+.scr p {
+  font-weight: 500;
+  font-size: 0.6vw;
+}
+
+.scr .min-loading {
+  position: absolute;
+  margin-top: 8vw;
+  display: none;
+}
+
+.rotate {
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.atm-item.hidden {
+  visibility: hidden;
+}
+
+.atm-item {
+  position: absolute;
+  background: #ffffff38;
+  width: 9vw;
+  height: 2vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-size: 0.8vw;
+  letter-spacing: 0.05vw;
+  text-transform: uppercase;
+  flex-direction: column;
+}
+
+.atm-item.left {
+  transform: skewX(1deg);
+  text-transform: none;
+  background: linear-gradient(-90deg, #48bd5e 0%, rgba(255, 255, 255, 0) 100%);
+  padding-right: 0.4vw;
+  align-items: flex-end;
+}
+
+.atm-item.right {
+  transform: skewX(-1deg);
+  align-items: flex-start;
+  padding-left: 0.4vw;
+  text-transform: none;
+  background: linear-gradient(90deg, #48bd5e 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+body.prop_atm_03 .atm-item.left {
+  background: linear-gradient(-90deg, #bd4848 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+body.prop_atm_03 .atm-item.right {
+  background: linear-gradient(90deg, #bd4848 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+
+body.prop_atm_02 .atm-item.left {
+  background: linear-gradient(-90deg, #5489b7 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+body.prop_atm_02 .atm-item.right {
+  background: linear-gradient(90deg, #5489b7 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.atm-item i {
+  display: flex;
+  margin-bottom: -0.15vw;
+}
+
+.atm-item p {
+  font-size: 0.7vw;
+  display: flex;
+  font-weight: 600;
+  align-items: center;
+  gap: 0.35vw;
+  color: #fff;
+  text-shadow: 0.2vw 0.1vw 0.15vw #00000020;
+}
+
+.atm-item span {
+  font-size: 0.5vw;
+  display: none;
+}
+
+.atm-item.left.a {
+  border-radius: 0px 0.2vw 0.2vw 0px;
+  margin-left: -11.7vw;
+  margin-top: -9.3vw;
+}
+
+.atm-item.left.b {
+  border-radius: 0px 0.2vw 0.2vw 0px;
+  margin-left: -11.5vw;
+  margin-top: -1.65vw;
+}
+
+.atm-item.left.c {
+  border-radius: 0px 0.2vw 0.2vw 0px;
+  margin-left: -11.2vw;
+  margin-top: 5.7vw;
+}
+
+.atm-item.left.d {
+  border-radius: 0px 0.2vw 0.2vw 0px;
+  bottom: 1.2vw;
+  left: 0.5vw;
+}
+
+.atm-item.right.e {
+  border-radius: 0.2vw 0vw 0vw 0.2vw;
+  margin-left: 12.8vw;
+  margin-top: -9.3vw;
+}
+
+.atm-item.right.f {
+  border-radius: 0.2vw 0vw 0vw 0.2vw;
+  margin-left: 12.6vw;
+  margin-top: -1.65vw;
+}
+
+.atm-item.right.g {
+  border-radius: 0.2vw 0vw 0vw 0.2vw;
+  margin-left: 12.2vw;
+  margin-top: 5.8vw;
+}
+
+.atm-item.right.h {
+  border-radius: 0.2vw 0vw 0vw 0.2vw;
+  margin-left: 12vw;
+  margin-top: 12.9vw;
+}
+
+.abs {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 21.5vw;
+  height: 17vw;
+  gap: 0.2vw;
+}
+
+input.wd,
+input.wdid {
+  width: 15vw;
+  height: 3vw;
+  text-align: center;
+  background: transparent;
+  font-size: 2vw;
+  font-weight: 800;
+  color: #fff;
+  background: #ffffff24;
+  border-radius: 0.1vw;
+}
+
+.money {
+  position: absolute;
+  left: 30.1vw;
+  top: 30.9vw;
+  cursor: pointer;
+}
+
+.money img {
+  width: 25.3vw;

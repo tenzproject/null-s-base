@@ -1,0 +1,25 @@
+{
+  "name": "null-imagemaker",
+  "version": "1.0.0",
+  "description": "Système de génération automatique d'icônes transparentes pour inventaire FiveM",
+  "main": "processor.js",
+  "scripts": {
+    "start": "node processor.js",
+    "dev": "nodemon processor.js"
+  },
+  "keywords": [
+    "fivem",
+    "image-processing",
+    "background-removal",
+    "inventory-icons"
+  ],
+  "author": "null",
+  "license": "MIT",
+  "dependencies": {
+    "@imgly/background-removal-node": "^1.4.3",
+    "chokidar": "^3.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

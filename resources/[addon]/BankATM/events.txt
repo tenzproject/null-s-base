@@ -1,0 +1,11 @@
+Client event when atm is opened and closed:
+
+===================================================
+RegisterNetEvent("BankATM:client:open",function()
+	print("ATM is opened")
+end)
+
+RegisterNetEvent("BankATM:client:close",function()
+	print("ATM is closed")
+end)
+===================================================

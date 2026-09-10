@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; background: transparent; overflow: hidden; }
+  #container {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+  }
+  #word-wrap {
+    display: flex; align-items: center; justify-content: center;
+    will-change: transform;
+  }
+  .letter-span {
+    display: inline-block;
+    font-size: 96px; font-weight: 700; letter-spacing: 0.04em;
+    white-space: pre;
+    will-change: transform, opacity, color;
+    transform-origin: center bottom;
+    /* Paint stroke BEHIND fill so outline surrounds the character instead of eating into it. */
+    paint-order: stroke fill;
+  }
+</style>
+</head>
+<body>
+<div id="container"><div id="word-wrap"></div></div>
+<script>
+'use strict';
+
+const container = document.getElementById('container');
+const wordWrap  = document.getElementById('word-wrap');
+
+let currentText         = '';
+let currentFont         = 'Arial';
+let currentColor        = '#ffffff';
+let currentAnim         = 'fadeSlide';
+let currentShadow       = false;
+let currentGlow         = false;
+let currentOutline      = false;
+let currentOutlineColor = '#000000';
+let currentOutlineWidth = 2;
+let currentColorShift   = false;
+let currentShiftColors  = [];   // parsed rgba tuples
+let currentShiftSpeed   = 30;   // frames per full cycle
+let builtText           = null;
+
+const _loadedFontUrls = new Set();
+function ensureFontLoaded(url) {
+    if (!url || _loadedFontUrls.has(url)) return;
+    _loadedFontUrls.add(url);
+    const link = document.createElement('link');
+    link.rel  = 'stylesheet';
+    link.href = url;
+    document.head.appendChild(link);
+}
+
+// ── Easing ────────────────────────────────────────────────────────────────────
+const easeInOut = t => t * t * (3 - 2 * t);
+const easeOut   = t => 1 - (1 - t) * (1 - t);
+const clamp     = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+function easeOutElastic(t) {
+    if (t <= 0) return 0; if (t >= 1) return 1;
+    return Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * (2 * Math.PI / 3)) + 1;
+}
+function easeOutBack(t) {
+    const c = 1.70158 + 1;
+    return 1 + c * Math.pow(t - 1, 3) + 1.70158 * Math.pow(t - 1, 2);
+}
+
+// ── Letter spans ──────────────────────────────────────────────────────────────
+function rebuildLetters(text) {
+    if (builtText === text) return;
+    builtText = text;
+    wordWrap.innerHTML = '';
+    for (const ch of text) {
+        const s = document.createElement('span');
+        s.className   = 'letter-span';
+        s.textContent = ch === ' ' ? '\u00A0' : ch;
+        wordWrap.appendChild(s);
+    }
+    applyBaseStyle();
+}
+
+function getLetters() { return Array.from(wordWrap.querySelectorAll('.letter-span')); }
+
+// ── Color parsing / lerping (for color-shift cycling) ────────────────────────
+function parseColor(str) {
+    if (!str) return [0,0,0,0];
+    const s = String(str).trim().toLowerCase();
+    if (s === 'transparent' || s === 'none' || s === '') return [0,0,0,0];
+    // #rgb, #rgba, #rrggbb, #rrggbbaa
+    if (s[0] === '#') {
+        let hex = s.slice(1);
+        if (hex.length === 3 || hex.length === 4) hex = hex.split('').map(c => c + c).join('');
+        const r = parseInt(hex.slice(0,2), 16);
+        const g = parseInt(hex.slice(2,4), 16);
+        const b = parseInt(hex.slice(4,6), 16);
+        const a = hex.length >= 8 ? parseInt(hex.slice(6,8), 16) / 255 : 1;
+        return [r|0, g|0, b|0, a];
+    }
+    // rgb(r,g,b) / rgba(r,g,b,a)
+    const m = s.match(/rgba?\s*\(([^)]+)\)/);
+    if (m) {
+        const parts = m[1].split(',').map(p => parseFloat(p));
+        return [parts[0]|0, parts[1]|0, parts[2]|0, parts[3] != null ? parts[3] : 1];
+    }
+    return [255,255,255,1];
+}
+function lerpColor(a, b, t) {
+    return [
+        a[0] + (b[0] - a[0]) * t,
+        a[1] + (b[1] - a[1]) * t,
+        a[2] + (b[2] - a[2]) * t,
+        a[3] + (b[3] - a[3]) * t,
+    ];
+}
+function toRgba(c) {
+    return `rgba(${c[0]|0},${c[1]|0},${c[2]|0},${c[3].toFixed(3)})`;
+}
+
+// Sample a palette at (rf / cycleFrames). Loops smoothly across the palette.
+function samplePalette(palette, rf) {
+    const n = palette.length;
+    if (n === 0) return parseColor(currentColor);
+    if (n === 1) return palette[0];
+    const speed = Math.max(1, currentShiftSpeed);
+    const phase = ((rf % speed) + speed) % speed / speed;   // 0..1
+    const slot  = phase * n;
+    const iA    = Math.floor(slot) % n;
+    const iB    = (iA + 1) % n;
+    const t     = slot - Math.floor(slot);
+    return lerpColor(palette[iA], palette[iB], t);
+}
+
+// The active palette — either the user's custom list (advanced), or an auto
+// palette derived from the main color with a transparent step.
+function activePalette() {
+    if (currentShiftColors.length > 0) return currentShiftColors;
+    return [parseColor(currentColor), [0, 0, 0, 0]];
+}
+
+function applyBaseStyle() {
+    // Tone down default shadow — single crisp drop plus a subtle ambient blur.
+    const shadow = currentShadow
+        ? '2px 2px 4px rgba(0,0,0,0.65), 0 0 8px rgba(0,0,0,0.35)'
+        : '';
+    const glow = currentGlow
+        ? `0 0 20px ${currentColor}, 0 0 45px ${currentColor}99, 0 0 90px ${currentColor}44`
+        : '';
+    const combined = [shadow, glow].filter(Boolean).join(', ') || 'none';
+    const strokeW  = currentOutline ? `${currentOutlineWidth}px` : '0';
+    getLetters().forEach(s => {
+        s.style.color            = currentColor;
+        s.style.fontFamily       = currentFont;
+        s.style.textShadow       = combined;
+        s.style.webkitTextStroke = `${strokeW} ${currentOutlineColor}`;
+    });
+}
+
+// ── Reset helpers ─────────────────────────────────────────────────────────────
+function resetWrap()    { wordWrap.style.transform = ''; wordWrap.style.opacity = ''; }
+function resetLetters() { getLetters().forEach(s => { s.style.opacity = ''; s.style.transform = ''; }); }
+
+// ── Animations ────────────────────────────────────────────────────────────────
+
+function animFadeSlide(rf, total, ai, ao) {
+    let op, tx;
+    if      (rf < ai)          { const t = easeInOut(rf / ai);                     op = t;     tx = (1-t)*-40; }
+    else if (rf > total - ao)  { const t = easeInOut(clamp((total-rf)/ao, 0, 1));  op = t;     tx = (1-t)*40;  }
+    else                       { op = 1; tx = 0; }
+    container.style.opacity  = op;
+    wordWrap.style.transform = `translateX(${tx}px)`;
+    resetLetters();
+}
+
+function animScaleUp(rf, total, ai, ao) {
+    let op, sc;
+    if      (rf < ai)          { const t = easeOut(rf / ai);                       op = t;     sc = 0.3 + t*0.7; }
+    else if (rf > total - ao)  { const t = easeInOut(clamp((total-rf)/ao, 0, 1));  op = t;     sc = 1 + (1-t)*0.5; }
+    else                       { op = 1; sc = 1; }
+    container.style.opacity  = op;
+    wordWrap.style.transform = `scale(${sc})`;
+    resetLetters();
+}
+
+function animScaleDown(rf, total, ai, ao) {
+    let op, sc;
+    if      (rf < ai)          { const t = easeOut(rf / ai);                       op = t;     sc = 2 - t; }
+    else if (rf > total - ao)  { const t = easeInOut(clamp((total-rf)/ao, 0, 1));  op = t;     sc = t; }
+    else                       { op = 1; sc = 1; }
+    container.style.opacity  = op;
+    wordWrap.style.transform = `scale(${sc})`;
+    resetLetters();
+}
+
+function animRise(rf, total, ai, ao) {
+    let op, ty;
+    if      (rf < ai)          { const t = easeOutElastic(rf / ai); op = clamp(rf/ai*2,0,1); ty = (1-t)*60; }
+    else if (rf > total - ao)  { const t = easeInOut(clamp((total-rf)/ao,0,1)); op = t; ty = (1-t)*-30; }
+    else                       { op = 1; ty = 0; }
+    container.style.opacity  = op;
+    wordWrap.style.transform = `translateY(${ty}px)`;
+    resetLetters();
+}
+
+function animLetterPop(rf, total, ai, ao) {
+    const letters = getLetters();
+    const n = letters.length; if (!n) return;
+    container.style.opacity  = '1';
+    resetWrap();
+
+    const stagger  = ai / n;
+    const duration = stagger * 2.2;
+
+    letters.forEach((s, i) => {
+        let op, sc, rot;
+        if (rf < ai) {
+            const localT = clamp((rf - i * stagger) / duration, 0, 1);
+            const te = easeOutElastic(localT);
+            op  = clamp(localT * 4, 0, 1);
+            sc  = te;
+            rot = (1 - easeOut(localT)) * (i % 2 === 0 ? 28 : -28);
+        } else if (rf > total - ao) {
+            const startF = total - ao + ((n-1-i) / n) * ao * 0.6;
+            const localT = clamp((rf - startF) / (ao / n * 2), 0, 1);
+            const tv = 1 - easeInOut(localT);
+            op = tv; sc = 0.5 + tv*0.5; rot = 0;
+        } else {
+            op = 1; sc = 1; rot = 0;
+        }
+        s.style.opacity   = op;
+        s.style.transform = `scale(${sc}) rotate(${rot}deg)`;
+    });
+}
+
+function animTypewriter(rf, total, ai, ao) {
+    const letters = getLetters();
+    const n = letters.length; if (!n) return;
+    container.style.opacity = '1';
+    resetWrap();
+
+    let visible;
+    if      (rf < ai)         visible = Math.floor((rf / ai) * n);
+    else if (rf > total - ao) visible = Math.ceil(clamp((total-rf)/ao, 0, 1) * n);
+    else                      visible = n;
+
+    letters.forEach((s, i) => {
+        const show = i < visible;
+        s.style.opacity   = show ? '1' : '0';
+        s.style.transform = show ? '' : 'translateY(12px) scale(0.8)';
+    });
+}
+
+function animWave(rf, total, ai, ao) {
+    const letters = getLetters();
+    const n = letters.length; if (!n) return;
+
+    let globalOp;
+    if      (rf < ai)         globalOp = easeInOut(rf / ai);
+    else if (rf > total - ao) globalOp = easeInOut(clamp((total-rf)/ao, 0, 1));
+    else                      globalOp = 1;
+
+    container.style.opacity  = globalOp;
+    wordWrap.style.transform = '';
+
+    const inHold = rf >= ai && rf <= total - ao;
+    letters.forEach((s, i) => {
+        s.style.opacity = '';
+        s.style.transform = inHold ? `translateY(${Math.sin(rf * 0.28 + i * 0.85) * 9}px)` : '';
+    });
+}
+
+// ── Scatter: letters fly in from random directions ────────────────────────────
+function animScatter(rf, total, ai, ao) {
+    const letters = getLetters();
+    const n = letters.length; if (!n) return;
+    container.style.opacity = '1';
+    resetWrap();
+
+    // Deterministic "random" per letter
+    function pr(seed) { let x = Math.sin(seed + 7.3) * 43758.5; return x - Math.floor(x); }
+
+    letters.forEach((s, i) => {
+        let op, tx, ty, sc;
+        const dx = (pr(i * 3.1) - 0.5) * 160;
+        const dy = (pr(i * 3.1 + 1) - 0.5) * 80;
+
+        if (rf < ai) {
+            const stagger = ai / n;
+            const localT  = clamp((rf - i * (stagger * 0.4)) / (ai * 0.8), 0, 1);
+            const te = easeOutBack(localT);
+            op = clamp(localT * 2, 0, 1);
+            tx = dx * (1 - te); ty = dy * (1 - te); sc = 0.3 + te * 0.7;
+        } else if (rf > total - ao) {
+            const t  = clamp((rf - (total - ao)) / ao, 0, 1);
+            const te = easeInOut(t);
+            op = 1 - te; tx = dx * te * 0.5; ty = dy * te * 0.5; sc = 1;
+        } else {
+            op = 1; tx = 0; ty = 0; sc = 1;
+        }
+        s.style.opacity   = op;
+        s.style.transform = `translate(${tx}px,${ty}px) scale(${sc})`;
+    });
+}
+
+// ── Dispatch ──────────────────────────────────────────────────────────────────
+const ANIMS = {
+    fadeSlide:  animFadeSlide,
+    scaleUp:    animScaleUp,
+    scaleDown:  animScaleDown,
+    rise:       animRise,
+    letterPop:  animLetterPop,
+    typewriter: animTypewriter,
+    wave:       animWave,
+    scatter:    animScatter,
+};
+
+function processText(data) {
+    let styleChanged = false;
+    if (data.fontUrl !== undefined) ensureFontLoaded(data.fontUrl);
+    if (data.text         !== undefined && data.text         !== currentText)         { currentText         = data.text;         styleChanged = true; }
+    if (data.font         !== undefined && data.font         !== currentFont)         { currentFont         = data.font;         styleChanged = true; }
+    if (data.color        !== undefined && data.color        !== currentColor)        { currentColor        = data.color;        styleChanged = true; }
+    if (data.shadow       !== undefined && data.shadow       !== currentShadow)       { currentShadow       = data.shadow;       styleChanged = true; }
+    if (data.glow         !== undefined && data.glow         !== currentGlow)         { currentGlow         = data.glow;         styleChanged = true; }
+    if (data.outline      !== undefined && data.outline      !== currentOutline)      { currentOutline      = data.outline;      styleChanged = true; }
+    if (data.outlineColor !== undefined && data.outlineColor !== currentOutlineColor) { currentOutlineColor = data.outlineColor; styleChanged = true; }
+    if (data.outlineWidth !== undefined && data.outlineWidth !== currentOutlineWidth) { currentOutlineWidth = data.outlineWidth; styleChanged = true; }
+    if (data.colorShift   !== undefined) currentColorShift = !!data.colorShift;
+    if (data.colorShiftColors !== undefined) {
+        const raw = Array.isArray(data.colorShiftColors)
+            ? data.colorShiftColors.join(',')
+            : String(data.colorShiftColors);
+        const trimmed = raw.trim();
+        if (trimmed === '') {
+            // Empty → auto palette (main color ↔ transparent) built in activePalette().
+            currentShiftColors = [];
+        } else {
+            currentShiftColors = trimmed.split(',').map(s => parseColor(s.trim()));
+        }
+    }
+    if (data.colorShiftSpeed !== undefined) currentShiftSpeed = Math.max(1, data.colorShiftSpeed | 0);
+    if (data.animation !== undefined) currentAnim = data.animation;
+
+    rebuildLetters(currentText);
+    if (styleChanged) applyBaseStyle();
+
+    const rf    = data.relFrame    || 0;
+    const total = data.totalFrames || 1;
+    const ai    = Math.max(0.5, data.animIn  || 15);
+    const ao    = Math.max(0.5, data.animOut || 15);
+
+    // Color-shift: the palette sweeps ACROSS the letters (left→right) over time.
+    // Each letter samples the palette at an offset proportional to its position,
+    // so at any instant one full wave of the palette is visible along the text,
+    // and that wave slides across as rf advances.
+    if (currentColorShift) {
+        const letters = getLetters();
+        const n       = letters.length || 1;
+        const palette = activePalette();
+        const speed   = Math.max(1, currentShiftSpeed);
+        const stride  = speed / n;   // per-letter phase offset
+        const shadow  = currentShadow ? '2px 2px 4px rgba(0,0,0,0.65), 0 0 8px rgba(0,0,0,0.35)' : '';
+        letters.forEach((s, i) => {
+            const c = samplePalette(palette, rf - i * stride);
+            s.style.color = toRgba(c);
+            if (currentGlow) {
+                // Glow tracks the live per-letter color so the halo fades in/out
+                // along with the sweep (pure shadow stays static behind it).
+                const gc   = toRgba(c);
+                const glow = `0 0 20px ${gc}, 0 0 45px ${gc}, 0 0 90px ${gc}`;
+                s.style.textShadow = [shadow, glow].filter(Boolean).join(', ');
+            }
+        });
+    }
+
+    (ANIMS[currentAnim] || animFadeSlide)(rf, total, ai, ao);
+}
+
+function hide() {
+    container.style.opacity  = '0';
+    resetWrap();
+    resetLetters();
+}
+
+window.addEventListener('message', (e) => {
+    const d = e.data;
+    if (!d || !d.action) return;
+    if      (d.action === 'processText') processText(d);
+    else if (d.action === 'hide')        hide();
+    else if (d.action === 'init') {
+        if (d.fontUrl      !== undefined) ensureFontLoaded(d.fontUrl);
+        if (d.text         !== undefined) currentText         = d.text;
+        if (d.font         !== undefined) currentFont         = d.font;
+        if (d.color        !== undefined) currentColor        = d.color;
+        if (d.shadow       !== undefined) currentShadow       = d.shadow;
+        if (d.glow         !== undefined) currentGlow         = d.glow;
+        if (d.outline      !== undefined) currentOutline      = d.outline;
+        if (d.outlineColor !== undefined) currentOutlineColor = d.outlineColor;
+        if (d.outlineWidth !== undefined) currentOutlineWidth = d.outlineWidth;
+        rebuildLetters(currentText);
+        hide();
+    }
+});
+</script>
+</body>
+</html>

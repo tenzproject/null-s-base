@@ -1,0 +1,3256 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap');
+
+:root {
+    --main-color:#171730;
+    --lighter-color:#1d1d3d;
+    --darker-color:#0d0d1d;
+    --darkest-color:#0a0a1a;
+    --app-minimize-color:#80bdcf;
+    --app-exit-color:#e75656;
+    --color-transition:background-color 0.8s cubic-bezier(0.01, 1.13, 0.5, 1);
+}
+
+body {
+    display: none;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    background-color: var(--main-color);
+    font-family: 'Ubuntu', sans-serif;
+    color: white;
+    transition: var(--color-transition);
+}
+
+::-webkit-scrollbar {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    width: 5px;
+    height: 5px;
+    scroll-behavior: smooth !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.4);
+    border-radius: 10px;
+}
+    
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(0,0,0,0);
+}
+
+input::selection {
+    background-color: rgba(255,255,255,0.2);
+    color: black;
+}
+
+#container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#desktop {
+    display: flex;
+    background-color: var(--main-color);
+    height: 95%;
+    transition: var(--color-transition);
+    background-image: none;
+    background-size: 8%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#desktop.laboratory {
+    background-image: url('assets/images/weed_labo3.png');
+    background-color: var(--color-transition);
+    filter: brightness(80%);
+}
+
+
+#taskbar {
+    position: sticky;
+    z-index: 99999999;
+    background-color: var(--lighter-color);
+    height: 5%;
+    font-weight: 300;
+    color: white;
+    font-size: 16px;
+    transition: var(--color-transition);
+}
+
+.taskbar-icon {
+    width: 50px;
+    height: 50px;
+    background: none;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    transition: background-color ease-in-out .1s;
+}
+
+.taskbar-icon:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.taskbar-icon img {
+    width: 40px;
+    height: 40px;
+}
+
+#taskbar * {
+    margin: 0;
+}
+
+#taskbar #left {
+    top: 50%;
+    height: 5%;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    gap: 5px;
+    box-sizing: border-box;
+}
+
+#taskbar #left img {
+    width: 32px;
+    height: 32px;
+}
+
+#taskbar #right {
+    top: 50%;
+    height: 5%;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    gap: 5px;
+    right: 0;
+}
+
+.desktop-icon {
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 80px;
+    height: 80px;
+    font-weight: 300;
+    font-size: 12px;
+    color: white;
+    background: none;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    transition: background-color ease-in-out .1s;
+}
+
+.desktop-icon img {
+    width: 50px;
+    height: 50px;
+}
+
+.desktop-icon:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+#time {
+    margin-right: 10px;
+    text-align: right;
+}
+
+#loader-container {
+    position: absolute;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#loader {
+    transform: rotate(0deg);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 6px solid rgb(255,255,255,.2);
+    border-top-color: transparent;
+    animation: loader 1s linear infinite;
+}
+
+#loader-text {
+    text-align: center;
+    font-weight: 400;
+    font-size: 24px;
+    color: white;
+}
+  
+@keyframes loader {
+    to {
+      transform: rotate(360deg);
+    }
+}
+
+.application {
+    position: absolute;
+    flex-direction: column;
+    justify-self: stretch;
+    border-radius: 8px;
+    top: 25%;
+    left: 25%;
+    background-color: var(--darker-color);
+    padding: 5px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: var(--color-transition);
+}
+
+.application > h1 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 400;
+    font-size: 18px;
+    color: white;
+    height: 5%;
+    margin: 2px;
+}
+
+.application p {
+    font-weight: 300;
+    font-size: 16px;
+    color: white;
+}
+
+.app-exit {
+    border-radius: 50%;
+    background-color: var(--app-exit-color);
+    outline: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+    transition: filter 0.1s ease-in-out;
+}
+
+.app-minimize {
+    border-radius: 50%;
+    background-color: var(--app-minimize-color);
+    outline: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+    transition: filter 0.1s ease-in-out;
+}
+
+.app-minimize:hover, .app-exit:hover {
+    filter: brightness(75%);
+}
+
+#console-text {
+    height: inherit;
+    background-color: var(--darkest-color);
+    border-radius: 8px;
+    overflow-y: auto;
+    transition: var(--color-transition);
+}
+
+#console-text p {
+    margin: 2px;
+}
+
+#console-input, #console-input:disabled {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    width: 100%;
+}
+
+#console-input:focus {
+    outline: none;
+}
+
+.console-line {
+    display: flex;
+    align-items: flex-start;
+}
+
+.entered-command {
+    overflow-wrap: anywhere;
+}
+
+.app-active {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.msg-box-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.msg-box-btn {
+    background-color: rgba(255,255,255,0.4);
+    color: white;
+    font-weight: 400;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    margin: 4px 2px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.msg-box-btn:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.msg-box-text {
+    margin: 2px;
+}
+
+#lang button {
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    background: none;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+}
+
+#lang button:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+#informations-text p {
+    margin: 4px 2px;
+}
+
+.info-label {
+    font-weight: 400;
+}
+
+#market-wrapper {
+    overflow: auto;
+}
+
+#market-container {
+    overflow: auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.market-elem {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    user-select: text;
+    height: 20vh;
+    width: 10vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.market-desc {
+    text-align: left;
+    padding: 10px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.market-elem h1 {
+    font-size: 18px;
+    text-align: center;
+}
+
+#market-top {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.market-btn {
+    background-color: rgba(255,255,255,0.4);
+    color: white;
+    font-weight: 400;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    margin: 4px 2px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.market-btn:disabled {
+    color: grey;
+    background-color: rgba(100,100,100,0.8);
+}
+
+.market-btn:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+#market-creation, #market-deletion {
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    max-width: fit-content;
+    padding: 10px;
+    padding-bottom: 6px;
+
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+#market-creation input, #market-deletion input {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-left: 4px;
+}
+
+#market-creation input:focus, #market-deletion input:focus {
+    outline: none;
+}
+
+#market-loader, #mail-loader {
+    display: none;
+    margin: auto;
+    transform: rotate(0deg);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 6px solid rgb(255,255,255,.2);
+    border-top-color: transparent;
+    animation: loader 1s linear infinite;
+}
+
+.market-post-id {
+    color: rgba(255,255,255,0.2) !important;
+    font-size: 10px !important;
+}
+
+#themes-container {
+    overflow: auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 400px;
+    width: 390px;
+}
+
+.themes-square {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    border: solid 1px rgba(255, 255, 255, 0.1);
+    padding-left: 5px;
+    cursor: pointer;
+}
+
+#laboratory-upgrades-wrapper {
+    overflow: auto;
+    padding: 20px;
+}
+
+#laboratory-upgrades-top {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#laboratory-upgrades-top h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#laboratory-upgrades-upgrades {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 10px;
+}
+
+.upgrade-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.upgrade-item:hover {
+    background-color: rgba(2, 2, 2, 0.15);
+}
+
+.upgrade-item.installed {
+    border: 1px solid #4CAF50;
+}
+
+.upgrade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.upgrade-image {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upgrade-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.upgrade-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.upgrade-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 15px;
+}
+
+.upgrade-prices {
+    font-size: 14px;
+}
+
+.upgrade-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.upgrade-actions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.upgrade-button {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upgrade-button:hover {
+    background-color: #45a049;
+}
+
+.upgrade-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#laboratory-upgrades-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+#laboratory-upgrades-container .new {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#mail-wrapper {
+    overflow: auto;
+}
+
+#mail-connection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#mail-connection input,
+#mail-signup input,
+#mail-creator input {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-left: 4px;
+}
+
+#mail-connection input:focus,
+#mail-signup input:focus,
+#mail-creator input:focus {
+    outline: none;
+}
+
+#mail-connection-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.mail-connection-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: stretch;
+}
+
+#mail-connection-signin, #mail-signup-signup {
+    background-color: rgba(255,255,255,0.4);
+    color: white;
+    font-weight: 400;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 10px 0px;
+    transition: background-color 0.1s ease-in-out;
+}
+
+#mail-connection-signin:hover, #mail-signup-signup:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+#mail-connection-signup,
+#mail-signup-signin,
+#mail-top button,
+#mail-creator button,
+#mail-reader-answer {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    font-weight: 400;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 5px 5px;
+    transition: background-color 0.1s ease-in-out;
+}
+
+#mail-connection-signup:hover,
+#mail-signup-signin:hover,
+#mail-top button:hover,
+#mail-creator button:hover,
+#mail-reader-answer:hover {
+    background-color: rgba(205,205,205,0.1);
+}
+
+#mail-signup {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#mail-signup-preview {
+    display: none;
+    margin: 0;
+}
+
+#mail-signup-preview span {
+    text-decoration: underline;
+}
+
+#mail-signup-error {
+    display: none;
+    margin: 0px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: red;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+#mail-connection-info {
+    display: none;
+    margin: 0px;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+#mail-signup-warning {
+    margin: 0px;
+    background-color: rgba(255, 220, 80, 0.2);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+#mail-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    overflow: auto;
+    max-height: 87.5%;
+    gap: 5px;
+}
+
+#mail-container .new {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.mail {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 5px 10px;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.mail .separator {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.mail .object {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+#mail-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#mail-top h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+#mail-creator {
+    display: none;
+    margin-top: 10px;
+    overflow: auto;
+    flex-direction: column;
+    box-sizing: border-box;
+    max-height: 100%;
+    gap: 10px;
+}
+
+#mail-creator textarea {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    padding-left: 4px;
+    resize: none;
+}
+
+#mail-creator textarea:focus {
+    outline: none;
+}
+
+#mail-creator {
+    display: none;
+    margin-top: 10px;
+    overflow: auto;
+    flex-direction: column;
+    box-sizing: border-box;
+    max-height: 100%;
+    gap: 10px;
+}
+
+#mail-reader {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+#mail-reader-answer {
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+
+#mail-reader-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+}
+
+.mail-reader-info {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 5px 10px;
+}
+
+.mail-new {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+
+.mail-reader-text {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px 10px;
+    user-select: text;
+}
+
+.mail-reader-date {
+    color: rgba(255, 255, 255, 0.4);
+    text-align: right;
+    user-select: none;
+}
+
+#mail-refresh:disabled {
+    opacity: 0.4;
+}
+
+#addresses-container {
+    overflow: auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 400px;
+    width: 390px;
+}
+
+#addresses-description {
+    font-weight: bold;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    margin-bottom: 0;
+    max-width: fit-content;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.addresses-info {
+    margin: 10px;
+    flex-basis: 100%;
+    text-align: center;
+    user-select: all;
+}
+
+::selection {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+#market-study-wrapper {
+    padding: 20px;
+    height: calc(100% - 40px);
+}
+
+#market-study-top {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#market-study-top h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#market-study-today {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#market-study-today-price {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+#market-study-stats {
+    height: 60%;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    position: relative;
+}
+
+#market-study-chart {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Security App Styles */
+.security-tabs {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.security-tab {
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.security-tab:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.security-tab.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+#security-wrapper {
+    padding: 20px;
+    height: calc(100% - 40px);
+}
+
+.security-filters {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.security-sort {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.security-filters input {
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border-radius: 4px;
+}
+.security-filters select {
+    padding: 8px;
+    background-color: rgb(32, 32, 32);
+    border: 1px solid rgb(44, 44, 44);
+    color: #fff;
+    border-radius: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 30px;
+}
+
+.security-filters select option {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    padding: 8px;
+}
+
+.security-filters input {
+    flex: 1;
+}
+
+.security-content {
+    padding: 10px;
+    overflow-y: auto;
+    height: calc(100% - 140px);
+}
+
+.security-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.security-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.security-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.security-item-name {
+    font-weight: bold;
+}
+
+.security-item-time {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9em;
+}
+
+.security-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.security-pagination button {
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.security-pagination button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.security-pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#laboratory-furnishing-wrapper {
+    overflow: auto;
+    padding: 20px;
+}
+
+#laboratory-furnishing-top {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#laboratory-furnishing-top h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#laboratory-furnishing-types {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    padding: 10px;
+}
+
+.lab-type-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.lab-type-item:hover {
+    background-color: rgba(2, 2, 2, 0.15);
+}
+
+.lab-type-image-container {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lab-type-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.lab-type-content {
+    padding: 15px;
+}
+
+.lab-type-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.lab-type-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.lab-type-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 15px;
+}
+
+.lab-type-price {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.lab-type-actions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.lab-type-button {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.lab-type-button:hover {
+    background-color: #45a049;
+}
+
+.lab-type-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#laboratory-furnishing-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+#employees-management-wrapper {
+    overflow: auto;
+    padding: 20px;
+}
+
+#employees-management-top {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#employees-management-top h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#employees-management-list {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    padding: 10px;
+}
+
+.employee-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+}
+
+.employee-item:hover {
+    background-color: rgba(2, 2, 2, 0.15);
+}
+
+.employee-item.hired {
+    border: 1px solid #4CAF50;
+}
+
+.employee-image-container {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.employee-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.employee-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.employee-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.employee-status {
+    color: #4CAF50;
+    font-size: 14px;
+}
+
+.employee-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 15px;
+}
+
+.employee-prices {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.employee-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.employee-actions {
+    margin-top: auto;
+    text-align: right;
+}
+
+.employee-button {
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.employee-button.hire {
+    background-color: #4CAF50;
+}
+
+.employee-button.hire:hover {
+    background-color: #45a049;
+}
+
+.employee-button.fire {
+    background-color: #f44336;
+}
+
+.employee-button.fire:hover {
+    background-color: #d32f2f;
+}
+
+.employee-button.pay {
+    background-color: #2196F3;
+    margin-left: 10px;
+}
+
+.employee-button.pay:hover {
+    background-color: #0b7dda;
+}
+
+.employee-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.payment-required {
+    color: #f44336;
+    font-weight: bold;
+}
+
+#employees-management-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+/* Styles pour la gestion des membres */
+#members-management-wrapper {
+    overflow: auto;
+    padding: 20px;
+}
+
+#members-management-top {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#members-management-top h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#members-management-invite {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+#members-management-invite h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.invite-form {
+    display: flex;
+    gap: 10px;
+}
+
+.invite-form input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.invite-form input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#members-management-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.no-members {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
+
+.member-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.member-item:hover {
+    background-color: rgba(2, 2, 2, 0.15);
+}
+
+.member-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.member-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.member-id {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.member-permissions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.permissions-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+.permissions-section h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.permission-item {
+    margin-bottom: 8px;
+}
+
+.permission-item label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.permission-item input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.member-button {
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.member-button.invite {
+    background-color: #4CAF50;
+}
+
+.member-button.invite:hover {
+    background-color: #45a049;
+}
+
+.member-button.remove {
+    background-color: #f44336;
+}
+
+.member-button.remove:hover {
+    background-color: #d32f2f;
+}
+
+#members-management-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+/* Styles pour la gestion du laboratoire */
+#lab-management-wrapper {
+    overflow: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#lab-management-info,
+#lab-management-expenses, 
+#lab-management-billing,
+#lab-management-transfer {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.lab-info-header,
+.lab-expenses-header,
+.lab-transfer-header {
+    margin-bottom: 15px;
+}
+
+.lab-info-header h2,
+.lab-expenses-header h2,
+.lab-transfer-header h2 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.lab-info-header {
+    display: flex;
+    gap: 20px;
+}
+
+.lab-info-image {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.lab-info-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.lab-info-details {
+    flex: 1;
+}
+
+.lab-info-row,
+.lab-expenses-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lab-info-row:last-child,
+.lab-expenses-row:last-child {
+    border-bottom: none;
+}
+
+.lab-expenses-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.lab-expenses-section h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.lab-expenses-row.total {
+    font-weight: bold;
+    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: none;
+    padding-top: 10px;
+}
+
+.lab-transfer-content {
+    margin-bottom: 15px;
+}
+
+.lab-transfer-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.lab-transfer-form input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.lab-transfer-form input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.lab-button {
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.lab-button.transfer {
+    background-color: #2196F3;
+}
+
+.lab-button.transfer:hover {
+    background-color: #1976D2;
+}
+
+.no-lab-data {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
+
+#lab-management-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap');
+
+:root {
+    --main-color:#171730;
+    --lighter-color:#1d1d3d;
+    --darker-color:#0d0d1d;
+    --darkest-color:#0a0a1a;
+    --app-minimize-color:#80bdcf;
+    --app-exit-color:#e75656;
+    --color-transition:background-color 0.8s cubic-bezier(0.01, 1.13, 0.5, 1);
+}
+
+body {
+    display: none;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    background-color: var(--main-color);
+    font-family: 'Ubuntu', sans-serif;
+    color: white;
+    transition: var(--color-transition);
+}
+
+::-webkit-scrollbar {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    width: 5px;
+    height: 5px;
+    scroll-behavior: smooth !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.4);
+    border-radius: 10px;
+}
+    
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(0,0,0,0);
+}
+
+input::selection {
+    background-color: rgba(255,255,255,0.2);
+    color: black;
+}
+
+#container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#desktop {
+    display: flex;
+    background-color: var(--main-color);
+    height: 95%;
+    transition: var(--color-transition);
+    background-image: none;
+    background-size: 8%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#desktop.laboratory {
+    background-image: url('assets/images/weed_labo3.png');
+    background-color: var(--color-transition);
+    filter: brightness(80%);
+}
+
+
+#taskbar {
+    position: sticky;
+    z-index: 99999999;
+    background-color: var(--lighter-color);
+    height: 5%;
+    font-weight: 300;
+    color: white;
+    font-size: 16px;
+    transition: var(--color-transition);
+}
+
+.taskbar-icon {
+    width: 50px;
+    height: 50px;
+    background: none;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    transition: background-color ease-in-out .1s;
+}
+
+.taskbar-icon:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.taskbar-icon img {
+    width: 40px;
+    height: 40px;
+}
+
+#taskbar * {
+    margin: 0;
+}
+
+#taskbar #left {
+    top: 50%;
+    height: 5%;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    gap: 5px;
+    box-sizing: border-box;
+}
+
+#taskbar #left img {
+    width: 32px;
+    height: 32px;
+}
+
+#taskbar #right {
+    top: 50%;
+    height: 5%;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    gap: 5px;
+    right: 0;
+}
+
+.desktop-icon {
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 80px;
+    height: 80px;
+    font-weight: 300;
+    font-size: 12px;
+    color: white;
+    background: none;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    transition: background-color ease-in-out .1s;
+}
+
+.desktop-icon img {
+    width: 50px;
+    height: 50px;
+}
+
+.desktop-icon:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+#time {
+    margin-right: 10px;
+    text-align: right;
+}
+
+#loader-container {
+    position: absolute;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#loader {
+    transform: rotate(0deg);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 6px solid rgb(255,255,255,.2);
+    border-top-color: transparent;
+    animation: loader 1s linear infinite;
+}
+
+#loader-text {
+    text-align: center;
+    font-weight: 400;
+    font-size: 24px;
+    color: white;
+}
+  
+@keyframes loader {
+    to {
+      transform: rotate(360deg);
+    }
+}
+
+.application {
+    position: absolute;
+    flex-direction: column;
+    justify-self: stretch;
+    border-radius: 8px;
+    top: 25%;
+    left: 25%;
+    background-color: var(--darker-color);
+    padding: 5px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: var(--color-transition);
+}
+
+.application > h1 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 400;
+    font-size: 18px;
+    color: white;
+    height: 5%;
+    margin: 2px;
+}
+
+.application p {
+    font-weight: 300;
+    font-size: 16px;
+    color: white;
+}
+
+.app-exit {
+    border-radius: 50%;
+    background-color: var(--app-exit-color);
+    outline: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+    transition: filter 0.1s ease-in-out;
+}
+
+.app-minimize {
+    border-radius: 50%;
+    background-color: var(--app-minimize-color);
+    outline: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+    transition: filter 0.1s ease-in-out;
+}
+
+.app-minimize:hover, .app-exit:hover {
+    filter: brightness(75%);
+}
+
+#console-text {
+    height: inherit;
+    background-color: var(--darkest-color);
+    border-radius: 8px;
+    overflow-y: auto;
+    transition: var(--color-transition);
+}
+
+#console-text p {
+    margin: 2px;
+}
+
+#console-input, #console-input:disabled {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    width: 100%;
+}
+
+#console-input:focus {
+    outline: none;
+}
+
+.console-line {
+    display: flex;
+    align-items: flex-start;
+}
+
+.entered-command {
+    overflow-wrap: anywhere;
+}
+
+.app-active {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.msg-box-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.msg-box-btn {
+    background-color: rgba(255,255,255,0.4);
+    color: white;
+    font-weight: 400;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    margin: 4px 2px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.msg-box-btn:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.msg-box-text {
+    margin: 2px;
+}
+
+#lang button {
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    background: none;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+}
+
+#lang button:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+#informations-text p {
+    margin: 4px 2px;
+}
+
+.info-label {
+    font-weight: 400;
+}
+
+#market-wrapper {
+    overflow: auto;
+}
+
+#market-container {
+    overflow: auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.market-elem {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    user-select: text;
+    height: 20vh;
+    width: 10vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.market-desc {
+    text-align: left;
+    padding: 10px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.market-elem h1 {
+    font-size: 18px;
+    text-align: center;
+}
+
+#market-top {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.market-btn {
+    background-color: rgba(255,255,255,0.4);
+    color: white;
+    font-weight: 400;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    margin: 4px 2px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.market-btn:disabled {
+    color: grey;
+    background-color: rgba(100,100,100,0.8);
+}
+
+.market-btn:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+#market-creation, #market-deletion {
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    max-width: fit-content;
+    padding: 10px;
+    padding-bottom: 6px;
+
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+#market-creation input, #market-deletion input {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-left: 4px;
+}
+
+#market-creation input:focus, #market-deletion input:focus {
+    outline: none;
+}
+
+#market-loader, #mail-loader {
+    display: none;
+    margin: auto;
+    transform: rotate(0deg);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 6px solid rgb(255,255,255,.2);
+    border-top-color: transparent;
+    animation: loader 1s linear infinite;
+}
+
+.market-post-id {
+    color: rgba(255,255,255,0.2) !important;
+    font-size: 10px !important;
+}
+
+#themes-container {
+    overflow: auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 400px;
+    width: 390px;
+}
+
+.themes-square {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    border: solid 1px rgba(255, 255, 255, 0.1);
+    padding-left: 5px;
+    cursor: pointer;
+}
+
+#laboratory-upgrades-wrapper {
+    overflow: auto;
+    padding: 20px;
+}
+
+#laboratory-upgrades-top {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#laboratory-upgrades-top h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#laboratory-upgrades-upgrades {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 10px;
+}
+
+.upgrade-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.upgrade-item:hover {
+    background-color: rgba(2, 2, 2, 0.15);
+}
+
+.upgrade-item.installed {
+    border: 1px solid #4CAF50;
+}
+
+.upgrade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.upgrade-image {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upgrade-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.upgrade-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.upgrade-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 15px;
+}
+
+.upgrade-prices {
+    font-size: 14px;
+}
+
+.upgrade-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.upgrade-actions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.upgrade-button {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upgrade-button:hover {
+    background-color: #45a049;
+}
+
+.upgrade-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#laboratory-upgrades-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+#laboratory-upgrades-container .new {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#mail-wrapper {
+    overflow: auto;
+}
+
+#mail-connection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#mail-connection input,
+#mail-signup input,
+#mail-creator input {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-left: 4px;
+}
+
+#mail-connection input:focus,
+#mail-signup input:focus,
+#mail-creator input:focus {
+    outline: none;
+}
+
+#mail-connection-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.mail-connection-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: stretch;
+}
+
+#mail-connection-signin, #mail-signup-signup {
+    background-color: rgba(255,255,255,0.4);
+    color: white;
+    font-weight: 400;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 10px 0px;
+    transition: background-color 0.1s ease-in-out;
+}
+
+#mail-connection-signin:hover, #mail-signup-signup:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+#mail-connection-signup,
+#mail-signup-signin,
+#mail-top button,
+#mail-creator button,
+#mail-reader-answer {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    font-weight: 400;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 5px 5px;
+    transition: background-color 0.1s ease-in-out;
+}
+
+#mail-connection-signup:hover,
+#mail-signup-signin:hover,
+#mail-top button:hover,
+#mail-creator button:hover,
+#mail-reader-answer:hover {
+    background-color: rgba(205,205,205,0.1);
+}
+
+#mail-signup {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#mail-signup-preview {
+    display: none;
+    margin: 0;
+}
+
+#mail-signup-preview span {
+    text-decoration: underline;
+}
+
+#mail-signup-error {
+    display: none;
+    margin: 0px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: red;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+#mail-connection-info {
+    display: none;
+    margin: 0px;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+#mail-signup-warning {
+    margin: 0px;
+    background-color: rgba(255, 220, 80, 0.2);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+#mail-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    overflow: auto;
+    max-height: 87.5%;
+    gap: 5px;
+}
+
+#mail-container .new {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.mail {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 5px 10px;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.mail .separator {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.mail .object {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+#mail-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#mail-top h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+#mail-creator {
+    display: none;
+    margin-top: 10px;
+    overflow: auto;
+    flex-direction: column;
+    box-sizing: border-box;
+    max-height: 100%;
+    gap: 10px;
+}
+
+#mail-creator textarea {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    padding-left: 4px;
+    resize: none;
+}
+
+#mail-creator textarea:focus {
+    outline: none;
+}
+
+#mail-creator {
+    display: none;
+    margin-top: 10px;
+    overflow: auto;
+    flex-direction: column;
+    box-sizing: border-box;
+    max-height: 100%;
+    gap: 10px;
+}
+
+#mail-reader {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+#mail-reader-answer {
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+
+#mail-reader-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+}
+
+.mail-reader-info {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 5px 10px;
+}
+
+.mail-new {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+
+.mail-reader-text {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px 10px;
+    user-select: text;
+}
+
+.mail-reader-date {
+    color: rgba(255, 255, 255, 0.4);
+    text-align: right;
+    user-select: none;
+}
+
+#mail-refresh:disabled {
+    opacity: 0.4;
+}
+
+#addresses-container {
+    overflow: auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 400px;
+    width: 390px;
+}
+
+#addresses-description {
+    font-weight: bold;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    margin-bottom: 0;
+    max-width: fit-content;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.addresses-info {
+    margin: 10px;
+    flex-basis: 100%;
+    text-align: center;
+    user-select: all;
+}
+
+::selection {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+#market-study-wrapper {
+    padding: 20px;
+    height: calc(100% - 40px);
+}
+
+#market-study-top {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#market-study-top h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#market-study-today {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#market-study-today-price {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+#market-study-stats {
+    height: 60%;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    position: relative;
+}
+
+#market-study-chart {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Security App Styles */
+.security-tabs {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.security-tab {
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.security-tab:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.security-tab.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+#security-wrapper {
+    padding: 20px;
+    height: calc(100% - 40px);
+}
+
+.security-filters {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.security-sort {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.security-filters input {
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border-radius: 4px;
+}
+.security-filters select {
+    padding: 8px;
+    background-color: rgb(32, 32, 32);
+    border: 1px solid rgb(44, 44, 44);
+    color: #fff;
+    border-radius: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 30px;
+}
+
+.security-filters select option {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    padding: 8px;
+}
+
+.security-filters input {
+    flex: 1;
+}
+
+.security-content {
+    padding: 10px;
+    overflow-y: auto;
+    height: calc(100% - 140px);
+}
+
+.security-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.security-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.security-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.security-item-name {
+    font-weight: bold;
+}
+
+.security-item-time {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9em;
+}
+
+.security-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.security-pagination button {
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.security-pagination button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.security-pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#laboratory-furnishing-wrapper {
+    overflow: auto;
+    padding: 20px;
+}
+
+#laboratory-furnishing-top {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#laboratory-furnishing-top h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#laboratory-furnishing-types {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    padding: 10px;
+}
+
+.lab-type-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.lab-type-item:hover {
+    background-color: rgba(2, 2, 2, 0.15);
+}
+
+.lab-type-image-container {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lab-type-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.lab-type-content {
+    padding: 15px;
+}
+
+.lab-type-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.lab-type-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.lab-type-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 15px;
+}
+
+.lab-type-price {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.lab-type-actions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.lab-type-button {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.lab-type-button:hover {
+    background-color: #45a049;
+}
+
+.lab-type-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#laboratory-furnishing-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+#employees-management-wrapper {
+    overflow: auto;
+    padding: 20px;
+}
+
+#employees-management-top {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#employees-management-top h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#employees-management-list {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    padding: 10px;
+}
+
+.employee-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+}
+
+.employee-item:hover {
+    background-color: rgba(2, 2, 2, 0.15);
+}
+
+.employee-item.hired {
+    border: 1px solid #4CAF50;
+}
+
+.employee-image-container {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.employee-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.employee-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.employee-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.employee-status {
+    color: #4CAF50;
+    font-size: 14px;
+}
+
+.employee-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 15px;
+}
+
+.employee-prices {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.employee-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.employee-actions {
+    margin-top: auto;
+    text-align: right;
+}
+
+.employee-button {
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.employee-button.hire {
+    background-color: #4CAF50;
+}
+
+.employee-button.hire:hover {
+    background-color: #45a049;
+}
+
+.employee-button.fire {
+    background-color: #f44336;
+}
+
+.employee-button.fire:hover {
+    background-color: #d32f2f;
+}
+
+.employee-button.pay {
+    background-color: #2196F3;
+    margin-left: 10px;
+}
+
+.employee-button.pay:hover {
+    background-color: #0b7dda;
+}
+
+.employee-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.payment-required {
+    color: #f44336;
+    font-weight: bold;
+}
+
+#employees-management-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+/* Styles pour la gestion des membres */
+#members-management-wrapper {
+    overflow: auto;
+    padding: 20px;
+}
+
+#members-management-top {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#members-management-top h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#members-management-invite {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+#members-management-invite h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.invite-form {
+    display: flex;
+    gap: 10px;
+}
+
+.invite-form input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.invite-form input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#members-management-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.no-members {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
+
+.member-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.member-item:hover {
+    background-color: rgba(2, 2, 2, 0.15);
+}
+
+.member-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.member-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.member-id {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.member-permissions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.permissions-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+.permissions-section h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.permission-item {
+    margin-bottom: 8px;
+}
+
+.permission-item label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.permission-item input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.member-button {
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.member-button.invite {
+    background-color: #4CAF50;
+}
+
+.member-button.invite:hover {
+    background-color: #45a049;
+}
+
+.member-button.remove {
+    background-color: #f44336;
+}
+
+.member-button.remove:hover {
+    background-color: #d32f2f;
+}
+
+#members-management-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+/* Styles pour la gestion du laboratoire */
+#lab-management-wrapper {
+    overflow: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#lab-management-info,
+#lab-management-expenses,
+#lab-management-transfer {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.lab-info-header,
+.lab-expenses-header,
+.lab-transfer-header {
+    margin-bottom: 15px;
+}
+
+.lab-info-header h2,
+.lab-expenses-header h2,
+.lab-transfer-header h2 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.lab-info-header {
+    display: flex;
+    gap: 20px;
+}
+
+.lab-info-image {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.lab-info-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.lab-info-details {
+    flex: 1;
+}
+
+.lab-info-row,
+.lab-expenses-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lab-info-row:last-child,
+.lab-expenses-row:last-child {
+    border-bottom: none;
+}
+
+.lab-expenses-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.lab-expenses-section h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.lab-expenses-row.total {
+    font-weight: bold;
+    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: none;
+    padding-top: 10px;
+}
+
+.lab-transfer-content {
+    margin-bottom: 15px;
+}
+
+.lab-transfer-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.lab-transfer-form input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.lab-transfer-form input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.lab-button {
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.lab-button.transfer {
+    background-color: #2196F3;
+}
+
+.lab-button.transfer:hover {
+    background-color: #1976D2;
+}
+
+.no-lab-data {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
+
+#lab-management-loader {
+    display: none;
+    margin: 20px auto;
+}
+
+#market-study-drug-selector {
+    margin: 15px 0;
+}
+
+#market-study-drug-select {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    outline: none;
+    width: 200px;
+}
+
+#market-study-drug-select option {
+    background-color: var(--darker-color);
+    color: white;
+}
+
+#market-study-drug-select:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+}
