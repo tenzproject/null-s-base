@@ -1,0 +1,11 @@
+{
+  "name": "null-cache",
+  "version": "1.0.0",
+  "description": "Image cache & screenshot processing",
+  "main": "server.js",
+  "dependencies": {
+    "@citizenfx/client": "^2.0.6878-1",
+    "@citizenfx/server": "^2.0.6878-1",
+    "image-js": "^0.35.5"
+  }
+}

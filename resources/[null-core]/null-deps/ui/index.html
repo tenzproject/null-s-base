@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>null-deps</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            overflow: hidden;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: transparent;
+        }
+        /* Always-on overlays (no focus, no events) */
+        #voice, #audio {
+            pointer-events: none;
+            z-index: 1;
+        }
+        /* Focusable UIs — pointer-events controlled by Lua via SetNuiFocus */
+        #screenshot { z-index: 2; pointer-events: none; }
+        #oxmysql    { z-index: 3; pointer-events: none; }
+        #oxlib      { z-index: 4; pointer-events: auto; }
+    </style>
+</head>
+<body>
+    <!-- Always-on lightweight overlays -->
+    <iframe id="voice"      src="./pma-voice/index.html"        allow="autoplay"></iframe>
+    <iframe id="audio"      src="./xsound/index.html"           allow="autoplay"></iframe>
+
+    <!-- Heavier UIs (focusable when their resource calls SetNuiFocus) -->
+    <iframe id="screenshot" src="./screenshot-basic/index.html"></iframe>
+    <iframe id="oxmysql"    src="./oxmysql/index.html"></iframe>
+    <iframe id="oxlib"      src="./modules/ox_lib/web/build/index.html"></iframe>
+
+    <script>
+        // ====================================================================
+        // NUI multiplexer for null-deps bundle
+        // --------------------------------------------------------------------
+        // Each bundled module's UI lives in its own iframe and listens to
+        // window.message via its original handler. We forward every
+        // SendNUIMessage from Lua to all iframes — each one filters by its own
+        // payload fields, so cross-traffic is silently ignored.
+        //
+        // For HTTP callbacks (fetch / $.post('https://null-deps/cb')) the
+        // game routes them directly to the matching RegisterNUICallback on
+        // the Lua side — no work needed here.
+        // ====================================================================
+        var iframes = [
+            document.getElementById('voice'),
+            document.getElementById('audio'),
+            document.getElementById('screenshot'),
+            document.getElementById('oxmysql'),
+            document.getElementById('oxlib')
+        ];
+
+        window.addEventListener('message', function(e) {
+            for (var i = 0; i < iframes.length; i++) {
+                try { iframes[i].contentWindow.postMessage(e.data, '*'); } catch (err) {}
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+/* Confirm Dialog Overlay */
+.confirm-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease;
+  z-index: 10000;
+}
+
+.confirm-dialog-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+  animation: fadeIn 0.1s ease-out;
+}
+
+.confirm-dialog-overlay.hiding {
+  opacity: 0;
+  pointer-events: none;
+  animation: fadeOut 0.1s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97) translateY(-6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.97) translateY(-6px); }
+}
+
+/* Confirm Dialog Container */
+.confirm-dialog-container {
+  background: var(--bg-primary-full);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  min-width: 320px;
+  max-width: 420px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.15s ease-out;
+  overflow: hidden;
+}
+
+.confirm-dialog-header {
+  position: relative;
+  /* padding: 16px 20px; */
+  padding: 26px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+  z-index: 0;
+}
+
+.confirm-dialog-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/assets/img/banniere.png') center / cover no-repeat;
+  z-index: -2;
+}
+
+.confirm-dialog-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%);
+  z-index: -1;
+}
+
+.confirm-dialog-content-wrapper {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Icon */
+.confirm-dialog-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  animation: iconPulse 0.3s ease-out;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+@keyframes iconPulse {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Title */
+.confirm-dialog-title {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+/* Message */
+.confirm-dialog-message {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  max-width: 100%;
+}
+
+/* Footer */
+.confirm-dialog-footer {
+  padding: 12px 20px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Buttons */
+.confirm-dialog-buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.confirm-dialog-button {
+  flex: 1;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s cubic-bezier(0.22, 1, 0.36, 1), color 0.15s ease, transform 0.15s ease;
+  letter-spacing: 0.3px;
+}
+
+.confirm-dialog-button.no {
+  background: transparent;
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-color);
+}
+
+.confirm-dialog-button.no:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.confirm-dialog-button.yes {
+  color: var(--text-primary);
+}
+
+.confirm-dialog-button.yes:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.confirm-dialog-button.yes:active {
+  transform: translateY(0);
+}
+
+/* Hint */
+.confirm-dialog-hint {
+  color: var(--text-tertiary);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.hint-key {
+  background: var(--bg-tertiary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}

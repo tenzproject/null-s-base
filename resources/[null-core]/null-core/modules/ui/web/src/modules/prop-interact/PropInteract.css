@@ -1,0 +1,743 @@
+/* ============================================================
+   PropInteract — Realistic 3D prop interaction overlay
+   Prefix: .pi-
+   Accent: --pi-accent (dynamic from primaryColor)
+   ============================================================ */
+
+/* --- Container --- */
+.pi-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: auto;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  user-select: none;
+  overflow: hidden;
+}
+
+/* Vignette for immersive prop focus */
+.pi-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.25) 100%);
+}
+
+.pi-container * {
+  box-sizing: border-box;
+}
+
+/* --- Overlay for orbit drag (transparent, captures mouse) --- */
+.pi-orbit-overlay {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  z-index: 1;
+}
+
+.pi-orbit-overlay.pi-orbiting {
+  cursor: grabbing;
+}
+
+/* --- Header Bar --- */
+.pi-header {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+  animation: pi-slideDown 0.4s ease-out;
+}
+
+.pi-header-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  letter-spacing: 0.5px;
+}
+
+.pi-header-subtitle {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.6);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+/* --- Close Button --- */
+.pi-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 100;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--bg-tertiary);
+  background: rgba(12,12,14,0.35);
+  /* backdrop-filter: blur(12px); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  animation: pi-fadeIn 0.3s ease-out 0.2s backwards;
+}
+
+.pi-close-btn:hover {
+  background: rgba(255,60,60,0.2);
+  border-color: rgba(255,60,60,0.3);
+  color: #ff6b6b;
+  transform: scale(1.05);
+}
+
+/* --- Keybind Hint --- */
+.pi-keybind-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: rgba(12,12,14,0.3);
+  /* backdrop-filter: blur(10px); */
+  border: 1px solid var(--bg-secondary);
+  pointer-events: none;
+  animation: pi-fadeIn 0.4s ease-out 0.5s backwards;
+}
+
+.pi-keybind-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  letter-spacing: 0.5px;
+}
+
+.pi-keybind-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* --- Tool Panel (left side) --- */
+.pi-tools-panel {
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: pi-slideRight 0.4s ease-out 0.15s backwards;
+}
+
+.pi-tools-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.pi-tool-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 1px solid var(--bg-tertiary);
+  background: rgba(12,12,14,0.35);
+  /* backdrop-filter: blur(12px); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.pi-tool-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85);
+  transform: scale(1.05);
+}
+
+.pi-tool-btn.pi-tool-active {
+  background: var(--pi-accent-15, rgba(100,100,255,0.15));
+  border-color: var(--pi-accent-40, rgba(100,100,255,0.4));
+  color: var(--pi-accent, #646464);
+  box-shadow: 0 0 20px var(--pi-accent-15, rgba(100,100,255,0.15));
+}
+
+.pi-tool-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.pi-tool-btn-label {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  max-width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pi-tool-tooltip {
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(12,12,14,0.9);
+  border: 1px solid rgba(255,255,255,0.1);
+  white-space: nowrap;
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 200;
+}
+
+.pi-tool-btn:hover .pi-tool-tooltip {
+  opacity: 1;
+}
+
+/* --- Items Panel (right side) --- */
+.pi-items-panel {
+  position: absolute;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 60vh;
+  animation: pi-slideLeft 0.4s ease-out 0.15s backwards;
+}
+
+.pi-items-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.pi-item-card {
+  width: 64px;
+  height: 72px;
+  border-radius: 14px;
+  border: 1px solid var(--bg-tertiary);
+  background: rgba(12,12,14,0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: rgba(255,255,255,0.6);
+  cursor: grab;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pi-item-card-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  pointer-events: none;
+}
+
+.pi-item-card:hover {
+  background: var(--bg-tertiary);
+  border-color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85);
+  transform: scale(1.05);
+}
+
+.pi-item-card:active {
+  cursor: grabbing;
+}
+
+.pi-item-card.pi-item-empty {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.pi-item-card svg {
+  width: 22px;
+  height: 22px;
+}
+
+.pi-item-card-label {
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  max-width: 54px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.pi-item-count {
+  position: absolute;
+  bottom: 3px;
+  right: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--pi-accent, #646464);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.pi-item-tooltip {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(12,12,14,0.9);
+  border: 1px solid rgba(255,255,255,0.1);
+  white-space: nowrap;
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 200;
+}
+
+.pi-item-card:hover .pi-item-tooltip {
+  opacity: 1;
+}
+
+/* --- Results Tray (bottom right) --- */
+.pi-results-panel {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  animation: pi-fadeIn 0.4s ease-out 0.3s backwards;
+}
+
+.pi-results-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-tertiary);
+  margin-bottom: 2px;
+}
+
+.pi-result-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(12,12,14,0.65);
+  /* backdrop-filter: blur(12px); */
+  border: 1px solid var(--pi-accent-15, rgba(100,100,255,0.15));
+  animation: pi-resultPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.pi-result-item svg {
+  width: 16px;
+  height: 16px;
+  color: var(--pi-accent, #646464);
+}
+
+.pi-result-item-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+}
+
+.pi-result-item-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--pi-accent, #646464);
+}
+
+/* --- Zone Markers (positioned at 3D prop screen coords) --- */
+.pi-zone {
+  position: absolute;
+  z-index: 30;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  transition: opacity 0.2s ease;
+}
+
+.pi-zone.pi-zone-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pi-zone-marker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(12,12,14,0.35);
+  border: 2px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  /* overflow: hidden; */
+}
+
+/* Zone with image — larger, rounded square */
+.pi-zone-marker.pi-zone-has-image {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+}
+
+.pi-zone-marker-img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  pointer-events: none;
+}
+
+/* Draggable zone cursor */
+.pi-zone-marker.pi-zone-draggable {
+  cursor: grab;
+}
+
+.pi-zone-marker.pi-zone-draggable:active {
+  cursor: grabbing;
+}
+
+.pi-zone-marker svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.pi-zone:hover .pi-zone-marker {
+  background: var(--pi-accent-15, rgba(100,100,255,0.15));
+  border-color: var(--pi-accent-50, rgba(100,100,255,0.5));
+  color: var(--pi-accent, #646464);
+  transform: scale(1.15);
+  box-shadow: 0 0 24px var(--pi-accent-20, rgba(100,100,255,0.2));
+}
+
+.pi-zone:hover .pi-zone-marker svg {
+  transform: scale(1.1);
+}
+
+/* Zone states */
+.pi-zone-marker.pi-zone-active {
+  background: var(--pi-accent-20, rgba(100,100,255,0.2));
+  border-color: var(--pi-accent-60, rgba(100,100,255,0.6));
+  color: var(--pi-accent, #646464);
+  box-shadow: 0 0 20px var(--pi-accent-15, rgba(100,100,255,0.15));
+}
+
+.pi-zone-marker.pi-zone-completed {
+  background: rgba(34,197,94,0.15);
+  border-color: rgba(34,197,94,0.5);
+  color: #22c55e;
+}
+
+.pi-zone-marker.pi-zone-disabled {
+  background: rgba(12,12,14,0.5);
+  border-color: var(--bg-tertiary);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.pi-zone-marker.pi-zone-highlight {
+  animation: pi-zoneGlow 1.5s ease-in-out infinite;
+  border-color: var(--pi-accent-60, rgba(100,100,255,0.6));
+  color: var(--pi-accent, #646464);
+}
+
+/* Pulse ring */
+.pi-zone-pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--pi-accent-30, rgba(100,100,255,0.3));
+  animation: pi-pulseRing 2s ease-out infinite;
+  pointer-events: none;
+}
+
+/* Zone label */
+.pi-zone-label {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(12,12,14,0.85);
+  border: 1px solid var(--bg-tertiary);
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.pi-zone:hover .pi-zone-label {
+  opacity: 1;
+}
+
+/* Zone action hint (shows required tool or action type) */
+.pi-zone-action-hint {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: var(--pi-accent-15, rgba(100,100,255,0.15));
+  border: 1px solid var(--pi-accent-25, rgba(100,100,255,0.25));
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--pi-accent, #646464);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.pi-zone:hover .pi-zone-action-hint {
+  opacity: 1;
+}
+
+/* Zone held items (mini icons inside) */
+.pi-zone-held {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  background: var(--pi-accent, #646464);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  padding: 0 4px;
+  pointer-events: none;
+}
+
+/* Drop highlight when dragging over */
+.pi-zone-marker.pi-zone-drop-target {
+  background: var(--pi-accent-25, rgba(100,100,255,0.25));
+  border-color: var(--pi-accent, #646464);
+  border-style: dashed;
+  transform: scale(1.2);
+  box-shadow: 0 0 30px var(--pi-accent-30, rgba(100,100,255,0.3));
+}
+
+/* --- Hold Progress Ring --- */
+.pi-hold-ring {
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+}
+
+.pi-hold-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.pi-hold-ring circle {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.pi-hold-ring .pi-hold-ring-bg {
+  stroke: var(--bg-tertiary);
+}
+
+.pi-hold-ring .pi-hold-ring-progress {
+  stroke: var(--pi-accent, #646464);
+  transition: stroke-dashoffset 0.05s linear;
+  filter: drop-shadow(0 0 4px var(--pi-accent-40, rgba(100,100,255,0.4)));
+}
+
+/* --- Drag Ghost (follows cursor) --- */
+.pi-drag-ghost {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: rgba(12,12,14,0.5);
+  border: 1px solid var(--pi-accent-30, rgba(100,100,255,0.3));
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transform: translate(-50%, -50%) scale(1.05);
+  animation: pi-dragAppear 0.15s ease-out;
+}
+
+.pi-drag-ghost svg {
+  width: 16px;
+  height: 16px;
+  color: var(--pi-accent, #646464);
+}
+
+.pi-drag-ghost-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.pi-drag-ghost-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+}
+
+/* --- Notifications --- */
+.pi-notifications {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.pi-notification {
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  /* backdrop-filter: blur(12px); */
+  animation: pi-notifSlide 0.3s ease-out;
+  white-space: nowrap;
+}
+
+.pi-notification.pi-notif-success {
+  background: rgba(34,197,94,0.15);
+  border: 1px solid rgba(34,197,94,0.3);
+  color: #4ade80;
+}
+
+.pi-notification.pi-notif-error {
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #f87171;
+}
+
+.pi-notification.pi-notif-info {
+  background: var(--pi-accent-10, rgba(100,100,255,0.1));
+  border: 1px solid var(--pi-accent-25, rgba(100,100,255,0.25));
+  color: var(--pi-accent-70w, #aaa);
+}
+
+/* --- Animations --- */
+@keyframes pi-slideDown {
+  from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes pi-slideRight {
+  from { opacity: 0; transform: translateY(-50%) translateX(-30px); }
+  to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+@keyframes pi-slideLeft {
+  from { opacity: 0; transform: translateY(-50%) translateX(30px); }
+  to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+@keyframes pi-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pi-resultPop {
+  0% { opacity: 0; transform: scale(0.8) translateX(20px); }
+  100% { opacity: 1; transform: scale(1) translateX(0); }
+}
+
+@keyframes pi-pulseRing {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes pi-zoneGlow {
+  0%, 100% { box-shadow: 0 0 12px var(--pi-accent-15, rgba(100,100,255,0.15)); }
+  50% { box-shadow: 0 0 28px var(--pi-accent-30, rgba(100,100,255,0.3)); }
+}
+
+@keyframes pi-dragAppear {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+@keyframes pi-notifSlide {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Closing animation --- */
+.pi-container.pi-closing {
+  animation: pi-containerClose 0.3s ease-in forwards;
+}
+
+@keyframes pi-containerClose {
+  to { opacity: 0; }
+}

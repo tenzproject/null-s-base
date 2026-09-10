@@ -1,0 +1,5 @@
+RegisterNUICallback('illegalDevice:territories:getData', function(_, cb)
+    ESX.TriggerServerCallback('null:illegalDevice:territories:get', function(result)
+        cb(result or { territories = {} })
+    end)
+end)

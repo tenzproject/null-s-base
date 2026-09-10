@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="fuel-shell" id="shell">
+        <header class="fuel-header">
+            <div class="fuel-brand">
+                <span class="fuel-dot"></span>
+                <span class="fuel-brand-text">STATION-SERVICE</span>
+            </div>
+            <div class="fuel-status" id="status">
+                <span class="fuel-status-dot"></span>
+                <span>EN COURS</span>
+            </div>
+        </header>
+
+        <section class="fuel-section fuel-col-fuel">
+            <div class="fuel-label">Carburant</div>
+            <div class="fuel-display">
+                <div class="digit-container" id="fuel-1"><div class="digit-slot"><div class="digit-roller"></div></div></div>
+                <div class="digit-container" id="fuel-2"><div class="digit-slot"><div class="digit-roller"></div></div></div>
+                <div class="digit-container" id="fuel-3"><div class="digit-slot"><div class="digit-roller"></div></div></div>
+                <div class="unit-symbol">L</div>
+            </div>
+        </section>
+
+        <div class="fuel-vdivider"></div>
+
+        <section class="fuel-section fuel-col-price">
+            <div class="fuel-label">À payer</div>
+            <div class="fuel-display">
+                <div class="unit-symbol unit-currency">$</div>
+                <div class="digit-container" id="price-1"><div class="digit-slot"><div class="digit-roller"></div></div></div>
+                <div class="digit-container" id="price-2"><div class="digit-slot"><div class="digit-roller"></div></div></div>
+                <div class="digit-container" id="price-3"><div class="digit-slot"><div class="digit-roller"></div></div></div>
+                <div class="digit-container" id="price-4"><div class="digit-slot"><div class="digit-roller"></div></div></div>
+            </div>
+        </section>
+
+        <footer class="fuel-footer">Null FUEL CO.</footer>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>

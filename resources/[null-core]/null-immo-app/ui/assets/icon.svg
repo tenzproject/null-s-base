@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"  stop-color="#40e05f"/>
+      <stop offset="100%" stop-color="#1f8a36"/>
+    </linearGradient>
+    <linearGradient id="house" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"  stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e8fff0"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect width="200" height="200" rx="44" fill="url(#bg)"/>
+
+  <!-- Subtle top highlight -->
+  <rect width="200" height="100" rx="44" fill="rgba(255,255,255,0.12)"/>
+
+  <!-- House silhouette -->
+  <g filter="url(#shadow)" transform="translate(40 50)">
+    <!-- Roof -->
+    <path d="M 60 0 L 0 50 L 0 60 L 10 60 L 10 100 L 110 100 L 110 60 L 120 60 L 120 50 Z"
+          fill="url(#house)"/>
+    <!-- Door -->
+    <rect x="50" y="60" width="20" height="40" rx="2" fill="#1f8a36"/>
+    <!-- Door knob -->
+    <circle cx="65" cy="82" r="2" fill="#40e05f"/>
+    <!-- Window L -->
+    <rect x="20" y="65" width="20" height="18" rx="2" fill="#40e05f" opacity="0.3"/>
+    <!-- Window R -->
+    <rect x="80" y="65" width="20" height="18" rx="2" fill="#40e05f" opacity="0.3"/>
+  </g>
+
+  <!-- "8" badge bottom-right (Dynasty 8 wink) -->
+  <g transform="translate(140 140)">
+    <circle r="22" fill="#ffffff" opacity="0.95"/>
+    <text x="0" y="8" text-anchor="middle" font-family="Outfit, Arial, sans-serif"
+          font-size="28" font-weight="800" fill="#1f8a36">8</text>
+  </g>
+</svg>

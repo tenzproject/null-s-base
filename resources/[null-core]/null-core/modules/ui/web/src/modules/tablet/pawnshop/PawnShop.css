@@ -1,0 +1,684 @@
+.pawnshop-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: pawnshop-fadeIn 0.3s ease;
+  background: rgba(0, 0, 0, 0.6); 
+}
+.pawnshop-overlay.pawnshop-hiding {
+  animation: pawnshop-fadeOut 0.3s ease forwards;
+}
+@keyframes pawnshop-fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pawnshop-fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.96); }
+}
+
+.pawnshop-container {
+  display: flex;
+  width: 72vw;
+  height: 70vh;
+  border-radius: 16px;
+  overflow: hidden;
+  /* background: rgba(15, 15, 20, 0.92); */
+  background: rgb(10, 10, 10);
+  /* backdrop-filter: blur(24px); */
+  border: 1px solid var(--bg-tertiary);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+}
+
+/* Sidebar */
+.pawnshop-sidebar {
+  width: 240px;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(10, 10, 15, 0.6);
+  border-right: 1px solid var(--bg-tertiary);
+  padding: 20px 14px;
+  gap: 16px;
+}
+.pawnshop-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px;
+}
+.pawnshop-sidebar-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+.pawnshop-sidebar-title h1 {
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  line-height: 1.2;
+}
+.pawnshop-sidebar-title p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+}
+
+.pawnshop-money-section {
+  display: flex;
+  gap: 8px;
+  padding: 0 4px;
+}
+.pawnshop-money-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  flex: 1;
+}
+.pawnshop-money-item svg { color: var(--text-secondary); }
+.pawnshop-money-item span { font-size: 12px; color: rgba(255, 255, 255, 0.7); font-weight: 600; }
+
+.pawnshop-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.pawnshop-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.2s;
+  position: relative;
+}
+.pawnshop-sidebar-item:hover { background: var(--bg-tertiary); color: white; }
+.pawnshop-sidebar-item.active { color: white; font-weight: 600; }
+.pawnshop-sidebar-arrow { margin-left: auto; opacity: 0.3; }
+.pawnshop-sidebar-item.active .pawnshop-sidebar-arrow { opacity: 0.8; }
+.pawnshop-tab-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  color: white;
+  font-weight: 700;
+  margin-left: auto;
+}
+
+.pawnshop-sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pawnshop-tax-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.pawnshop-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--bg-tertiary);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.2s;
+}
+.pawnshop-close-btn:hover { background: rgba(231, 76, 60, 0.15); color: #e74c3c; border-color: rgba(231, 76, 60, 0.3); }
+
+/* Content */
+.pawnshop-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 20px 24px;
+  gap: 16px;
+}
+.pawnshop-content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.pawnshop-content-header-info h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+.pawnshop-content-header-info p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+}
+.pawnshop-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  border: 1px solid var(--bg-tertiary);
+  min-width: 220px;
+}
+.pawnshop-search svg { color: var(--text-tertiary); flex-shrink: 0; }
+.pawnshop-search input {
+  background: none;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 13px;
+  width: 100%;
+}
+.pawnshop-search input::placeholder { color: var(--text-tertiary); }
+
+/* Browse content */
+.pawnshop-browse-content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-right: 4px;
+}
+.pawnshop-browse-content::-webkit-scrollbar { width: 4px; }
+.pawnshop-browse-content::-webkit-scrollbar-track { background: transparent; }
+.pawnshop-browse-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+.pawnshop-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pawnshop-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  align-content: start;
+}
+.pawnshop-item-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+.pawnshop-item-card:hover {
+  background: var(--bg-secondary);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+.pawnshop-item-card.player-listing { border-top: 2px solid var(--pawnshop-accent); }
+
+.pawnshop-item-image {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.pawnshop-item-image img {
+  max-width: 64px;
+  max-height: 64px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+.pawnshop-item-image-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.pawnshop-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pawnshop-item-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pawnshop-item-price { font-size: 14px; font-weight: 700; }
+.pawnshop-item-stock { font-size: 11px; color: var(--text-tertiary); }
+.pawnshop-item-seller {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+
+.pawnshop-item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: auto;
+}
+.pawnshop-qty-control {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.pawnshop-qty-control button {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+}
+.pawnshop-qty-control button:hover { background: rgba(255, 255, 255, 0.1); color: white; }
+.pawnshop-qty-control span {
+  min-width: 22px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+.pawnshop-buy-buttons {
+  display: flex;
+  gap: 4px;
+}
+.pawnshop-buy-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+}
+.pawnshop-buy-btn:hover:not(:disabled) { background: var(--pawnshop-accent); color: white !important; border-color: var(--pawnshop-accent) !important; }
+.pawnshop-buy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Sell tab */
+.pawnshop-sell-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.pawnshop-sell-content::-webkit-scrollbar { width: 4px; }
+.pawnshop-sell-content::-webkit-scrollbar-track { background: transparent; }
+.pawnshop-sell-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+.pawnshop-inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+.pawnshop-inv-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-secondary);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-secondary);
+}
+.pawnshop-inv-item:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--pawnshop-accent);
+  transform: translateY(-2px);
+}
+.pawnshop-inv-item .pawnshop-item-image {
+  width: 48px;
+  height: 48px;
+  background: transparent;
+}
+.pawnshop-inv-item .pawnshop-item-image img {
+  max-width: 40px;
+  max-height: 40px;
+}
+.pawnshop-inv-item-label { font-size: 12px; font-weight: 600; color: white; text-align: center; }
+.pawnshop-inv-item-count { font-size: 11px; color: var(--text-tertiary); }
+
+.pawnshop-sell-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 480px;
+}
+.pawnshop-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  transition: color 0.2s;
+}
+.pawnshop-back-btn:hover { color: white; }
+
+.pawnshop-sell-item-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--bg-tertiary);
+}
+.pawnshop-sell-item-preview .pawnshop-item-image {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  flex-shrink: 0;
+}
+.pawnshop-sell-item-preview .pawnshop-item-image img {
+  max-width: 40px;
+  max-height: 40px;
+}
+.pawnshop-sell-item-preview h3 { font-size: 15px; color: white; margin: 0; font-weight: 600; }
+.pawnshop-sell-item-preview p { font-size: 12px; color: var(--text-secondary); margin: 2px 0 0; }
+
+.pawnshop-sell-fields {
+  display: flex;
+  gap: 12px;
+}
+.pawnshop-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pawnshop-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.pawnshop-field input {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--bg-tertiary);
+  background: var(--bg-secondary);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.pawnshop-field input:focus { border-color: var(--pawnshop-accent); }
+.pawnshop-field input::placeholder { color: var(--text-tertiary); }
+
+.pawnshop-sell-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+.pawnshop-sell-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.pawnshop-sell-summary-row.tax { color: #e74c3c; }
+.pawnshop-sell-summary-row.total {
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  padding-top: 6px;
+  border-top: 1px solid var(--bg-tertiary);
+  margin-top: 4px;
+}
+
+.pawnshop-sell-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+}
+.pawnshop-sell-submit:hover:not(:disabled) { filter: brightness(1.15); }
+.pawnshop-sell-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.pawnshop-sell-warning {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #e74c3c;
+}
+
+/* My Listings */
+.pawnshop-mylistings-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.pawnshop-mylistings-content::-webkit-scrollbar { width: 4px; }
+.pawnshop-mylistings-content::-webkit-scrollbar-track { background: transparent; }
+.pawnshop-mylistings-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+.pawnshop-listing-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pawnshop-listing-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  border: 1px solid var(--bg-secondary);
+}
+.pawnshop-listing-row .pawnshop-item-image {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+}
+.pawnshop-listing-row .pawnshop-item-image img {
+  max-width: 28px;
+  max-height: 28px;
+}
+.pawnshop-listing-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.pawnshop-listing-label { font-size: 13px; font-weight: 600; color: white; }
+.pawnshop-listing-detail { font-size: 11px; color: var(--text-tertiary); }
+.pawnshop-listing-total { font-size: 13px; font-weight: 700; min-width: 70px; text-align: right; }
+.pawnshop-listing-cancel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  background: transparent;
+  color: #e74c3c;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+}
+.pawnshop-listing-cancel:hover:not(:disabled) { background: rgba(231, 76, 60, 0.15); }
+.pawnshop-listing-cancel:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Revenue */
+.pawnshop-revenue-content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 4px;
+}
+.pawnshop-revenue-content::-webkit-scrollbar { width: 4px; }
+.pawnshop-revenue-content::-webkit-scrollbar-track { background: transparent; }
+.pawnshop-revenue-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+.pawnshop-revenue-total-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid;
+}
+.pawnshop-revenue-total-label { font-size: 12px; color: var(--text-secondary); }
+.pawnshop-revenue-total-amount { font-size: 22px; font-weight: 800; display: block; }
+.pawnshop-collect-all-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: auto;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+}
+.pawnshop-collect-all-btn:hover:not(:disabled) { filter: brightness(1.15); }
+.pawnshop-collect-all-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.pawnshop-revenue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pawnshop-revenue-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+.pawnshop-revenue-amount { font-size: 13px; font-weight: 600; color: white; }
+
+/* Empty state */
+.pawnshop-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 0;
+  color: rgba(255, 255, 255, 0.15);
+}
+.pawnshop-empty p { font-size: 14px; color: var(--text-tertiary); }
+
+/* Notification */
+.pawnshop-notification {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  animation: pawnshop-notifIn 0.3s ease;
+  z-index: 10;
+}
+.pawnshop-notification.success { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
+.pawnshop-notification.error { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); }
+
+@keyframes pawnshop-notifIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

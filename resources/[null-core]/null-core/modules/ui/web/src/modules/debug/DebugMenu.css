@@ -1,0 +1,227 @@
+/* =============================================
+   DEBUG MENU — Development Mode Only
+   ============================================= */
+
+.debug-menu-overlay {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  animation: debugSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes debugSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.debug-menu {
+  width: 380px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: rgba(10, 10, 14, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+}
+
+.debug-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--bg-tertiary);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.debug-menu-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.debug-menu-title svg {
+  color: #f59e0b;
+}
+
+.debug-menu-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: none;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.debug-menu-close:hover {
+  background: var(--bg-tertiary);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.debug-menu-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 0;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.debug-menu-tab {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px 8px 0 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.debug-menu-tab:hover {
+  background: var(--bg-secondary);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.debug-menu-tab.active {
+  background: var(--bg-tertiary);
+  color: #f59e0b;
+  border-bottom: 2px solid #f59e0b;
+}
+
+.debug-menu-grid {
+  flex: 1;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  overflow-y: auto;
+  max-height: calc(85vh - 180px);
+}
+
+.debug-menu-grid::-webkit-scrollbar {
+  width: 5px;
+}
+
+.debug-menu-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.debug-menu-grid::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+.debug-menu-grid::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+.debug-module-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+  border-radius: 12px;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  overflow: hidden;
+}
+
+.debug-module-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--bg-secondary), transparent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.debug-module-btn:hover::before {
+  opacity: 1;
+}
+
+.debug-module-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.debug-module-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  position: relative;
+  z-index: 1;
+}
+
+.debug-module-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.debug-module-arrow {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.debug-module-btn:hover .debug-module-arrow {
+  opacity: 0.6;
+  transform: translateX(2px);
+}
+
+.debug-menu-footer {
+  padding: 12px 18px;
+  border-top: 1px solid var(--bg-tertiary);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.debug-menu-footer kbd {
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--bg-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}

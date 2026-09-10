@@ -1,0 +1,293 @@
+--[[
+    Mecano NUI Menu
+    Modern bottom-panel UI with keyboard navigation
+    Mouse remains focused (SetNuiFocusKeepInput)
+]]
+
+local MecanoNUI = {}
+local isMenuOpen = false
+
+-- Open the NUI menu
+function MecanoNUI.OpenMenu()
+    if isMenuOpen then return end
+    
+    isMenuOpen = true
+    
+    -- Send NUI message to open
+    SendNUIMessage({
+        action = 'mecano:open'
+    })
+    
+    -- Set NUI focus but KEEP input control (mouse stays focused on game)
+    SetNuiFocus(true, true)
+    
+    -- Start control thread for keyboard navigation
+    MecanoNUI.StartControlThread()
+end
+
+-- Close the NUI menu
+function MecanoNUI.CloseMenu()
+    if not isMenuOpen then return end
+    
+    isMenuOpen = false
+    
+    SendNUIMessage({
+        action = 'mecano:close'
+    })
+    
+    SetNuiFocus(false, false)
+end
+
+-- Control thread for handling game controls while NUI is open
+function MecanoNUI.StartControlThread()
+    Citizen.CreateThread(function()
+        while isMenuOpen do
+            Citizen.Wait(0)
+            
+            -- Disable controls that might interfere
+            -- But keep movement controls active (WASD, Arrows)
+            DisableControlAction(0, 1, true)    -- LookLeftRight
+            DisableControlAction(0, 2, true)    -- LookUpDown
+            DisableControlAction(0, 24, true)   -- Attack
+            DisableControlAction(0, 25, true)   -- Aim
+            DisableControlAction(0, 45, true)   -- Reload
+            DisableControlAction(0, 140, true) -- MeleeAttackLight
+            DisableControlAction(0, 141, true) -- MeleeAttackHeavy
+            DisableControlAction(0, 142, true) -- MeleeAttackAlternate
+            DisableControlAction(0, 257, true) -- Attack2
+            DisableControlAction(0, 263, true) -- MeleeAttack1
+            DisableControlAction(0, 264, true) -- MeleeAttack2
+            DisableControlAction(0, 265, true) -- MeleeAttack3
+            
+            -- Allow ESC to close
+            if IsControlJustPressed(0, 177) then -- BACKSPACE / ESC
+                MecanoNUI.CloseMenu()
+            end
+        end
+    end)
+end
+
+-- NUI Callback: Close menu
+RegisterNUICallback('mecano:close', function(data, cb)
+    MecanoNUI.CloseMenu()
+    cb('ok')
+end)
+
+-- NUI Callback: Create bill
+RegisterNUICallback('mecano:facture', function(data, cb)
+    cb('ok')
+    
+    local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+    
+    if closestPlayer == -1 or closestDistance > 3.0 then
+        ESX.ShowNotification('Il n\'y a aucun joueur aux alentours')
+        return
+    end
+    
+    -- Use input dialog for amount
+    local amount = nil
+    
+    -- Try to use the new input system
+    local inputData = exports['null-core']:InputDialog('Montant de la facture', {
+        { type = 'number', label = 'Montant', required = true }
+    })
+    
+    if inputData then
+        amount = tonumber(inputData[1])
+    else
+        -- Fallback to old input
+        local string = null.fct.input('Montant', false, 9000000, 'number')
+        if string ~= '' then
+            amount = tonumber(string)
+        end
+    end
+    
+    if amount and amount > 0 then
+        TriggerServerEvent('Core:AddBilling', GetPlayerServerId(closestPlayer), amount, ESX.PlayerData.job.name)
+    end
+end)
+
+-- NUI Callback: Verify vehicle owner
+RegisterNUICallback('mecano:verifier', function(data, cb)
+    cb('ok')
+    
+    local playerPed = PlayerPedId()
+    local vehicle, dist = ESX.Game.GetClosestVehicle(GetEntityCoords(playerPed))
+    local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+    
+    if IsPedSittingInAnyVehicle(playerPed) then
+        ESX.ShowNotification('Vous ne pouvez pas faire ça à l\'intérieur d\'un véhicule')
+        return
+    end
+    
+    if closestPlayer == -1 or closestDistance > 3.0 then
+        ESX.ShowNotification('Il n\'y a aucun joueur aux alentours')
+        return
+    end
+    
+    if DoesEntityExist(vehicle) and dist < 4 then
+        TaskStartScenarioInPlace(playerPed, 'WORLD_HUMAN_CLIPBOARD', 0, true)
+        FreezeEntityPosition(playerPed, true)
+        
+        Citizen.CreateThread(function()
+            Citizen.Wait(10000)
+            FreezeEntityPosition(playerPed, false)
+            ClearPedTasksImmediately(playerPed)
+            TriggerServerEvent('null:mecano:verifOwner', GetPlayerServerId(closestPlayer), GetVehicleNumberPlateText(vehicle))
+        end)
+    else
+        ESX.ShowNotification('Aucun véhicule aux alentours')
+    end
+end)
+
+-- NUI Callback: Repair vehicle
+RegisterNUICallback('mecano:reparer', function(data, cb)
+    cb('ok')
+    
+    local playerPed = PlayerPedId()
+    local coords = GetEntityCoords(playerPed)
+    local vehicle = ESX.Game.GetClosestVehicle(coords)
+    local vehiclePos = GetEntityCoords(vehicle)
+    local distance = #(coords - vehiclePos)
+    
+    if IsPedSittingInAnyVehicle(playerPed) then
+        ESX.ShowNotification('Sortez du véhicule pour réparer')
+        return
+    end
+    
+    if not DoesEntityExist(vehicle) then
+        ESX.ShowNotification('Aucun véhicule aux alentours')
+        return
+    end
+    
+    if distance > 2 then
+        ESX.ShowNotification('Vous êtes trop loin du véhicule')
+        return
+    end
+    
+    -- Check verification policy
+    if SocietyList[ESX.PlayerData.job.name] ~= nil 
+       and SocietyList[ESX.PlayerData.job.name].data ~= nil 
+       and SocietyList[ESX.PlayerData.job.name].data.politique ~= nil 
+       and SocietyList[ESX.PlayerData.job.name].data.politique['Politique de vérification'] then
+        if VerifiedPlate[GetVehicleNumberPlateText(vehicle)] ~= true then
+            ESX.ShowNotification('Vous devez vérifier le propriétaire du véhicule.')
+            return
+        end
+    end
+    
+    TaskStartScenarioInPlace(playerPed, 'PROP_HUMAN_BUM_BIN', 0, true)
+    
+    Citizen.CreateThread(function()
+        Citizen.Wait(20000)
+        
+        SetVehicleFixed(vehicle)
+        SetVehicleDeformationFixed(vehicle)
+        SetVehicleUndriveable(vehicle, false)
+        SetVehicleEngineHealth(vehicle, 1000.0)
+        SetVehicleEngineOn(vehicle, true, true)
+        ClearPedTasksImmediately(playerPed)
+        
+        ESX.ShowNotification('Le véhicule a été réparé')
+    end)
+end)
+
+-- NUI Callback: Unlock/lockpick vehicle
+RegisterNUICallback('mecano:crocheter', function(data, cb)
+    cb('ok')
+    
+    local playerPed = PlayerPedId()
+    local vehicle = ESX.Game.GetClosestVehicle(GetEntityCoords(playerPed))
+    
+    if IsPedSittingInAnyVehicle(playerPed) then
+        ESX.ShowNotification('Vous ne pouvez pas faire ça à l\'intérieur d\'un véhicule')
+        return
+    end
+    
+    if not DoesEntityExist(vehicle) then
+        ESX.ShowNotification('Aucun véhicule aux alentours')
+        return
+    end
+    
+    TaskStartScenarioInPlace(playerPed, 'WORLD_HUMAN_WELDING', 0, true)
+    
+    Citizen.CreateThread(function()
+        Citizen.Wait(10000)
+        
+        SetVehicleDoorsLocked(vehicle, 1)
+        SetVehicleDoorsLockedForAllPlayers(vehicle, false)
+        ClearPedTasksImmediately(playerPed)
+        
+        ESX.ShowNotification('Le véhicule a été déverrouillé')
+    end)
+end)
+
+-- NUI Callback: Clean vehicle
+RegisterNUICallback('mecano:nettoyer', function(data, cb)
+    cb('ok')
+    
+    local playerPed = PlayerPedId()
+    local vehicle = ESX.Game.GetClosestVehicle(GetEntityCoords(playerPed))
+    
+    if IsPedSittingInAnyVehicle(playerPed) then
+        ESX.ShowNotification('Vous ne pouvez pas faire ça à l\'intérieur d\'un véhicule')
+        return
+    end
+    
+    if not DoesEntityExist(vehicle) then
+        ESX.ShowNotification('Aucun véhicule aux alentours')
+        return
+    end
+    
+    TaskStartScenarioInPlace(playerPed, 'WORLD_HUMAN_MAID_CLEAN', 0, true)
+    
+    Citizen.CreateThread(function()
+        Citizen.Wait(10000)
+        
+        SetVehicleDirtLevel(vehicle, 0)
+        ClearPedTasksImmediately(playerPed)
+        
+        ESX.ShowNotification('Le véhicule a été nettoyé')
+    end)
+end)
+
+-- NUI Callback: Impound vehicle
+RegisterNUICallback('mecano:fourriere', function(data, cb)
+    cb('ok')
+    
+    local playerPed = PlayerPedId()
+    
+    if IsPedSittingInAnyVehicle(playerPed) then
+        local vehicle = GetVehiclePedIsIn(playerPed, false)
+        
+        if GetPedInVehicleSeat(vehicle, -1) == playerPed then
+            ESX.ShowNotification('Le véhicule a été mis en fourrière')
+            ESX.Game.DeleteVehicle(vehicle)
+        else
+            ESX.ShowNotification('Vous devez être conducteur !', 'Erreur')
+        end
+    else
+        local vehicle = ESX.Game.GetClosestVehicle(GetEntityCoords(playerPed))
+        
+        if DoesEntityExist(vehicle) then
+            ESX.ShowNotification('Le véhicule a été mis en fourrière')
+            ESX.Game.DeleteVehicle(vehicle)
+        else
+            ESX.ShowNotification('Aucun véhicule aux alentours', 'Erreur')
+        end
+    end
+end)
+
+-- NUI Callback: Show badge
+RegisterNUICallback('mecano:badge', function(data, cb)
+    cb('ok')
+    ShowJobBadge(ESX.PlayerData.job.name)
+end)
+
+-- Export the open function
+exports('OpenMecanoMenu', MecanoNUI.OpenMenu)
+exports('CloseMecanoMenu', MecanoNUI.CloseMenu)
+
+-- Make it globally accessible
+_G.OpenMecanoNUIMenu = MecanoNUI.OpenMenu
+_G.CloseMecanoNUIMenu = MecanoNUI.CloseMenu

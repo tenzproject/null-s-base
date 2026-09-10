@@ -1,0 +1,22 @@
+-- null.export = function(resourceName, name, ...)
+--     if GetResourceState(resourceName) ~= "started" then
+--         null.DebugPrint("La ressource " .. resourceName .. " n'est pas chargée et est demandée par " .. GetInvokingResource())
+--         while GetResourceState(resourceName) ~= "started" do
+--             Wait(100)
+--         end
+--     end
+--     local success, result, error, maxattemp = false, nil, nil, 0
+--     while not success and maxattemp < 10 do
+--         success, result, error = pcall(function()
+--             local result = exports[resourceName]:name(...)
+--             return result
+--         end)
+--         maxattemp = maxattemp + 1
+--         Wait(500)
+--     end
+--     if success then
+--         return result
+--     end
+--     null.DebugPrint("Export " .. name .. " de la ressource " .. resourceName .. " a echoué (" .. error .. ") | Invoking: " .. GetInvokingResource())
+--     return nil, error
+-- end

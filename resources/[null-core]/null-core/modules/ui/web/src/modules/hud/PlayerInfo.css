@@ -1,0 +1,117 @@
+/* Player Info HUD — Multi-line card with fixed info + rotating ticker */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+.pinfo-container {
+  --pinfo-accent: var(--server-color, #646464);
+  font-family: 'Outfit', sans-serif;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ---- Appear / Disappear ---- */
+.pinfo-container.pinfo-showing {
+  animation: piSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.pinfo-container.pinfo-hiding {
+  animation: piSlideOut 0.25s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+
+@keyframes piSlideIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes piSlideOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-6px) scale(0.97); }
+}
+
+/* ---- Panel ---- */
+.pinfo-panel {
+  background: var(--bg-primary);
+  border-radius: 10px;
+  /* border-left: 2px solid var(--pinfo-accent-30, rgba(100,100,100,0.30)); */
+  padding: 10px 14px 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+  min-width: 175px;
+}
+
+/* ---- Header: server name + logo ---- */
+.pinfo-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--bg-tertiary);
+  margin-bottom: 7px;
+}
+
+.pinfo-logo {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.pinfo-server-name {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-primary);
+}
+
+/* ---- Fixed info rows ---- */
+.pinfo-fixed-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+
+.pinfo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pinfo-row-label {
+  font-size: 8.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-tertiary);
+}
+
+.pinfo-row-value {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ---- Separator ---- */
+.pinfo-separator {
+  height: 1px;
+  background: linear-gradient(90deg, var(--pinfo-accent-15, rgba(100,100,100,0.15)), var(--bg-secondary));
+  margin: 8px 0;
+}
+
+.pinfo-accent-color {
+  color: var(--pinfo-accent);
+}
+
+.pinfo-green {
+  color: rgba(46, 204, 113, 0.9);
+}
+
+.pinfo-red {
+  color: rgba(239, 68, 68, 0.8);
+}
+
+.pinfo-muted {
+  color: var(--text-secondary);
+}

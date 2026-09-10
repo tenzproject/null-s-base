@@ -1,0 +1,199 @@
+/**
+ * Null UI - Styles principaux
+ */
+
+/* Reset et base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: transparent;
+    color: #fff;
+}
+
+/* Container principal */
+#null-ui {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    pointer-events: none;
+}
+
+#null-ui * {
+    pointer-events: auto;
+}
+
+/* Variables CSS */
+:root {
+    /* Couleurs principales */
+    --null-primary: #0ea7ff;
+    --null-primary-dark: #0770ad;
+    --null-secondary: #3498db;
+    --null-success: #2ecc71;
+    --null-warning: #f39c12;
+    --null-error: #e74c3c;
+    --null-info: #3498db;
+    
+    /* Couleurs de fond */
+    --null-bg-dark: rgba(12, 12, 12, 0.7);
+    --null-bg-medium: rgba(12, 12, 12, 0.6);
+    --null-bg-light: rgba(12, 12, 12, 0.4);
+    
+    /* Texte */
+    --null-text-primary: #ffffff;
+    --null-text-secondary: rgba(255, 255, 255, 0.7);
+    --null-text-muted: rgba(255, 255, 255, 0.5);
+    
+    /* Bordures */
+    --null-border-radius: 8px;
+    --null-border-radius-sm: 4px;
+    --null-border-radius-lg: 12px;
+    
+    /* Ombres */
+    --null-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --null-shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.4);
+    
+    /* Transitions */
+    --null-transition: all 0.3s ease;
+    --null-transition-fast: all 0.15s ease;
+}
+
+/* Utilitaires */
+.hidden {
+    display: none !important;
+}
+
+.invisible {
+    visibility: hidden !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease forwards;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.3s ease forwards;
+}
+
+.slide-out-right {
+    animation: slideOutRight 0.3s ease forwards;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes progress {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+/* Containers */
+#icons {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+#icons .icon {
+    position: absolute;
+    pointer-events: none;
+}
+
+#modals {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+#modals.active {
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--null-primary);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--null-primary-dark);
+}

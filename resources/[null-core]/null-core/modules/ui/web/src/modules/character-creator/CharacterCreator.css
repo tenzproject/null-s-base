@@ -1,0 +1,660 @@
+/* ============================================
+   Character Creator — aligné sur le ped-shop
+   (couleurs serveur --cc-brand-*, mêmes boutons,
+    bento accueil, vignette radiale plein écran)
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* ---- Overlay (plein écran) ---- */
+.cc-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  display: flex; align-items: center;
+  padding: 40px 56px;
+  pointer-events: none; opacity: 0;
+  font-family: 'Outfit', sans-serif;
+  color: #fff;
+  user-select: none; -webkit-user-select: none;
+  cursor: grab;
+}
+.cc-overlay.cc-visible { pointer-events: auto; }
+.cc-overlay:active { cursor: grabbing; }
+.cc-overlay input, .cc-overlay select { user-select: text; -webkit-user-select: text; cursor: text; }
+
+/* Scrollbar */
+.cc-overlay ::-webkit-scrollbar { width: 4px; }
+.cc-overlay ::-webkit-scrollbar-track { background: transparent; }
+.cc-overlay ::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 4px; }
+
+/* ---- Vignette radiale (bords sombres + lueur accent dans les coins) ---- */
+.cc-vignette {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 75% 75% at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.55) 100%),
+    radial-gradient(circle at 0% 100%, var(--cc-brand-25) 0%, transparent 42%),
+    radial-gradient(circle at 100% 0%, var(--cc-brand-20) 0%, transparent 42%);
+}
+
+/* ---- Animations ---- */
+@keyframes ccFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ccFadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes ccPanelIn {
+  from { opacity: 0; transform: translateX(-24px) scale(0.98); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes ccContentIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cc-overlay.cc-showing { animation: ccFadeIn 0.4s ease forwards; }
+.cc-overlay.cc-hiding  { animation: ccFadeOut 0.3s ease forwards; }
+.cc-overlay.cc-showing .cc-container { animation: ccPanelIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards; opacity: 0; }
+.cc-overlay.cc-hiding .cc-container { animation: ccFadeOut 0.25s ease forwards; }
+
+/* ============================================
+   CONTAINER (panneau gauche)
+   ============================================ */
+.cc-container {
+  position: relative;
+  z-index: 1;
+  width: 560px;
+  height: 86vh;
+  max-width: 46vw;
+  display: flex; flex-direction: column;
+  background: rgb(10, 10, 10);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+  cursor: default;
+}
+
+/* ============================================
+   BANNIÈRE serveur (style bento boutique)
+   ============================================ */
+.cc-banner {
+  position: relative;
+  height: 130px;
+  flex-shrink: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg-secondary);
+}
+.cc-banner-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  user-select: none; pointer-events: none;
+}
+.cc-banner-shade {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.15) 100%);
+}
+.cc-banner-close {
+  position: absolute;
+  top: 12px; right: 12px;
+  z-index: 2;
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  border: none;
+  background: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.cc-banner-close:hover { background: rgba(255, 70, 70, 0.85); color: #fff; }
+.cc-banner-text {
+  position: relative; z-index: 1;
+  height: 100%;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 4px;
+  padding: 16px 20px;
+}
+.cc-banner-eyebrow {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1.3px;
+  color: rgba(255, 255, 255, 0.55);
+}
+.cc-banner-title {
+  margin: 0;
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -0.4px; line-height: 1.1;
+  color: #fff;
+}
+.cc-banner-desc {
+  margin: 0;
+  font-size: 12px; line-height: 1.4;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+/* Séparateur accent sous la bannière */
+.cc-brand-sep {
+  height: 2px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg,
+    transparent 0%, var(--cc-brand-90) 30%, var(--cc-brand-bg) 50%, var(--cc-brand-90) 70%, transparent 100%);
+  opacity: 0.85;
+  box-shadow: 0 0 14px var(--cc-brand-50);
+}
+
+/* ============================================
+   CONTENT HEADER (titre + toolbar)
+   ============================================ */
+.cc-content-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px 10px 18px;
+  flex-shrink: 0;
+}
+.cc-content-header-left {
+  display: flex; align-items: center; gap: 12px;
+  min-width: 0;
+}
+.cc-content-header-info h2 {
+  font-size: 16px; font-weight: 700;
+  color: #fff; margin: 0;
+}
+.cc-content-header-info p {
+  font-size: 11px; color: var(--text-secondary);
+  margin: 3px 0 0 0;
+}
+
+/* ---- Boutons (style ped-shop : secondary + border, accent au hover/active) ---- */
+.cc-back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  border-radius: 9px;
+  border: 1px solid var(--bg-tertiary);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  flex-shrink: 0;
+}
+.cc-back-btn:hover { background: var(--bg-tertiary); color: #fff; }
+.cc-back-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: var(--bg-secondary);
+  color: var(--text-tertiary);
+}
+
+.cc-step-track {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  padding: 0 18px 10px;
+  flex-shrink: 0;
+}
+.cc-step-dot {
+  height: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: background 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+.cc-step-dot.done {
+  background: var(--cc-brand-40);
+}
+.cc-step-dot.active {
+  background: var(--cc-brand-bg);
+  box-shadow: 0 0 12px var(--cc-brand-40);
+}
+.cc-step-dot:hover {
+  opacity: 0.82;
+}
+
+.cc-toolbar {
+  display: flex; align-items: center; gap: 6px;
+  flex-shrink: 0;
+}
+.cc-icon-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 8px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer; transition: all 0.18s ease;
+  flex-shrink: 0;
+}
+.cc-icon-btn:hover { background: var(--bg-tertiary); color: #fff; }
+.cc-icon-btn.cc-reset:hover { background: rgba(255, 80, 80, 0.2); color: #ff5050; border-color: transparent; }
+
+.cc-cam-buttons { display: flex; gap: 4px; }
+.cc-cam-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 7px;
+  padding: 6px 10px;
+  color: var(--text-secondary);
+  font-size: 11px; font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.cc-cam-btn:hover { background: var(--bg-tertiary); color: rgba(255, 255, 255, 0.85); }
+.cc-cam-btn.active {
+  background: var(--cc-brand-70);
+  border-color: var(--cc-brand-10);
+  color: #fff;
+  box-shadow: 0 4px 14px var(--cc-brand-40), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* ============================================
+   ACCUEIL — catégories en bento (style ped-shop)
+   ============================================ */
+.cc-bento-scroll {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  padding: 4px 18px 14px 18px;
+}
+.cc-bento-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 12px;
+  min-height: 0;
+}
+/* 2 mis en avant (2x2) + 4 réguliers larges (2x1) → remplit 4x4 */
+.cc-bento-card:not(.featured) { grid-column: span 2; }
+.cc-bento-card.featured { grid-column: span 2; grid-row: span 2; }
+
+.cc-bento-card {
+  position: relative;
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  background: var(--bg-secondary);
+  isolation: isolate;
+  text-align: left;
+  font-family: 'Outfit', sans-serif;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.cc-bento-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+.cc-bento-card:hover .cc-bento-img { transform: scale(1.05); }
+
+.cc-bento-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none; pointer-events: none;
+}
+.cc-bento-icon {
+  position: absolute; inset: 0; z-index: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--cc-brand-40);
+}
+.cc-bento-icon svg { width: 40px; height: 40px; }
+.cc-bento-card.featured .cc-bento-icon svg { width: 56px; height: 56px; }
+
+.cc-bento-shade {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0.1) 100%);
+}
+.cc-bento-body {
+  position: relative; z-index: 2;
+  height: 100%;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 12px 14px;
+}
+.cc-bento-eyebrow {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1.2px;
+  color: rgba(255, 255, 255, 0.55);
+}
+.cc-bento-foot {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 8px;
+}
+.cc-bento-title {
+  margin: 0;
+  font-size: 15px; font-weight: 700;
+  letter-spacing: -0.2px;
+  color: #fff;
+}
+.cc-bento-card.featured .cc-bento-title { font-size: 22px; letter-spacing: -0.4px; }
+.cc-bento-cta {
+  color: rgba(255, 255, 255, 0.7);
+  display: flex; align-items: center;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+.cc-bento-card:hover .cc-bento-cta { color: #fff; transform: translateX(3px); }
+
+/* ============================================
+   CONTENU CATÉGORIE
+   ============================================ */
+.cc-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 18px 14px 18px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.cc-content-inner {
+  display: flex; flex-direction: column; gap: 16px;
+  animation: ccContentIn 0.3s ease forwards;
+}
+
+/* ---- Section ---- */
+.cc-section { display: flex; flex-direction: column; gap: 10px; }
+.cc-section-title {
+  font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.cc-divider { height: 1px; background: var(--bg-tertiary); margin: 4px 0; }
+
+/* ---- Identity Form ---- */
+.cc-form-group { display: flex; flex-direction: column; gap: 4px; }
+.cc-form-label { font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+.cc-form-input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 13px; font-family: 'Outfit', sans-serif;
+  outline: none;
+  transition: all 0.18s ease;
+}
+.cc-form-input::placeholder { color: var(--text-tertiary); }
+.cc-form-input:focus {
+  border-color: var(--cc-brand-bg);
+  background: var(--bg-tertiary);
+  box-shadow: 0 0 0 2px var(--cc-brand-20);
+}
+
+/* ---- Gender Selector ---- */
+.cc-gender-selector { display: flex; gap: 8px; }
+.cc-gender-btn {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--text-secondary);
+  font-size: 13px; font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.cc-gender-btn:hover { background: var(--bg-tertiary); color: rgba(255, 255, 255, 0.85); }
+.cc-gender-btn.active {
+  background: var(--cc-brand-70);
+  border-color: var(--cc-brand-10);
+  color: #fff;
+  box-shadow: 0 4px 14px var(--cc-brand-40), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+.cc-gender-btn svg { width: 18px; height: 18px; }
+
+/* ---- Parent Grid ---- */
+.cc-parent-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+}
+.cc-parent-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex; flex-direction: column; align-items: center;
+  overflow: hidden;
+}
+.cc-parent-item:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--bg-tertiary);
+  transform: translateY(-2px);
+}
+.cc-parent-item.active {
+  border-color: var(--cc-brand-bg);
+  background: var(--cc-brand-15);
+  box-shadow: 0 0 0 1px var(--cc-brand-40);
+}
+.cc-parent-item img {
+  width: 100%; aspect-ratio: 1;
+  object-fit: cover;
+}
+.cc-parent-name {
+  font-size: 9px; font-weight: 500;
+  color: var(--text-secondary);
+  padding: 3px 2px;
+  text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  width: 100%;
+}
+.cc-parent-item.active .cc-parent-name { color: #fff; }
+
+/* ---- Slider ---- */
+.cc-slider-group { display: flex; flex-direction: column; gap: 4px; }
+.cc-slider-header { display: flex; justify-content: space-between; align-items: center; }
+.cc-slider-label { font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+.cc-slider-value {
+  font-size: 11px; font-weight: 600; color: var(--cc-accent);
+  min-width: 28px; text-align: right;
+}
+.cc-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 4px;
+  background: var(--bg-tertiary);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.cc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--cc-brand-bg);
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.cc-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+/* ---- Number Stepper ---- */
+.cc-stepper { display: flex; align-items: center; gap: 8px; }
+.cc-stepper-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 7px;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer; transition: all 0.18s ease;
+}
+.cc-stepper-btn:hover { background: var(--cc-brand-70); border-color: var(--cc-brand-10); color: #fff; }
+.cc-stepper-display {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 7px;
+  padding: 6px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; color: #fff;
+}
+
+/* ---- Color Grid ---- */
+.cc-color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(24px, 1fr));
+  gap: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+}
+.cc-color-grid-compact {
+  grid-template-columns: repeat(18, 24px);
+  justify-content: start;
+}
+.cc-color-item {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  border: 2px solid var(--bg-tertiary);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+}
+.cc-color-item:hover { border-color: var(--text-tertiary); transform: scale(1.15); }
+.cc-color-item.active {
+  border-color: var(--cc-brand-bg);
+  box-shadow: 0 0 0 2px var(--cc-brand-40), 0 0 12px var(--cc-brand-30);
+  transform: scale(1.2);
+}
+
+/* ---- Outfits Grid ---- */
+.cc-outfits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+}
+.cc-outfit-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex; flex-direction: column; padding: 8px; gap: 6px;
+}
+.cc-outfit-item:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--bg-tertiary);
+  transform: translateY(-2px);
+}
+.cc-outfit-item.active {
+  border-color: var(--cc-brand-bg);
+  background: var(--cc-brand-15);
+  box-shadow: 0 0 0 1px var(--cc-brand-40);
+}
+.cc-outfit-image {
+  width: 100%; aspect-ratio: 1;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.cc-outfit-image img { width: 100%; height: 100%; object-fit: cover; }
+.cc-outfit-placeholder {
+  width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  color: var(--text-tertiary);
+}
+.cc-outfit-label {
+  font-size: 11px; font-weight: 500;
+  color: var(--text-secondary);
+  text-align: center;
+}
+.cc-outfit-item.active .cc-outfit-label { color: #fff; font-weight: 600; }
+
+/* ---- Face sliders ---- */
+.cc-face-sliders { display: flex; flex-direction: column; gap: 2px; }
+.cc-face-sliders .cc-slider-group {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: background 0.15s;
+}
+.cc-face-sliders .cc-slider-group:hover { background: var(--bg-secondary); }
+
+/* ============================================
+   ADD BAR (valider — façon ped-shop)
+   ============================================ */
+.cc-add-bar {
+  padding: 12px 18px;
+  border-top: 1px solid var(--bg-tertiary);
+  flex-shrink: 0;
+}
+.cc-add-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--cc-brand-10);
+  background: var(--cc-brand-70);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.cc-add-btn:hover { background: var(--cc-brand-bg); box-shadow: 0 6px 18px var(--cc-brand-45); }
+
+/* ============================================
+   Hint rotation + notification
+   ============================================ */
+.cc-rotation-hint {
+  position: fixed;
+  bottom: 90px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  padding: 10px 18px;
+  color: var(--text-secondary);
+  font-size: 12px; font-weight: 500;
+  pointer-events: none;
+  z-index: 10000;
+  animation: ccHintIn 0.5s ease 0.6s forwards;
+  opacity: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+.cc-rotation-hint svg { color: var(--text-tertiary); flex-shrink: 0; }
+.cc-rotation-hint.cc-hint-hidden { animation: ccHintOut 0.3s ease forwards; }
+@keyframes ccHintIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes ccHintOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(10px); }
+}
+
+.cc-notification {
+  position: fixed;
+  bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12px; font-weight: 500;
+  animation: ccNotifIn 0.3s ease forwards;
+  z-index: 10000;
+  pointer-events: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+@keyframes ccNotifIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}

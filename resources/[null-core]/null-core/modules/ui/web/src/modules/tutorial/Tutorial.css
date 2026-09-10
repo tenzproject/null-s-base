@@ -1,0 +1,1397 @@
+/* ==========================================================================
+   TUTORIAL SYSTEM - Shop Tablet Style
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================================================
+   OVERLAY & CONTAINER
+   ========================================================================== */
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  animation: tutorialOverlayIn 0.3s ease-out;
+  font-family: 'Outfit', sans-serif;
+}
+
+.tutorial-overlay.tutorial-hiding {
+  animation: tutorialOverlayOut 0.3s ease-in forwards;
+}
+
+.tutorial-overlay.tutorial-animating .tutorial-content-body {
+  opacity: 0.3;
+  transform: translateY(6px);
+  transition: all 0.2s ease;
+}
+
+@keyframes tutorialOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes tutorialOverlayOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.tutorial-container {
+  width: 85vw;
+  height: 80vh;
+  max-width: 1400px;
+  display: flex;
+  background: rgb(10, 10, 10);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  animation: tutorialSlideIn 0.4s ease-out;
+  position: relative;
+}
+
+.tutorial-hiding .tutorial-container {
+  animation: tutorialSlideOut 0.3s ease-in forwards;
+}
+
+@keyframes tutorialSlideIn {
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes tutorialSlideOut {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.95) translateY(20px); }
+}
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+.tutorial-sidebar {
+  width: 240px;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid var(--bg-tertiary);
+}
+
+.tutorial-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.tutorial-sidebar-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+.tutorial-sidebar-title {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  min-width: 0;
+}
+
+.tutorial-sidebar-title h1 {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: #fff;
+  margin: 0;
+}
+
+.tutorial-sidebar-title p {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 3px 0 0 0;
+  font-weight: 500;
+}
+
+/* Progress bar */
+.tutorial-sidebar-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.tutorial-sidebar-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.tutorial-sidebar-progress-fill {
+  height: 100%;
+  background: var(--tutorial-accent, #44a5ff);
+  border-radius: 4px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tutorial-sidebar-progress-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--tutorial-accent, #44a5ff);
+  min-width: 30px;
+  text-align: right;
+}
+
+/* Nav steps - shop sidebar style */
+.tutorial-sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tutorial-sidebar-nav::-webkit-scrollbar {
+  width: 3px;
+}
+
+.tutorial-sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tutorial-sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.tutorial-sidebar-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: default;
+  transition: all 0.15s;
+  position: relative;
+}
+
+.tutorial-sidebar-step.active {
+  background: var(--bg-tertiary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.tutorial-sidebar-step.completed {
+  color: var(--text-secondary);
+}
+
+.tutorial-sidebar-step.completed .tutorial-sidebar-step-icon {
+  color: #2ecc71;
+}
+
+.tutorial-sidebar-step-icon {
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Shop-style indicator bar */
+.tutorial-sidebar-indicator {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 16px;
+  border-radius: 0 4px 4px 0;
+}
+
+.tutorial-sidebar-step span {
+  flex: 1;
+}
+
+.tutorial-sidebar-arrow {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  color: var(--text-tertiary);
+}
+
+.tutorial-sidebar-step.active .tutorial-sidebar-arrow {
+  opacity: 1;
+}
+
+/* Footer */
+.tutorial-sidebar-footer {
+  padding: 12px;
+  border-top: 1px solid var(--bg-tertiary);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tutorial-skip-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+  width: 100%;
+}
+
+.tutorial-skip-btn:hover {
+  background: #ff4444;
+  color: white;
+}
+
+/* ==========================================================================
+   CONTENT AREA
+   ========================================================================== */
+.tutorial-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tutorial-content-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.tutorial-content-header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--tutorial-accent, #44a5ff);
+}
+
+.tutorial-content-header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.tutorial-content-subtitle {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-tertiary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.tutorial-content-header-text h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.tutorial-content-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  transition: all 0.2s ease;
+}
+
+.tutorial-content-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tutorial-content-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tutorial-content-body::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+/* Actions bar */
+.tutorial-content-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--bg-tertiary);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.tutorial-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.tutorial-action-btn.primary {
+  background: var(--tutorial-accent, #44a5ff);
+  color: white;
+  box-shadow: 0 4px 16px var(--tutorial-accent-30);
+}
+
+.tutorial-action-btn.primary:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px var(--tutorial-accent-40);
+}
+
+.tutorial-action-btn.secondary {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  border: 1px solid var(--bg-tertiary);
+}
+
+.tutorial-action-btn.secondary:hover {
+  background: var(--bg-tertiary);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.tutorial-action-btn.danger {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.15);
+}
+
+.tutorial-action-btn.danger:hover {
+  background: rgba(231, 76, 60, 0.2);
+}
+
+/* ==========================================================================
+   WELCOME SCREEN
+   ========================================================================== */
+.tutorial-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 12px 0;
+  padding-top: 100px;
+}
+
+.tutorial-welcome-hero {
+  text-align: center;
+  padding: 0 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tutorial-welcome-hero.complete {
+  padding: 0 20px;
+}
+
+.tutorial-welcome-glow {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px;
+  height: 240px;
+  /*background: radial-gradient(circle, var(--tutorial-accent-15), transparent 70%);*/
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Server logo */
+.tutorial-welcome-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  position: relative;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.4));
+  animation: tutorialLogoFloat 3s ease-in-out infinite;
+}
+
+.tutorial-welcome-logo-fallback {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: 20px;
+  position: relative;
+  animation: tutorialLogoFloat 3s ease-in-out infinite;
+}
+
+@keyframes tutorialLogoFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes tutorialPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.tutorial-welcome-hero h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 14px;
+  letter-spacing: -0.3px;
+}
+
+.tutorial-welcome-hero p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* Divider */
+.tutorial-welcome-divider {
+  width: 60px;
+  height: 2px;
+  background: var(--bg-tertiary);
+  border-radius: 2px;
+}
+
+.tutorial-welcome-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.tutorial-feature-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.tutorial-feature-card:hover {
+  background: var(--bg-secondary);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.tutorial-feature-card svg {
+  color: var(--tutorial-accent, #44a5ff);
+  flex-shrink: 0;
+}
+
+.tutorial-welcome-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  max-width: 520px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.tutorial-welcome-note svg {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+/* ============================================================================
+   CONTENT SECTIONS
+   ========================================================================== */
+
+.tutorial-content-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tutorial-info-block {
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bg-secondary);
+  border-radius: 12px;
+}
+
+.tutorial-info-block.highlight {
+  border-color: var(--tutorial-accent-20);
+  background: var(--tutorial-accent-4);
+}
+
+.tutorial-info-block h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.tutorial-info-block h3 svg {
+  color: var(--tutorial-accent, #44a5ff);
+  flex-shrink: 0;
+}
+
+.tutorial-info-block p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.tutorial-info-block ul {
+  margin: 8px 0 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.tutorial-info-block ul li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  padding-left: 16px;
+  position: relative;
+}
+
+.tutorial-info-block ul li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--tutorial-accent, #44a5ff);
+}
+
+/* Rules summary */
+.tutorial-rules-summary {
+  padding: 16px 18px;
+  background: rgba(231, 76, 60, 0.04);
+  border: 1px solid rgba(231, 76, 60, 0.12);
+  border-radius: 12px;
+}
+
+.tutorial-rules-summary h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e74c3c;
+  margin: 0 0 10px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.tutorial-rules-summary ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tutorial-rules-summary ul li {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-left: 16px;
+  position: relative;
+}
+
+.tutorial-rules-summary ul li::before {
+  content: '⚠';
+  position: absolute;
+  left: 0;
+  font-size: 10px;
+}
+
+/* Rules grid */
+.tutorial-rules-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.tutorial-rule-card {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+}
+
+.tutorial-rule-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tutorial-rule-header svg {
+  color: var(--tutorial-accent, #44a5ff);
+  flex-shrink: 0;
+}
+
+.tutorial-rule-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+.tutorial-rule-card p {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Loading indicator */
+.tutorial-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 0;
+}
+
+.tutorial-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--tutorial-accent, #44a5ff);
+  border-radius: 50%;
+  animation: tutorialSpinnerRotate 1s linear infinite;
+}
+
+@keyframes tutorialSpinnerRotate {
+  to { transform: rotate(360deg); }
+}
+
+.tutorial-loading p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Tip */
+.tutorial-tip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-family: 'Outfit', sans-serif;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  margin: 0;
+}
+
+.tutorial-tip svg {
+  color: var(--tutorial-accent, #44a5ff);
+  flex-shrink: 0;
+}
+
+.tutorial-tip code,
+.tutorial-info-block code {
+  background: var(--bg-tertiary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--tutorial-accent, #44a5ff);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.tutorial-tip kbd,
+.tutorial-info-block kbd,
+.tutorial-content-section kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================================
+   KEYBINDS GRID
+   ========================================================================== */
+
+.tutorial-keybinds-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.tutorial-keybind {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bg-secondary);
+  border-radius: 10px;
+}
+
+.tutorial-keybind kbd {
+  min-width: 36px;
+  padding: 4px 8px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.tutorial-keybind div {
+  display: flex;
+  flex-direction: column;
+}
+
+.tutorial-keybind strong {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Outfit', sans-serif;
+}
+
+.tutorial-keybind span {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: 'Outfit', sans-serif;
+}
+
+/* ============================================================================
+   PATH CHOICE
+   ========================================================================== */
+
+.tutorial-choice-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.tutorial-choice-intro {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  text-align: center;
+  max-width: 500px;
+  margin: 0;
+}
+
+.tutorial-path-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.tutorial-path-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 28px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+}
+
+.tutorial-path-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tutorial-path-card.legal::before {
+  background: #2ecc71;
+}
+
+.tutorial-path-card.illegal::before {
+  background: #e74c3c;
+}
+
+.tutorial-path-card:hover {
+  transform: translateY(-4px);
+}
+
+.tutorial-path-card.legal:hover {
+  border-color: rgba(46, 204, 113, 0.25);
+  background: rgba(46, 204, 113, 0.06);
+}
+
+.tutorial-path-card.illegal:hover {
+  border-color: rgba(231, 76, 60, 0.25);
+  background: rgba(231, 76, 60, 0.06);
+}
+
+.tutorial-path-card:hover::before {
+  opacity: 1;
+}
+
+.tutorial-path-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.tutorial-path-card.legal .tutorial-path-card-icon {
+  background: rgba(46, 204, 113, 0.12);
+  color: #2ecc71;
+}
+
+.tutorial-path-card.illegal .tutorial-path-card-icon {
+  background: rgba(231, 76, 60, 0.12);
+  color: #e74c3c;
+}
+
+.tutorial-path-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+}
+
+.tutorial-path-card p {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+
+.tutorial-path-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.tutorial-path-tags span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.tutorial-path-arrow {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  color: rgba(255, 255, 255, 0.15);
+  transition: all 0.3s;
+}
+
+.tutorial-path-card:hover .tutorial-path-arrow {
+  color: var(--text-secondary);
+  transform: translateX(3px);
+}
+
+/* ============================================================================
+   ILLEGAL FEATURES
+   ========================================================================== */
+
+.tutorial-illegal-features {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tutorial-illegal-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bg-secondary);
+  border-radius: 10px;
+}
+
+.tutorial-illegal-feature > svg {
+  color: #e74c3c;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tutorial-illegal-feature strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Outfit', sans-serif;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tutorial-illegal-feature p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.tutorial-discord-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px !important;
+  font-size: 12px !important;
+  color: var(--text-secondary) !important;
+}
+
+.tutorial-discord-link svg {
+  color: #5865F2;
+}
+
+/* ============================================================================
+   STEPS PREVIEW (character creation)
+   ========================================================================== */
+
+.tutorial-steps-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tutorial-step-preview-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bg-secondary);
+  border-radius: 10px;
+}
+
+.tutorial-step-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--tutorial-accent-15);
+  color: var(--tutorial-accent, #44a5ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  flex-shrink: 0;
+}
+
+.tutorial-step-preview-item strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Outfit', sans-serif;
+  display: block;
+}
+
+.tutorial-step-preview-item p {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+}
+
+/* ============================================================================
+   OBJECTIVES (in-game steps)
+   ========================================================================== */
+
+.tutorial-objective {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--tutorial-accent-5);
+  border: 1px solid var(--tutorial-accent-15);
+  border-radius: 12px;
+}
+
+.tutorial-objective.active {
+  border-color: var(--tutorial-accent-25);
+  background: var(--tutorial-accent-8);
+}
+
+.tutorial-objective > svg {
+  color: var(--tutorial-accent, #44a5ff);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tutorial-objective strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tutorial-objective p {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Tutorial list */
+.tutorial-list {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tutorial-list li {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-left: 16px;
+  position: relative;
+}
+
+.tutorial-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--tutorial-accent, #44a5ff);
+}
+
+/* ============================================================================
+   COMPLETION PAGE (v2 - Modern achievement style)
+   ========================================================================== */
+
+.tutorial-complete-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 20px 0;
+}
+
+/* Hero */
+.tutorial-complete-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.tutorial-complete-trophy-ring {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(46, 204, 113, 0.05));
+  border: 2px solid rgba(46, 204, 113, 0.3);
+  color: #2ecc71;
+  animation: tutorialTrophyPulse 2s ease-in-out infinite;
+}
+
+.tutorial-complete-trophy-glow {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.15), transparent 70%);
+  pointer-events: none;
+  animation: tutorialGlowPulse 2s ease-in-out infinite;
+}
+
+@keyframes tutorialTrophyPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+@keyframes tutorialGlowPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.tutorial-complete-hero h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.tutorial-complete-hero > p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 420px;
+  margin: 0;
+}
+
+/* Achievements grid */
+.tutorial-complete-achievements {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 560px;
+}
+
+.tutorial-complete-achievement {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  transition: all 0.2s;
+  animation: tutorialAchievementIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.tutorial-complete-achievement:nth-child(1) { animation-delay: 0.05s; }
+.tutorial-complete-achievement:nth-child(2) { animation-delay: 0.1s; }
+.tutorial-complete-achievement:nth-child(3) { animation-delay: 0.15s; }
+.tutorial-complete-achievement:nth-child(4) { animation-delay: 0.2s; }
+.tutorial-complete-achievement:nth-child(5) { animation-delay: 0.25s; }
+.tutorial-complete-achievement:nth-child(6) { animation-delay: 0.3s; }
+
+@keyframes tutorialAchievementIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tutorial-complete-achievement-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(46, 204, 113, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2ecc71;
+  flex-shrink: 0;
+}
+
+.tutorial-complete-achievement-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.tutorial-complete-achievement-info strong {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Outfit', sans-serif;
+}
+
+.tutorial-complete-achievement-info span {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  font-family: 'Outfit', sans-serif;
+}
+
+.tutorial-complete-check {
+  color: #2ecc71;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* Next steps */
+.tutorial-complete-nextsteps {
+  width: 100%;
+  max-width: 560px;
+}
+
+.tutorial-complete-nextsteps h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 12px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.tutorial-complete-nextsteps h3 svg {
+  color: var(--tutorial-accent, #44a5ff);
+}
+
+.tutorial-complete-nextsteps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.tutorial-complete-nextstep-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  transition: all 0.15s;
+}
+
+.tutorial-complete-nextstep-card:hover {
+  background: var(--bg-secondary);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.tutorial-complete-nextstep-card > svg {
+  color: var(--tutorial-accent, #44a5ff);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tutorial-complete-nextstep-card strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Outfit', sans-serif;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tutorial-complete-nextstep-card p {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.tutorial-complete-nextstep-card kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  padding: 1px 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ============================================================================
+   JOBS LIST (pole emploi)
+   ========================================================================== */
+
+.tutorial-jobs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tutorial-job-card {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  transition: all 0.15s;
+}
+
+.tutorial-job-card:hover {
+  background: var(--bg-secondary);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.tutorial-job-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.tutorial-job-header svg {
+  color: var(--tutorial-accent, #44a5ff);
+  flex-shrink: 0;
+}
+
+.tutorial-job-header strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Outfit', sans-serif;
+}
+
+.tutorial-job-card p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}

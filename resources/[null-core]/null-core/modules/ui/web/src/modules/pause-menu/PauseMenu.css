@@ -1,0 +1,404 @@
+/* ============================================================================
+   PAUSE MENU — Full-screen escape menu
+   ============================================================================ */
+
+.pm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  font-family: 'Outfit', sans-serif;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  overflow: hidden;
+}
+.pm-overlay.pm-visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ─── Left: Ped display area (transparent for 3D ped behind) ─── */
+.pm-left {
+  width: 48%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 60px 0 60px 50px;
+  background: transparent;
+}
+
+/* Ped occluded fallback — solid bg when ped is behind a wall */
+.pm-ped-occluded-bg {
+  position: absolute; inset: 0; z-index: -1;
+  background: rgb(12, 12, 12);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.pm-ped-occluded-bg.pm-ped-occluded-active {
+  opacity: 1;
+}
+
+/* Gradient overlays — blend the 3D ped rectangle edges into the NUI */
+.pm-left-gradient {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+.pm-left-gradient-top {
+  top: 0; left: 0; right: 0; height: 18%;
+  background: linear-gradient(to bottom, rgba(12,12,14,1) 10%, transparent 100%);
+}
+.pm-left-gradient-bottom {
+  bottom: 0; left: 0; right: 0; height: 18%;
+  background: linear-gradient(to top, rgba(12,12,14,1) 10%, transparent 100%);
+}
+.pm-left-gradient-left {
+  top: 0; bottom: 0; left: 0; width: 12%;
+  background: linear-gradient(to right, rgba(12,12,14,1) 20%, transparent 100%);
+}
+.pm-left-gradient-right {
+  top: 0; bottom: 0; right: 0; width: 50%;
+  background: linear-gradient(to left, rgba(12,12,14,1) 30%, transparent 100%);
+}
+
+/* Player name overlay at bottom-left of ped area */
+.pm-ped-info {
+  position: relative;
+  z-index: 2;
+  padding-right: 60px;
+}
+.pm-ped-name {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.7);
+  line-height: 1.1;
+}
+.pm-ped-subtitle {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pm-ped-subtitle span {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* ─── Right: Content area ─── */
+.pm-right {
+  flex: 1;
+  /* background: var(--bg-primary); */
+  background: linear-gradient(to right, rgb(12, 12, 12) 30%, var(--bg-primary) 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 50px 50px 40px 30px;
+  gap: 0;
+  overflow-y: auto;
+  position: relative;
+}
+.pm-right::-webkit-scrollbar { width: 3px; }
+.pm-right::-webkit-scrollbar-track { background: transparent; }
+.pm-right::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 3px; }
+
+/* ─── Server header ─── */
+.pm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  flex-shrink: 0;
+}
+.pm-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.pm-server-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.pm-server-logo-placeholder {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pm-server-name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.pm-header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.pm-player-count {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.pm-player-count-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.pm-close-hint {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pm-close-hint kbd {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+/* ─── Section label ─── */
+.pm-section {
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+.pm-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.18);
+  margin-bottom: 14px;
+}
+
+/* ─── Player info row ─── */
+.pm-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.pm-info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--bg-secondary);
+  border-radius: 10px;
+}
+.pm-info-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--pm-accent-10);
+  color: var(--pm-accent);
+}
+.pm-info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.pm-info-label {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.pm-info-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── Money pills ─── */
+.pm-money-row {
+  display: flex;
+  gap: 10px;
+}
+.pm-money-pill {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--bg-secondary);
+  border-radius: 10px;
+}
+.pm-money-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--pm-accent);
+  opacity: 0.7;
+}
+.pm-money-label {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.pm-money-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  margin-top: 1px;
+}
+
+/* ─── Actions ─── */
+.pm-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pm-action-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  user-select: none;
+}
+.pm-action-item:hover {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--bg-secondary);
+  color: rgba(255,255,255,0.85);
+}
+.pm-action-item:active {
+  transform: scale(0.99);
+}
+.pm-action-item svg {
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+.pm-action-item:hover svg {
+  opacity: 0.8;
+  color: var(--pm-accent);
+}
+.pm-action-item-label {
+  flex: 1;
+}
+.pm-action-item-arrow {
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity 0.15s;
+  color: var(--text-tertiary);
+}
+.pm-action-item:hover .pm-action-item-arrow {
+  opacity: 1;
+}
+
+/* ─── Modules grid ─── */
+.pm-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.pm-module-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--bg-secondary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  user-select: none;
+  text-align: center;
+}
+.pm-module-card:hover {
+  background: var(--pm-accent-6);
+  border-color: var(--pm-accent-15);
+  color: rgba(255,255,255,0.85);
+}
+.pm-module-card:hover svg {
+  color: var(--pm-accent);
+}
+.pm-module-card:active {
+  transform: scale(0.97);
+}
+.pm-module-card svg {
+  opacity: 0.5;
+  transition: all 0.15s;
+}
+.pm-module-card:hover svg {
+  opacity: 1;
+}
+
+/* ─── Footer ─── */
+.pm-footer {
+  margin-top: auto;
+  padding-top: 24px;
+  flex-shrink: 0;
+}
+.pm-quit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--bg-secondary);
+  border-radius: 10px;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+.pm-quit-btn:hover {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+.pm-quit-btn:active {
+  transform: scale(0.99);
+}

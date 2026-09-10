@@ -1,0 +1,114 @@
+/* AmmoHud — same visual language as StatusBar cards (rounded dark pill,
+   Outfit font, soft shadow, pop-in/out animations). */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+.ammo-wrapper {
+    pointer-events: none;
+    font-family: 'Outfit', sans-serif;
+}
+
+.ammo-card {
+    display: flex;
+    align-items: center;
+    gap: 1vh;
+    padding: 0.55vh 1.1vh;
+    height: 3.4vh;
+    border-radius: 9px;
+    background: var(--bg-primary);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    color: var(--text-primary);
+    will-change: transform, opacity;
+    transform: scale(1);
+    opacity: 1;
+}
+
+.ammo-card.ammo-entering {
+    animation: ammoPopIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.ammo-card.ammo-leaving {
+    animation: ammoPopOut 0.25s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+
+@keyframes ammoPopIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: scale(1); }
+}
+@keyframes ammoPopOut {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(0.5); }
+}
+
+/* Divider between clip and mag */
+.ammo-divider {
+    width: 1px;
+    height: 1.8vh;
+    background: rgba(255, 255, 255, 0.18);
+}
+
+/* Bullet icon color uses primary color via --ammo-color */
+.ammo-icon {
+    width: 1.8vh;
+    height: 1.8vh;
+    fill: var(--ammo-color, var(--text-primary));
+    filter: drop-shadow(0 0 3px rgba(var(--ammo-color-rgb, 255, 255, 255), 0.25));
+}
+
+.ammo-clip {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25vh;
+    line-height: 1;
+}
+.ammo-clip-value {
+    font-size: 2.1vh;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+.ammo-clip-max {
+    font-size: 1.3vh;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.ammo-mags {
+    display: flex;
+    align-items: center;
+    gap: 0.35vh;
+}
+.ammo-mags-icon {
+    width: 1.4vh;
+    height: 1.4vh;
+    fill: rgba(255, 255, 255, 0.85);
+}
+.ammo-mags-count {
+    font-size: 1.4vh;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+/* Low clip (below 25%) → red accent + gentle pulse, mirroring StatusBar .sb-low */
+.ammo-card.ammo-low .ammo-clip-value {
+    color: #ef4444;
+}
+.ammo-card.ammo-low {
+    animation: ammoPulse 1.5s ease-in-out infinite;
+}
+.ammo-card.ammo-low.ammo-entering {
+    animation: ammoPopIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* No reserve magazines → red icon + count */
+.ammo-card.ammo-empty .ammo-mags-icon {
+    fill: #ef4444;
+}
+.ammo-card.ammo-empty .ammo-mags-count {
+    color: #ef4444;
+}
+
+@keyframes ammoPulse {
+    0%, 100% { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35); }
+    50%      { box-shadow: 0 0 12px rgba(239, 68, 68, 0.45); }
+}

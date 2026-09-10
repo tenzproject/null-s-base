@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Null Immo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ================== MAP VIEW ================== -->
+    <section id="view-map" class="view view-active">
+
+      <header class="vi-header">
+        <div class="vi-brand">
+          <div class="vi-logo">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <div>
+            <h1>Null Immo</h1>
+            <p>Marché immobilier en direct</p>
+          </div>
+        </div>
+        <button id="btn-refresh" class="vi-icon-btn" title="Rafraîchir">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/>
+            <polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Filter tabs -->
+      <div class="vi-tabs">
+        <button class="vi-tab vi-tab-active" data-mode="all">
+          <span id="cnt-all">0</span> Tous
+        </button>
+        <button class="vi-tab" data-mode="sell">
+          <span id="cnt-sell">0</span> Vente
+        </button>
+        <button class="vi-tab" data-mode="rent">
+          <span id="cnt-rent">0</span> Location
+        </button>
+      </div>
+
+      <!-- Pannable / zoomable map -->
+      <div class="vi-map-wrap" id="map-wrap">
+        <div class="vi-map-stage" id="map-stage">
+          <img class="vi-map-img"
+               src="https://api.null.fr/media/carte-satellite-gta-51_1777204498061.jpg?v=1777204498157"
+               alt="Map" id="map-img" draggable="false" />
+          <div class="vi-pins" id="map-pins"></div>
+        </div>
+
+        <!-- Zoom controls -->
+        <div class="vi-zoom">
+          <button class="vi-zoom-btn" id="z-in">+</button>
+          <button class="vi-zoom-btn" id="z-out">−</button>
+          <button class="vi-zoom-btn" id="z-reset" title="Recentrer">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Bottom popup card when a pin is selected -->
+        <div class="vi-popup" id="map-popup" hidden>
+          <div class="vi-popup-icon" id="pop-icon">🏠</div>
+          <div class="vi-popup-info">
+            <h3 id="pop-title">—</h3>
+            <p id="pop-sub">—</p>
+          </div>
+          <div class="vi-popup-price">
+            <span class="badge" id="pop-badge">—</span>
+            <span class="price" id="pop-price">—</span>
+          </div>
+          <button class="vi-popup-go" id="pop-go" title="Voir le bien">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </div>
+
+        
+      </div>
+    </section>
+
+    <!-- ================== DETAIL VIEW ================== -->
+    <section id="view-detail" class="view">
+      <header class="vi-header vi-header-detail">
+        <button id="btn-back" class="vi-icon-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+        </button>
+        <h2 id="d-title">Détails du bien</h2>
+        <span></span>
+      </header>
+
+      <div class="vi-detail" id="vi-detail"></div>
+    </section>
+
+  </div>
+
+  <!--
+    lb-phone bootstrap : on attend le message `componentsLoaded` envoyé
+    par le téléphone parent avant de rendre la page visible.
+    Ça empêche l'UI de s'afficher en plein écran quand la resource
+    démarre (le ui_page de la resource est forcément monté en NUI).
+  -->
+  <script>
+    (function () {
+      var loaded = false;
+      function loadApp() {
+        if (loaded) return;
+        loaded = true;
+        document.body.classList.add('ready');
+        var s = document.createElement('script');
+        s.src = 'script.js';
+        document.body.appendChild(s);
+      }
+      // N'importe quel message du parent (lb-phone) signifie qu'on
+      // est embed dans le téléphone -> on révèle l'app.
+      window.addEventListener('message', function () { loadApp(); });
+      // Fallback browser-dev (pas dans CitizenFX) : reveal après 800ms
+      setTimeout(function () {
+        if (!loaded && !window.invokeNative) loadApp();
+      }, 800);
+    })();
+  </script>
+</body>
+</html>

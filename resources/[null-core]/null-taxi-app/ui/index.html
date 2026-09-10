@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Null Taxi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ================== HOME ================== -->
+    <section id="view-home" class="view view-active">
+      <header class="ut-topbar">
+        <div class="ut-wordmark">Null<span>Taxi</span></div>
+        <button id="btn-refresh" class="ut-icon-btn" title="Rafraîchir">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/>
+            <polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="ut-hero">
+        <div class="ut-hero-eyebrow">À votre service</div>
+        <h1 class="ut-hero-title">Allez où vous voulez,<br/>quand vous voulez.</h1>
+
+        <div class="ut-hero-stats">
+          <div class="ut-stat">
+            <span class="ut-stat-value" id="cnt-drivers">0</span>
+            <span class="ut-stat-label">en service</span>
+          </div>
+          <div class="ut-stat">
+            <span class="ut-stat-value" id="cnt-idle">0</span>
+            <span class="ut-stat-label">disponibles</span>
+          </div>
+        </div>
+
+        <button id="btn-request" class="ut-cta">
+          <span>Demander un taxi</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+               stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="ut-section">
+        <div class="ut-section-head">
+          <h2>Chauffeurs</h2>
+          <span class="ut-section-meta" id="section-meta">—</span>
+        </div>
+        <div class="ut-driver-list" id="driver-list">
+          <div class="ut-empty">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <p>Aucun chauffeur en service</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================== ACTIVE REQUEST ================== -->
+    <section id="view-active" class="view">
+      <header class="ut-topbar ut-topbar-active">
+        <div class="ut-active-head">
+          <div class="ut-status-pill" id="status-pill">
+            <span class="ut-status-dot" id="status-dot"></span>
+            <span id="status-label">Recherche…</span>
+          </div>
+          <h1 id="active-title">Recherche d'un taxi</h1>
+          <p id="active-sub">Notification envoyée à tous les taxis en service</p>
+        </div>
+      </header>
+
+      <div class="ut-map-wrap" id="mini-map-wrap">
+        <img class="ut-map-img"
+             src="https://api.null.fr/media/carte-satellite-gta-51_1777204498061.jpg?v=1777204498157"
+             alt="Map" id="mini-map-img" draggable="false" />
+        <div class="ut-map-pins" id="mini-map-pins"></div>
+        <div class="ut-map-overlay-grad"></div>
+      </div>
+
+      <div class="ut-active-bottom">
+        <div class="ut-driver-card" id="driver-card" hidden>
+          <div class="ut-driver-avatar"><span id="driver-initial">T</span></div>
+          <div class="ut-driver-info">
+            <span class="ut-driver-name" id="driver-name">Chauffeur</span>
+            <span class="ut-driver-sub" id="status-sub">Vient vous chercher</span>
+          </div>
+          <div class="ut-driver-eta" id="driver-eta-wrap" hidden>
+            <span class="ut-driver-eta-value" id="driver-eta">—</span>
+            <span class="ut-driver-eta-label">min</span>
+          </div>
+        </div>
+
+        <div class="ut-active-actions">
+          <button id="btn-cancel" class="ut-cta ut-cta-secondary">Annuler la course</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================== RIDE IN PROGRESS ================== -->
+    <section id="view-ride" class="view">
+      <header class="ut-topbar">
+        <div class="ut-wordmark">Null<span>Taxi</span></div>
+        <div class="ut-ride-pill" id="ride-pill">En course</div>
+      </header>
+
+      <div class="ut-ride-hero">
+        <div class="ut-ride-role" id="ride-role-label">Course en cours</div>
+        <div class="ut-ride-person" id="ride-person-label"></div>
+      </div>
+
+      <div class="ut-ride-meter-wrap">
+        <div class="ut-ride-meter-block">
+          <span class="ut-ride-meter-label">Distance</span>
+          <span class="ut-ride-meter-value" id="ride-km">0.00 km</span>
+        </div>
+        <div class="ut-ride-meter-divider"></div>
+        <div class="ut-ride-meter-block">
+          <span class="ut-ride-meter-label">Tarif</span>
+          <span class="ut-ride-meter-value ut-ride-fare" id="ride-fare">$0</span>
+        </div>
+      </div>
+
+      <p class="ut-ride-foot" id="ride-foot">Le tarif s'arrête lorsque vous descendez du taxi.</p>
+
+      <!-- Summary shown after ride ends -->
+      <div class="ut-ride-summary" id="ride-summary" hidden>
+        <div class="ut-ride-summary-icon">✓</div>
+        <h2>Course terminée</h2>
+        <div class="ut-ride-summary-row">
+          <span>Tarif total</span>
+          <span id="sum-price">$0</span>
+        </div>
+        <div class="ut-ride-summary-row ut-ride-summary-paid">
+          <span>Montant débité</span>
+          <span id="sum-paid">$0</span>
+        </div>
+        <button class="ut-cta" id="btn-ride-done">Fermer</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    (function () {
+      var loaded = false;
+      var embedded = window.parent !== window;
+      function loadApp() {
+        if (loaded || !embedded) return;
+        loaded = true;
+        document.body.classList.add('ready');
+        var s = document.createElement('script');
+        s.src = 'script.js';
+        document.body.appendChild(s);
+      }
+      window.addEventListener('message', function () { loadApp(); });
+      setTimeout(function () { if (!loaded && !window.invokeNative) loadApp(); }, 800);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+/* Ammo hologram — minimalist style inspired by hologramspeed
+   Uses vw units so layout scales with any DUI canvas (512 / 1024 / 2048). */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.hidden {
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.4));
+    transition: opacity 0.2s, visibility 0.2s;
+    visibility: visible;
+    opacity: 1;
+}
+
+.content {
+    text-align: center;
+    font-weight: 100;
+    line-height: 1;
+}
+
+.ammo {
+    font-size: 7vw;
+    font-weight: 100;
+    letter-spacing: -0.2vw;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.ammo .slash {
+    font-size: 3.5vw;
+    margin: 0 0.8vw;
+    color: rgba(193, 193, 193, 0.5);
+}
+
+#mag {
+    font-size: 3.5vw;
+    color: rgba(193, 193, 193, 0.65);
+    font-weight: 100;
+}
+
+.footer {
+    margin-top: 1.4vw;
+    font-size: 1.3vw;
+    font-weight: 300;
+    letter-spacing: 0.6vw;
+    color: rgba(193, 193, 193, 0.7);
+    text-transform: uppercase;
+}
+
+/* Low ammo */
+#root.low #clip {
+    color: rgba(255, 179, 71, 0.95);
+}
+/* Empty */
+#root.empty #clip {
+    color: rgba(255, 77, 109, 0.95);
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   Pack "Realistic" mode — heavy bloom graphics packs (NVE, NeoBloom, …)
+   saturate white text into glare. We switch to dark, low-opacity text
+   so the bloom doesn't explode the rendering. Same approach as the
+   original hologramspeed NVE theme.
+   ────────────────────────────────────────────────────────────────────────*/
+#root.mode-realistic #clip {
+    color: rgba(45, 45, 45, 0.75);
+}
+#root.mode-realistic #mag,
+#root.mode-realistic .ammo .slash {
+    color: rgba(45, 45, 45, 0.45);
+}
+#root.mode-realistic .footer {
+    color: rgba(45, 45, 45, 0.65);
+}
+#root.mode-realistic.low #clip {
+    color: rgba(120, 60, 0, 0.8);
+}
+#root.mode-realistic.empty #clip {
+    color: rgba(120, 0, 15, 0.8);
+}

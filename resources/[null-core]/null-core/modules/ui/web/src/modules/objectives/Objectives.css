@@ -1,0 +1,200 @@
+/* =============================================
+   OBJECTIVES — Minimal centered-top style
+   Matches PropInteract header aesthetic
+   ============================================= */
+
+.obj-container {
+  position: fixed;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 900;
+  pointer-events: none;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Visibility phases --- */
+.obj-container.obj-entering {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+.obj-container.obj-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.obj-container.obj-exiting {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+/* --- Title --- */
+.obj-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* --- Progress subtitle --- */
+.obj-progress-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.obj-progress-text span {
+  color: var(--obj-accent, #44a5ff);
+  font-weight: 700;
+}
+
+/* --- Progress bar --- */
+.obj-progress-bar {
+  width: 220px;
+  height: 2px;
+  background: var(--bg-tertiary);
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.obj-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--obj-accent, #44a5ff);
+  border-radius: 1px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 6px var(--obj-accent-40, rgba(68,165,255,0.4));
+}
+
+/* --- Step content --- */
+.obj-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-top: 4px;
+  animation: objStepIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.obj-step.obj-step-exit {
+  animation: objStepOut 0.25s ease forwards;
+}
+
+.obj-step-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.obj-step-desc {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  text-align: center;
+  line-height: 1.4;
+  max-width: 360px;
+}
+
+/* --- Completed state --- */
+.obj-completed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  animation: objCompleteFadeIn 0.4s ease forwards;
+}
+
+.obj-completed-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--obj-accent-20, rgba(68,165,255,0.2));
+  color: var(--obj-accent, #44a5ff);
+  margin-bottom: 2px;
+}
+
+.obj-completed-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.obj-completed-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  letter-spacing: 0.3px;
+}
+
+.obj-completed-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+/* --- Skip command hint --- */
+.obj-skip-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: rgba(12,12,14,0.3);
+  border: 1px solid var(--bg-secondary);
+}
+
+.obj-skip-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.obj-skip-command {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--obj-accent, #44a5ff);
+  letter-spacing: 0.3px;
+}
+
+/* --- Animations --- */
+@keyframes objStepIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes objStepOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-6px); }
+}
+
+@keyframes objCompleteFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

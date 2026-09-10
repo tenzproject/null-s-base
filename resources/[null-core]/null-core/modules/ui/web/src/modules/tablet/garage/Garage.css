@@ -1,0 +1,1055 @@
+/* ==========================================================================
+   GARAGE UI - Tablet Style (matching shop/tablet design)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* Overlay */
+.garageui-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  animation: garageuiOverlayIn 0.3s ease-out;
+  font-family: 'Outfit', sans-serif;
+}
+
+.garageui-overlay.garageui-hiding {
+  animation: garageuiOverlayOut 0.3s ease-in forwards;
+}
+
+@keyframes garageuiOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes garageuiOverlayOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* Container */
+.garageui-container {
+  isolation: isolate;
+  width: 85vw;
+  height: 80vh;
+  max-width: 1400px;
+  display: flex;
+  background: rgb(10, 10, 10);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  animation: garageuiSlideIn 0.4s ease-out;
+  position: relative;
+}
+
+.garageui-hiding .garageui-container {
+  animation: garageuiSlideOut 0.3s ease-in forwards;
+}
+
+@keyframes garageuiSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes garageuiSlideOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+}
+
+/* ==========================================================================
+   BRAND HERO (sidebar top banner)
+   ========================================================================== */
+.garageui-brand-hero {
+  padding: 18px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.garageui-brand-hero-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.garageui-brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+.garageui-brand-hero-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  min-width: 0;
+}
+
+.garageui-brand-hero-text h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: #fff;
+}
+
+.garageui-brand-hero-text p {
+  margin: 3px 0 0 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Ambient brand tint behind content */
+.garageui-brand-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.9;
+  z-index: 0;
+}
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+.garageui-sidebar {
+  width: 240px;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(12, 12, 12, 1);
+  border-right: 1px solid var(--bg-tertiary);
+}
+
+.garageui-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.garageui-sidebar-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.garageui-sidebar-title h1 {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.garageui-sidebar-title p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 2px 0 0 0;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Stats section */
+.garageui-stats-section {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.garageui-stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.garageui-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.garageui-stat-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+
+/* Sidebar nav */
+.garageui-sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.garageui-sidebar-nav::-webkit-scrollbar {
+  width: 3px;
+}
+
+.garageui-sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.garageui-sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.garageui-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+  text-align: left;
+  width: 100%;
+  position: relative;
+}
+
+.garageui-sidebar-item:hover {
+  background: var(--bg-secondary);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.garageui-sidebar-item.active {
+  background: var(--bg-tertiary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.garageui-sidebar-indicator {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 16px;
+  border-radius: 0 4px 4px 0;
+}
+
+.garageui-sidebar-item span {
+  flex: 1;
+}
+
+.garageui-sidebar-arrow {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  color: var(--text-tertiary);
+}
+
+.garageui-sidebar-item:hover .garageui-sidebar-arrow,
+.garageui-sidebar-item.active .garageui-sidebar-arrow {
+  opacity: 1;
+}
+
+/* Sidebar footer */
+.garageui-sidebar-footer {
+  padding: 12px;
+  border-top: 1px solid var(--bg-tertiary);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.garageui-vehicle-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.garageui-vehicle-count svg {
+  color: var(--text-tertiary);
+}
+
+.garageui-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.garageui-close-btn:hover {
+  background: #ff4444;
+  color: white;
+}
+
+/* ==========================================================================
+   CONTENT AREA
+   ========================================================================== */
+.garageui-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.garageui-content>*:not(.garageui-brand-ambient) {
+  position: relative;
+  z-index: 1;
+}
+
+.garageui-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.garageui-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.garageui-content::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+/* Content header */
+.garageui-content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.garageui-content-header-info h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.garageui-content-header-info p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 4px 0 0 0;
+}
+
+.garageui-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Search */
+.garageui-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  min-width: 200px;
+  transition: border-color 0.2s ease;
+  position: relative;
+}
+
+.garageui-search:focus-within {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.garageui-search svg {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.garageui-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  width: 100%;
+}
+
+.garageui-search input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.garageui-search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.garageui-search-clear:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Sort dropdown */
+.garageui-sort {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  color: var(--text-tertiary);
+}
+
+.garageui-sort select {
+  appearance: none;
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  padding: 8px 26px 8px 12px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.garageui-sort select:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-strong);
+}
+
+.garageui-sort svg {
+  position: absolute;
+  right: 9px;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   MAIN LAYOUT (Grid + Detail)
+   ========================================================================== */
+.garageui-main-layout {
+
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Vehicle grid */
+.garageui-vehicle-grid {
+  padding-top: 5px;
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  align-content: start;
+  padding-right: 4px;
+}
+
+.garageui-vehicle-grid::-webkit-scrollbar {
+  width: 4px;
+}
+
+.garageui-vehicle-grid::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+/* Vehicle card */
+.garageui-vehicle-card {
+  background: rgba(12, 12, 12, 1);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.garageui-vehicle-card:hover {
+  /* background: var(--bg-secondary); */
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.garageui-vehicle-card.selected {
+  background: var(--bg-tertiary);
+  border-color: var(--garage-accent, #3498db);
+  box-shadow: 0 0 0 1px var(--garage-accent, #3498db);
+}
+
+.garageui-vehicle-card.spawned {
+  opacity: 0.6;
+}
+
+.garageui-vehicle-card.spawned.selected {
+  opacity: 1;
+}
+
+.garageui-vehicle-image {
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(ellipse at 50% 60%, var(--bg-secondary) 0%, transparent 60%);
+  overflow: visible;
+}
+
+.garageui-vehicle-img {
+
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+
+.garageui-vehicle-badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+/* Badges */
+.garageui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px var(--bg-secondary);
+}
+
+.garageui-badge-in {
+  background: rgba(46, 204, 113, 0.18);
+  color: #4ade80;
+}
+
+.garageui-badge-out {
+  background: rgba(59, 130, 246, 0.18);
+  color: #60a5fa;
+}
+
+.garageui-badge-impound {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+}
+
+.garageui-badge-boutique {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fbbf24;
+  padding: 3px 6px;
+}
+
+/* Vehicle info */
+.garageui-vehicle-info {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.garageui-vehicle-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.garageui-vehicle-model {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.garageui-vehicle-plate {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Placeholder */
+.garageui-card-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   DETAIL PANEL
+   ========================================================================== */
+.garageui-detail-panel {
+  width: 320px;
+  min-width: 320px;
+  background: rgba(12, 12, 12, 1);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.garageui-detail-panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.garageui-detail-panel::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+.garageui-detail-panel.has-vehicle {
+  justify-content: flex-start;
+}
+
+.garageui-detail {
+  padding: 20px;
+  animation: garageuiDetailIn 0.22s ease forwards;
+}
+
+@keyframes garageuiDetailIn {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.garageui-detail-image {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  background: radial-gradient(ellipse at 50% 65%, var(--bg-secondary) 0%, transparent 70%);
+  border: 1px solid var(--bg-secondary);
+  overflow: hidden;
+}
+
+.garageui-detail-img {
+  object-fit: contain;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
+}
+
+.garageui-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.garageui-detail-type-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 7px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.garageui-detail-boutique {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 7px;
+  background: rgba(245, 158, 11, 0.13);
+  color: #fbbf24;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.garageui-detail-name-section {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--bg-secondary);
+}
+
+.garageui-detail-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.garageui-detail-model {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  display: block;
+}
+
+/* Rename */
+.garageui-rename-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.garageui-rename-input {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: white;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.garageui-rename-input:focus {
+  border-color: var(--garage-accent, #3498db);
+}
+
+/* Detail infos */
+.garageui-detail-infos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.garageui-detail-info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--bg-secondary);
+}
+
+.garageui-detail-info-row:last-child {
+  border-bottom: none;
+}
+
+.garageui-detail-info-row svg {
+  flex-shrink: 0;
+}
+
+.garageui-detail-info-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  min-width: 50px;
+}
+
+.garageui-detail-info-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Detail actions */
+.garageui-detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Buttons */
+.garageui-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.garageui-btn-sm {
+  padding: 7px 10px;
+}
+
+.garageui-btn-full {
+  width: 100%;
+}
+
+.garageui-btn-accent {
+  background: var(--garage-accent, #3498db);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.garageui-btn-accent:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.garageui-btn-outline {
+  background: var(--bg-secondary);
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--bg-tertiary);
+}
+
+.garageui-btn-outline:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.garageui-btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.garageui-btn-ghost:hover {
+  background: var(--bg-secondary);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.garageui-btn-warning {
+  color: rgba(248, 113, 113, 0.85);
+  border-color: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.garageui-btn-warning:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+/* Detail empty */
+.garageui-detail-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  height: 100%;
+  /* color: var(--text-tertiary); */
+  color: var(--text-primary);
+  opacity: 0.05;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 40px;
+}
+
+/* Empty state */
+.garageui-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  /* color: var(--text-tertiary); */
+  color: var(--text-primary);
+  opacity: 0.05;
+  grid-column: 1 / -1;
+}
+
+.garageui-empty p {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   STORE VIEW
+   ========================================================================== */
+.garageui-store-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.garageui-store-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 16px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.garageui-store-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.garageui-store-warning {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 13px;
+  border-radius: 9px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+  font-size: 12px;
+  font-weight: 600;
+  width: 100%;
+}
+
+/* ==========================================================================
+   NOTIFICATION
+   ========================================================================== */
+.garageui-notification {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  animation: garageuiNotifIn 0.3s ease-out;
+  z-index: 100;
+  white-space: nowrap;
+}
+
+.garageui-notification.success {
+  background: rgba(46, 204, 113, 0.15);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.garageui-notification.success svg {
+  color: #2ecc71;
+}
+
+.garageui-notification.error {
+  background: rgba(231, 76, 60, 0.15);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.garageui-notification.error svg {
+  color: #e74c3c;
+}
+
+@keyframes garageuiNotifIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

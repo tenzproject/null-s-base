@@ -1,0 +1,717 @@
+.clothes-shop {
+    font-family: Inter-Medium, serif;
+}
+
+.clothes-shop .nav-menu {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 22%; /* Plus large */
+    padding: 20px 0;
+    background: linear-gradient(90deg, rgba(12, 12, 12, 0.5) 0%, rgba(0, 0, 0, 0.4) 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.clothes-shop .nav-item {
+    color: rgba(255, 255, 255, 0.6);
+    padding: 16px 25px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 500;
+    font-size: 14px;
+    position: relative;
+    border-left: 3px solid transparent;
+}
+
+.clothes-shop .nav-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.clothes-shop .nav-item:hover {
+    color: white;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.05) 100%);
+    padding-left: 30px;
+}
+
+.clothes-shop .nav-item:hover i {
+    transform: scale(1.1);
+    color: var(--global-main-color);
+}
+
+.clothes-shop .nav-item.active {
+    color: white;
+    background: linear-gradient(90deg, var(--global-main-color-dark-10) 0%, transparent 100%);
+    border-left: 3px solid var(--global-main-color);
+    padding-left: 30px;
+}
+
+.clothes-shop .nav-item.active i {
+    color: var(--global-main-color);
+    filter: drop-shadow(0 0 5px var(--global-main-color-dark-50));
+}
+
+.clothes-shop .nav-item.unable {
+    opacity: 1;
+    padding: 15px 15px 15px 15px;
+    margin-bottom: -5px;
+    pointer-events: none;
+    background: none;
+    border-left: none;
+}
+
+.clothes-shop .nav-item.unable img.logo {
+    width: 100%;
+    height: auto;
+    max-height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+}
+
+.clothes-shop .content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 20px;
+    padding-bottom: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    scrollbar-gutter: stable;
+    background: rgba(0, 0, 0, 0.05)
+}
+
+.clothes-shop .store-title {
+    color: white;
+    font-size: 24px;
+    margin: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.clothes-shop .content {
+    display: block;
+    width: 100%;
+    height: 90%;
+}
+
+.clothes-shop .category-content {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: -5px;
+}
+
+.clothes-shop .items-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    /*padding: 0 15px 20px 10px;*/
+    min-height: min-content;
+}
+
+.clothes-shop .item-card {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+}
+
+.clothes-shop .item-card:hover {
+    border-color: var(--global-main-color-dark-80);
+    background: var(--global-main-color-dark-10);
+}
+
+.clothes-shop .item-card.active {
+    border-color: var(--global-main-color-dark-80);
+    background: var(--global-main-color-dark-10);
+    box-shadow: 0 0 15px var(--global-main-color-dark-20);
+}
+
+.clothes-shop .item-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.clothes-shop .item-card:hover .item-info {
+    opacity: 1;
+}
+
+.clothes-shop .item-number {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--nykz-card-background);
+    padding: 2px 6px;
+    border-radius: 6px;
+    border: 1px solid var(--nykz-border-color);
+    align-self: flex-start;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+}
+
+.clothes-shop .item-price-tag {
+    color: var(--nykz-accent-color);
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--nykz-card-background);
+    padding: 2px 6px;
+    border-radius: 6px;
+    border: 1px solid var(--nykz-border-color);
+    align-self: flex-end;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+    font-weight: 500;
+}
+
+.clothes-shop .item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 3px;
+}
+
+.clothes-shop .cart-icon, .clothes-shop .buy-acc {
+    margin-top: auto;
+    padding: 15px;
+    cursor: pointer;
+    /* opacity: 0.7; */
+    /* border-left: 2px solid transparent; */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+}
+
+.clothes-shop .cart-icon:hover, .clothes-shop .buy-acc:hover {
+    opacity: 1;
+}
+
+.clothes-shop .cart-icon.active, .clothes-shop .buy-acc.active {
+    opacity: 1;
+    border-left: 2px solid var(--global-main-color-dark-60);
+}
+
+.clothes-shop .cart-content {
+    padding: 20px;
+    color: white;
+    height: 100%;
+    position: relative;
+}
+
+.clothes-shop .cart-content.active {
+    display: block;
+}
+
+.clothes-shop .cart-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.clothes-shop .cart-group {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.clothes-shop .cart-group h3 {
+    color: white;
+    font-size: 16px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: inherit;
+}
+
+.clothes-shop .cart-group h3::after {
+    content: attr(data-total);
+    color: rgb(33, 175, 100);
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.clothes-shop .cart-group-items {
+    margin-bottom: 2px;
+}
+
+.clothes-shop .group-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.clothes-shop .pay-group {
+    background: var(--global-main-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.clothes-shop .pay-group .cash {
+    background: rgb(45, 224, 129);
+}
+
+.clothes-shop .payment-options {
+    display: none;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    border-bottom: 1px solid rgb(45, 224, 129);
+    border-radius: 4px;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.clothes-shop .payment-options.show {
+    display: block;
+}
+
+.clothes-shop .payment-option {
+    background: none;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 3px;
+}
+
+.clothes-shop .payment-option:hover {
+    background: var(--global-main-color-dark-20);
+}
+
+.clothes-shop .remove-group {
+    background: rgba(255, 47, 47, 0.4);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background 0.2s;
+}
+
+.clothes-shop .remove-group:hover {
+    background: rgba(255, 47, 47, 1);
+}
+
+.clothes-shop .payment-dropdown {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.clothes-shop .cart-items {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.clothes-shop .cart-footer {
+    bottom: 20px;
+    width: 90%;
+    margin-top: auto;
+    align-self: center;
+    gap: 4px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.clothes-shop .pay-button {
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.clothes-shop .pay-button:hover {
+    background: rgba(45, 243, 137, 1);
+    transform: translateY(-1px);
+}
+
+.clothes-shop .pay-button.carte:hover {
+    background: rgba(68, 196, 255, 1);
+}
+
+.clothes-shop .pay-button:active {
+    transform: translateY(0);
+}
+
+.clothes-shop .pay-button i {
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+.clothes-shop .cart-item {
+    background: rgba(0, 0, 0, 0.0);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    /* border-left: 2px solid var(--global-main); */
+}
+
+.clothes-shop .cart-item-info {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    min-height: 65px;
+}
+
+.clothes-shop .cart-item-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.clothes-shop .cart-item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 3px;
+    margin: 0 5px;
+}
+
+.clothes-shop .cart-item-details {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.clothes-shop .cart-item-details span {
+    display: block;
+    padding-bottom: 2px;
+}
+
+.clothes-shop .remove-item {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+.clothes-shop .remove-item:hover {
+    background-color: #cc0000;
+}
+
+.clothes-shop .cart-empty {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 40px 20px;
+    font-size: 16px;
+}
+
+.clothes-shop .cart-shop {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.clothes-shop .variation-number {
+    font-size: 13px;
+    color: white;
+    background: rgba(0, 0, 0, 0.0);
+    padding: 5px 0;
+    border-radius: 0;
+    display: inline-block;
+    /* border-top: 1px solid rgba(255, 255, 255, 0.1); */
+}
+
+.clothes-shop .cart-item-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.clothes-shop .number-input {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    width: 100px;
+    outline: none;
+}
+
+.clothes-shop .number-input:focus {
+    border-color: var(--global-main-color-dark-40);
+}
+
+.clothes-shop .number-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.clothes-shop .search-container {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.clothes-shop .logo {
+    margin-top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.clothes-shop .camera-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+    z-index: 1000;
+}
+
+.clothes-shop .control-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.clothes-shop .control-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.clothes-shop .control-icon i {
+    font-size: 20px;
+}
+
+.clothes-shop .control-icon span {
+    font-size: 12px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.clothes-shop .control-text {
+    font-size: 14px;
+    margin: 0 5px;
+}
+
+/* Zone de Rotation - Panel rectangulaire transparent avec contour */
+.rotation-area {
+    position: fixed;
+    right: 50%;
+    top: 55%;
+    transform: translateY(-50%) translateX(50%);
+    width: 270px;
+    height: 70%;
+    border-radius: 1rem;
+    background: rgba(0, 0, 0, 0);
+    border: 2px dashed rgba(255, 255, 255, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    z-index: 998;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.rotation-area:hover {
+    background: rgba(0, 0, 0, 0.15);
+    border-color: var(--global-main-color, #2196f3);
+}
+
+.rotation-area:active {
+    cursor: grabbing;
+    background: rgba(0, 0, 0, 0.3);
+    border-style: solid;
+}
+
+.rotation-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.rotation-hint i {
+    font-size: 32px;
+    color: var(--global-main-color, #2196f3);
+}
+
+.rotation-hint span {
+    font-size: 12px;
+    text-align: center;
+    max-width: 150px;
+}
+
+.rotation-area:active .rotation-hint {
+    opacity: 0.3;
+}
+
+/* Scrollbars specific for clothes shop elements if needed */
+.clothes-shop ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.clothes-shop ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.clothes-shop ::-webkit-scrollbar-thumb {
+    background: var(--global-main-color-dark-60);
+    border-radius: 4px;
+}
+
+.clothes-shop ::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* Animation Fade In */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Prevent selection during rotation */
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Boutons de variation modernes - Style carré et épuré */
+.main-content {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--nykz-card-background);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.main-content .nav-arrow {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.main-content .nav-arrow:hover {
+    background: var(--global-main-color, #2196f3);
+    border-color: var(--global-main-color, #2196f3);
+    box-shadow: 0 0 15px var(--global-main-color-dark-50, rgba(33, 150, 243, 0.5));
+}
+
+.main-content .nav-arrow:active {
+    transform: scale(0.95);
+}
+
+.main-content .nav-display {
+    min-width: 60px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    padding: 0 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cart-item-price {
+    color: var(--global-main-color);
+    font-size: 15px;
+    margin-left: auto;
+    padding-right: 10px;
+}
+
+.cart-item-price i {
+    font-size: 18px;
+}

@@ -1,0 +1,130 @@
+:root {
+  --bg-primary: rgba(12, 12, 12, 0.92);
+  --bg-primary-full: rgba(12, 12, 12, 1.0);
+  --bg-secondary: rgba(255, 255, 255, 0.04);
+  --bg-tertiary: rgba(255, 255, 255, 0.08);
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --border-color: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.12);
+
+  --text-primary: rgba(255, 255, 255, 0.92);
+  --text-secondary: rgba(255, 255, 255, 0.50);
+  --text-tertiary: rgba(255, 255, 255, 0.28);
+
+  --accent: #63b9ff;
+  --accent-glow: rgba(99, 185, 255, 0.18);
+  --accent-hover: rgba(99, 185, 255, 0.12);
+
+  --danger: rgba(255, 80, 80, 0.85);
+  --danger-glow: rgba(255, 80, 80, 0.15);
+
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.40);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 6px;
+
+  --font-base: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --shadow-color: rgba(0, 0, 0, 0.55);
+
+  --surface-1: rgba(12, 12, 12, 0.94);
+  --surface-2: rgba(20, 20, 22, 0.92);
+  --surface-3: rgba(255, 255, 255, 0.03);
+  --surface-blur: none;
+  --overlay-scrim: rgba(0, 0, 0, 0.6);
+}
+
+html[data-null-blur-addon="active"] {
+  --surface-1: rgba(12, 12, 12, 0.45);
+  --surface-2: rgba(18, 18, 20, 0.42);
+  --surface-3: rgba(255, 255, 255, 0.05);
+  --surface-blur: blur(22px);
+  --overlay-scrim: rgba(0, 0, 0, 0.28);
+}
+
+html[data-null-blur-addon="active"] [data-theme="light"] {
+  --surface-1: rgba(240, 240, 240, 0.55);
+  --surface-2: rgba(230, 230, 232, 0.52);
+  --surface-3: rgba(0, 0, 0, 0.04);
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg-primary: rgba(240, 240, 240, 0.96);
+  --bg-primary-full: rgba(240, 240, 240, 1.0);
+  --bg-secondary: rgba(0, 0, 0, 0.04);
+  --bg-tertiary: rgba(0, 0, 0, 0.07);
+  --bg-hover: rgba(0, 0, 0, 0.05);
+
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.14);
+
+  --text-primary: rgba(10, 10, 10, 1.0);
+  --text-secondary: rgba(10, 10, 10, 1.0);
+  --text-tertiary: rgba(10, 10, 10, 0.28);
+
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.12);
+  --shadow-color: rgba(0, 0, 0, 0.18);
+}
+
+/* Modern Style (Default) */
+:root,
+[data-style="modern"] {
+  --spacing-unit: 1rem;
+  --border-radius: 0.5rem;
+  --font-size-base: 1rem;
+  --padding-base: 1rem;
+  --gap-base: 1rem;
+}
+
+/* Compact Style */
+[data-style="compact"] {
+  --spacing-unit: 0.5rem;
+  --border-radius: 0.25rem;
+  --font-size-base: 0.875rem;
+  --padding-base: 0.5rem;
+  --gap-base: 0.5rem;
+}
+
+/* Theme-aware component styles - modules should use these variables */
+
+/* Compact style adjustments */
+[data-style="compact"] .p-6 {
+  padding: var(--padding-base) !important;
+}
+
+[data-style="compact"] .p-4 {
+  padding: calc(var(--padding-base) * 0.75) !important;
+}
+
+[data-style="compact"] .p-3 {
+  padding: calc(var(--padding-base) * 0.5) !important;
+}
+
+[data-style="compact"] .gap-4 {
+  gap: var(--gap-base) !important;
+}
+
+[data-style="compact"] .gap-3 {
+  gap: calc(var(--gap-base) * 0.75) !important;
+}
+
+[data-style="compact"] .gap-2 {
+  gap: calc(var(--gap-base) * 0.5) !important;
+}
+
+[data-style="compact"] .rounded-lg {
+  border-radius: var(--border-radius) !important;
+}
+
+[data-style="compact"] .text-sm {
+  font-size: var(--font-size-base) !important;
+}
+
+[data-style="compact"] .text-xs {
+  font-size: calc(var(--font-size-base) * 0.85) !important;
+}

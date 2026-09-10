@@ -1,0 +1,1212 @@
+-- local List = {
+--     Actions = {
+--         "Déposer",
+--         "Prendre"
+--     },
+--     ActionIndex = 1,
+--     ActionButton = 1
+-- }
+-- local List2 = {
+--     Actions = {
+--         "Déposer",
+--         "Prendre"
+--     },
+--     ActionIndex = 1,
+--     ActionButton = 1
+-- }
+-- local ListProprieties = {}
+
+-- local TypeHistIndex = 1
+-- local possiblesQty = {}
+-- local IndexBoissons = 1
+-- local IndexSoins = 1
+-- local IndexStocks = 1
+-- local employeeList = {}
+-- local CoffreWeight = 3000
+
+-- local DataMenu = {}
+-- local EmployesList = nil
+-- local GradesList = nil
+-- local argentEntreprise = 0
+
+-- local selectedLabel = ""
+-- local selectedPosBoss
+-- local selectedPosVestiaire
+-- local selectedPosBar
+
+-- local postion = {
+--     "~b~Coffre~s~",
+--     "~b~Récolte~s~",
+--     "~b~Traitement~s~",
+--     "~b~Vente~s~"
+-- }
+-- local PosIndex = 1
+
+-- namejob = "Pas définit"
+-- labeljob = "Pas définit"
+-- PositionVestiaire = "Pas définit"
+-- PositionCustom = "Pas définit"
+-- PositionCustom2 = "Pas définit"
+-- PositionCustom3 = "Pas définit"
+-- PositionBar = "Pas définit"
+-- PositionBoss = "Pas définit"
+
+-- -- local self = {
+-- -- 	gunLSPD = {
+-- -- 		[1] = {name = "Lampe de poche", value = "WEAPON_FLASHLIGHT", price = 80, ammo = 0},
+-- -- 		[2] = {name = "Matraque", value = "WEAPON_NIGHTSTICK", price = 120, ammo = 0},
+-- -- 		[3] = {name = "Taser", value = "WEAPON_STUNGUN", price = 180, ammo = 0},
+-- -- 		[4] = {name = "Fusil à carabine", value = "WEAPON_CARBINERIFLE", price = 2200, ammo = 200},
+-- -- 		[5] = {name = "Fusil à pompe", value = "WEAPON_PUMPSHOTGUN", price = 2800, ammo = 200},
+-- -- 		[6] = {name = "Pistolet 9mm", value = "WEAPON_COMBATPISTOL", price = 975, ammo = 200},
+-- -- 		[7] = {name = "Parachute", value = "GADGET_PARACHUTE", price = 1250, ammo = 0}
+-- -- 	},
+-- -- }
+
+-- local self2 = {
+--     drinksUnicorn = {
+-- 		[1] = {name = "Cola", value = "cocafrais", price = 150},
+-- 		[2] = {name = "Rhum", value = "rhum", price = 175},
+-- 		[3] = {name = "Tequila", value = "tequila", price = 135},
+-- 		[4] = {name = "Ice tea", value = "icetea", price = 144},
+-- 		[5] = {name = "Maximator", value = "beer", price = 165},
+-- 		[6] = {name = "Martini", value = "martini", price = 130},
+--         [7] = {name = "Mojito", value = "mojito", price = 175},
+--         [8] = {name = "Orangina", value = "orangina", price = 120},
+--         [9] = {name = "Redbull", value = "redbull", price = 130},
+--         [10] = {name = "Vodka", value = "vodka", price = 165},
+--         [11] = {name = "Fanta", value = "fanta", price = 110},
+--         [12] = {name = "Champagne", value = "champagne", price = 110}
+-- 	}
+-- }
+
+-- local self3 = {
+--     Zonah = {
+-- 		[1] = {name = "Bandage", value = "bandage", price = 200},
+-- 		[2] = {name = "Kit de soins", value = "medikit", price = 500}
+-- 	}
+-- }
+
+
+-- local function SizeOfGrade(t)
+--     local count = 0
+
+--     for k,v in pairs(t) do
+--         count = count + 1
+--     end
+
+--     return count
+-- end
+
+-- RegisterNetEvent('null:reciveNewPolitique', function(name, value)
+--     if SocietyList[name] ~= nil then
+--         SocietyList[name].politique = value
+--     end
+-- end)
+
+-- RegisterNetEvent('Null:updateSalary', function(value)
+--     SalaryData = value
+-- end)
+
+-- RegisterNetEvent('Null:updateTaxes', function(value)
+--     taxesData = value
+-- end)
+
+-- local DataLoaded = false
+-- SocietyList = {}
+-- SalaryData = {}
+-- taxesData = {}
+
+
+
+-- Citizen.CreateThread(function()
+--     while not DataLoaded do
+--         ESX.TriggerServerCallback("Core:GetSociety", function(result, salaryData, taxes) 
+--             SocietyList = result
+--             SalaryData = salaryData
+--             taxesData = taxes
+--             DataLoaded = true
+--         end)
+--         Wait(10000)
+--     end
+-- end)
+
+-- local BarLoaded = false
+-- BarList = {}
+
+-- FinalBarList = {}
+
+-- Citizen.CreateThread(function()
+--     while not BarLoaded do
+--         ESX.TriggerServerCallback("Core:GetBarList", function(result) 
+--             BarList = result
+--             BarLoaded = true
+--         end)
+--         Wait(10000)
+--     end
+
+--     Wait(1000)
+--     FinalBarList = {}
+--     for k,v in pairs(BarList) do
+--         FinalBarList[v.name] = v.name
+--     end
+-- end)
+
+
+
+-- OpenSocietyMenu = function(society, position, job2)
+--     local menu = RageUI.CreateMenu("", "Actions disponibles :")
+--     local coffreMenu = RageUI.CreateSubMenu(menu, "", "Que souhaitez-vous faire ?")
+--     local depoMenu = RageUI.CreateSubMenu(coffreMenu, "", "Contenu de vos poches")
+--     local moneyActionMenu = RageUI.CreateSubMenu(menu, "", "Que souhaitez-vous faire ?")
+--     local historiqueSocieter = RageUI.CreateSubMenu(moneyActionMenu, "", "Que souhaitez-vous faire ?")
+--     local historiqueCustomSocieter = RageUI.CreateSubMenu(menu, "", "Que souhaitez-vous faire ?")
+--     local AgentImmoListProprio = RageUI.CreateSubMenu(menu, "", "Que souhaitez-vous faire ?")
+--     local AgentImmoListProprio2 = RageUI.CreateSubMenu(AgentImmoListProprio, "", "Que souhaitez-vous faire ?")
+--     local employesListMenu = RageUI.CreateSubMenu(menu, "", "Que souhaitez-vous faire ?")
+--     local employesListMenu2 = RageUI.CreateSubMenu(menu, "", "Que souhaitez-vous faire ?")
+--     local employesActionsMenu = RageUI.CreateSubMenu(employesListMenu, "Actions sur l'employé", "Que souhaitez-vous faire ?")
+--     local employesActionsMenu2 = RageUI.CreateSubMenu(employesListMenu2, "Actions sur l'employé", "Que souhaitez-vous faire ?")
+--     local gradeListMenu = RageUI.CreateSubMenu(menu, "", "Que souhaitez-vous faire ?")
+--     local actionGradeMenu = RageUI.CreateSubMenu(gradeListMenu, "", "Êtes vous sur ?")
+--     local BarFrigo = RageUI.CreateSubMenu(menu, "", "Êtes vous sur ?")
+--     local EMSBoutique = RageUI.CreateSubMenu(menu, "", "Êtes vous sur ?")     
+--     local PolitiqueGestion = RageUI.CreateSubMenu(menu, "", "Êtes vous sur ?")       
+--     local cityInfo = RageUI.CreateSubMenu(menu, "", "Êtes vous sur ?")         
+--     local entrepriseGestion = RageUI.CreateSubMenu(menu, "", "Êtes vous sur ?")    
+--     local entrepriseGestion2 = RageUI.CreateSubMenu(entrepriseGestion, "", "Êtes vous sur ?")    
+--     local historiqueSocieter2 = RageUI.CreateSubMenu(entrepriseGestion2, "", "Êtes vous sur ?")           
+
+--     local DataLoaded = false
+--     ESX.TriggerServerCallback("Core:GetSocietyInfo", function(result, weight) 
+--         if result == nil then result = {} end
+--         if result.data == nil then result.data = {} end
+--         DataMenu = result.data
+--         DataMenu["weight"] = weight
+--         DataLoaded = true
+--     end, society.name)
+
+    
+--     local IndexSelected = 1
+--     local EmployesSelected = nil
+--     local GradeSelected = nil
+--     local ActionDelete = false
+
+--     while not DataLoaded do 
+--         Wait(1)
+--     end
+
+--     RageUI.Visible(menu, not RageUI.Visible(menu))
+
+--     while true do
+--         Wait(0)
+--         if not menu then break end
+
+--         if not job2 then
+--             if ESX.PlayerData.job.name ~= society.name then 
+--                 RageUI.CloseAll()
+--                 ESX.ShowNotification("~r~Vous n'êtes plus "..society.label..".")
+--             end
+--         else 
+--             if ESX.PlayerData.job2.name ~= society.name then 
+--                 RageUI.CloseAll()
+--                 ESX.ShowNotification("~r~Vous n'êtes plus "..society.label..".")
+--             end
+--         end
+
+--         if position and #(GetEntityCoords(PlayerPedId()) - position) > 8 then 
+--             ESX.ShowNotification("~r~Information\n~s~Tu t'éloigne trop !")
+--             RageUI.CloseAll()
+--         end
+        
+--         RageUI.IsVisible(menu, function()
+--             local info_panels = {
+--                 { label = "Nom", value = society.label },
+--                 { label = "Accès patron", value = ESX.PlayerData.job.grade_name == "boss" },
+--             }
+--             if ESX.PlayerData.job.grade_name == "boss" then
+--                 table.insert(info_panels, { label = "Nombre d'employés", value = (employeeList ~= nil and #employeeList or "N/A") })
+--             end
+--             RageUI.InfoPanel({
+--                 title = "Information sur votre entreprise",
+--                 items = info_panels,
+--             })
+--             if ESX.PlayerData.job.grade_name ~= "boss" and not job2 then 
+--             --    RageUI.Separator("Argent liquide : "..DataMenu["accounts"].cash.."$~s~ et argent sale : "..DataMenu["accounts"].dirtycash.."$")
+--             end
+--             if not job2 then
+--             --    RageUI.Separator("Poids du coffre : "..DataMenu["weight"].."/"..CoffreWeight)
+--             end
+--             --RageUI.Separator("↓ Actions disponible~s~ ↓")
+--             if society.name ~= "gouvernement" then
+--                 if SocietyList[ESX.PlayerData.job.name] ~= nil and SocietyList[ESX.PlayerData.job.name].data ~= nil and SocietyList[ESX.PlayerData.job.name].data.politique ~= nil and ESX.PlayerData.job.grade_name == "boss" then
+--                     RageUI.Button("Gestion de vos Politiques", "Gérer par le gouvernement", { RightLabel = "" }, ESX.PlayerData.job.grade_name == "boss", {
+--                         onSelected = function()
+--                         end
+--                     }, PolitiqueGestion)
+--                 end
+
+--                 RageUI.Button("Informations sur la Ville", nil, { RightLabel = "" }, ESX.PlayerData.job.grade_name == "boss", {
+--                     onSelected = function()
+--                     end
+--                 }, cityInfo)
+--             else
+--                 RageUI.Button("Gestion de la Ville", nil, { RightLabel = "" }, ESX.PlayerData.job.grade_name == "boss", {
+--                     onSelected = function()
+--                     end
+--                 }, cityInfo)
+--                 RageUI.Button("Gestion des entreprises", nil, { RightLabel = "" }, ESX.PlayerData.job.grade_name == "boss", {
+--                     onSelected = function()
+--                     end
+--                 }, entrepriseGestion)
+--             end
+
+--             for k,v in pairs(null.data.jobs.mecanos.list) do
+--                 if not job2 and ESX.PlayerData.job.name == v.name and ESX.PlayerData.job.grade_name == "boss" then
+--                     RageUI.Button("Blanchir Argent", nil, { RightLabel = nil }, ESX.PlayerData.job.grade_name == "boss", {
+--                         onSelected = function()
+--                             local result = null.fct.input('Montant :', false, 9000000, "number")
+--                             if (result) then 
+--                                 TriggerServerEvent('Null:blanchiment', result)
+--                             end
+--                         end
+--                     })
+--                     RageUI.Button("Historique Customs", nil, { RightLabel = nil }, true, {
+--                         onSelected = function()
+--                             SocietyHistoForMeca = true
+--                             ESX.TriggerServerCallback("Core:GetSocietyHistorique", function(result) 
+--                                 SocietyHisto = result
+--                             end, ESX.PlayerData.job.name, "mecano")
+--                         end
+--                     }, historiqueCustomSocieter)
+--                 end
+--             end
+            
+--             if not job2 and ESX.PlayerData.job.name == "realestateagent" and ESX.PlayerData.job.grade_name == "boss" then
+--                 RageUI.Button("Liste des propriétés", nil, { RightLabel = nil }, true, {
+--                     onSelected = function()
+--                         ESX.TriggerServerCallback("null:properties:GetProperties", function(result) 
+--                             ListProprieties = result
+--                         end)
+--                     end
+--                 }, AgentImmoListProprio)
+--             end
+--             for k,v in pairs(null.data.jobs.bars.list) do
+--                 if not job2 and ESX.PlayerData.job.name == v.name and ESX.PlayerData.job.grade_name == "boss" then
+--                     RageUI.Button("Blanchir Argent", nil, { RightLabel = nil }, ESX.PlayerData.job.grade_name == "boss", {
+--                         onSelected = function()
+--                             local result = null.fct.input('Montant :', false, 9000000, "number")
+--                             if (result) then 
+--                                 TriggerServerEvent('Null:blanchiment', result)
+--                             end
+--                         end
+--                     })
+--                 end
+--             end
+--             if not job2 then
+--                 RageUI.Button("Coffre de l'entreprise", nil, { RightLabel = nil }, ESX.PlayerData.job.grade_name == "boss", {
+--                     onSelected = function()
+--                         RageUI.CloseAll()
+--                         ESX.TriggerServerCallback('null:getCoffre', function(data, id)
+--                             if data then
+--                                 local inventory = data
+--                                 inventory.weight = 0
+--                                 inventory.id = id
+--                                 inventory.maxWeight = 1000
+--                                 inventory.type = "SOCIETY"
+--                                 TriggerEvent("inventory:openTarget",inventory)
+--                             end
+--                         end, ESX.PlayerData.job.name)
+--                     end
+--                 })
+--             end
+--             if not job2 then
+--                 RageUI.Button("Gérer le compte Societer", nil, { RightLabel = nil }, ESX.PlayerData.job.grade_name == "boss", {}, moneyActionMenu)
+--             end
+
+--             if not job2 then
+--                 RageUI.Button("Gestion des employés", nil, { RightLabel = nil }, ESX.PlayerData.job.grade_name == "boss", {
+--                     onSelected = function()
+--                         ESX.TriggerServerCallback("Null:GetMemberOfSociety", function(result, result2) 
+--                             employeeList = result
+--                             myGradeList = result2
+--                         end, "boss", ESX.PlayerData.job.name)
+--                     end
+--                 }, employesListMenu)
+--             end
+
+--             if not job2 then
+--                 RageUI.Button("Gérer les grades", ESX.PlayerData.job2.grade_name ~= "boss" and nil, { RightLabel = nil }, ESX.PlayerData.job.grade_name == "boss", {
+--                     onSelected = function()
+--                         TriggerServerEvent("Core:GetSocietyGrade", position, society, job2)
+--                     end
+--                 }, gradeListMenu)
+--             else
+--                 RageUI.Button("Gérer les grades", ESX.PlayerData.job2.grade_name ~= "boss" and nil, { RightLabel = nil }, ESX.PlayerData.job2.grade_name == "boss", {
+--                     onSelected = function()
+--                         TriggerServerEvent("Core:GetSocietyGrade", position, society, job2)
+--                     end
+--                 }, gradeListMenu)
+--             end
+--             if ESX.PlayerData.job.grade_name == "boss" then
+--                 RageUI.Line()
+                   
+--                 for k,v in pairs(null.data.jobs.ambulances.list) do
+--                     if ESX.PlayerData.job.name == v.name then
+--                         RageUI.Button("Acheter des soins pour la boutique", nil, { RightLabel = nil }, true, {}, EMSBoutique)
+--                     end
+--                 end
+
+--                 for k,v in pairs(null.data.jobs.bars.list) do
+--                     if not job2 and ESX.PlayerData.job.name == v.name and ESX.PlayerData.job.grade_name == "boss" then
+--                         RageUI.Button("Acheter des boissons pour le frigo", nil, { RightLabel = nil }, true, {}, BarFrigo)
+--                     end
+--                 end
+
+--                 RageUI.Button("Changer le nom de votre entreprise", "F5 -> Status des Entreprises", { RightLabel = nil }, ESX.PlayerData.job.grade_name == "boss", {
+--                     onSelected = function()
+--                         local newname = null.fct.input("Nouveau nom pour votre entreprise :")
+--                         TriggerServerEvent("vsociety:changelabelsociety", ESX.PlayerData.job.name, newname)
+--                         --society.label = newname
+--                     end
+--                 })
+--                 --[[RageUI.Button("Faire une annonce", "~r~(Spam = ban)", { RightLabel = nil }, ESX.PlayerData.job.grade_name == "boss", {
+--                     onSelected = function()
+--                         local newname = null.fct.input("Votre annonce")
+--                         TriggerServerEvent("Null:Annonce", newname)
+--                         --society.label = newname
+--                     end
+--                 })]]
+--             end
+
+
+--         end, function()
+--         end)
+--         RageUI.IsVisible(AgentImmoListProprio, function()
+--             for k,v in pairs(ListProprieties) do
+--                 local selllabel = v.isBuy == true and "Oui" or "Non"
+--                 local owner = v.owner or "Aucun"
+--                 local immeuble = v.immeuble == "0" and "Aucun" or v.immeuble
+--                 RageUI.Button(v.label.." ("..v.id..")", "[ENTER] = Ouvrir le menu gestion\n[E] = Supprimer cette propriété", {RightLabel = v.isBuy == true and ESX.Config("serverColor").."Vendu" or ""}, true, {
+--                     onSelected = function()
+--                         SelectedProprieties = v
+--                     end,
+--                     onActive = function()
+--                         RageUI.Info(v.label, {"Id:", "Nom:", "Price:", "Immeuble:"}, {v.id, v.name, v.price, immeuble})
+--                         if IsControlJustPressed(1,51) then
+--                             TriggerServerEvent("null:properties:deleteProperties", v)
+--                             RageUI.GoBack()
+--                             Wait(1000)
+--                             ESX.TriggerServerCallback("null:properties:GetProperties", function(result) 
+--                                 ListProprieties = result
+--                             end)
+--                         end
+--                     end
+--                 }, AgentImmoListProprio2)
+--             end
+--         end)
+--         RageUI.IsVisible(AgentImmoListProprio2, function()
+--             while SelectedProprieties == nil do return end
+--             local selllabel = SelectedProprieties.isBuy == true and "Oui" or "Non"
+--             RageUI.Separator("Propriété sélectionner : "..SelectedProprieties.label.." ("..SelectedProprieties.id..")")
+--             RageUI.Separator("Vendu : "..ESX.Config("serverColor")..selllabel)
+--             RageUI.Line()
+--             RageUI.Button("~r~Supprimer cette proriété", false, {}, true, {
+--                 onSelected = function()
+--                     TriggerServerEvent("null:properties:deleteProperties", SelectedProprieties)
+--                     RageUI.GoBack()
+--                     Wait(1000)
+--                     ESX.TriggerServerCallback("null:properties:GetProperties", function(result) 
+--                         ListProprieties = result
+--                     end)
+--                 end
+--             })
+--             if SelectedProprieties.isBuy then
+--                 RageUI.Button("Virer le propriétaire", false, {}, true, {
+--                     onSelected = function()
+--                         TriggerServerEvent("null:properties:virerOwnerProperties", SelectedProprieties)
+--                         RageUI.GoBack()
+--                         Wait(1000)
+--                         ESX.TriggerServerCallback("null:properties:GetProperties", function(result) 
+--                             ListProprieties = result
+--                         end)
+--                     end
+--                 })
+--             else
+--                 local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+--                 RageUI.Button("Attribuer la propriété au joueur le plus proche", false, {}, closestDistance ~= -1 and true or false, {
+--                     onActive = function()
+--                         if closestPlayer ~= -1 and closestDistance < 3.0 then
+--                             ESX.Utils.EntityMarker(GetPlayerPed(closestPlayer))
+--                         end
+--                     end,
+--                     onSelected = function()
+--                         TriggerServerEvent("null:properties:PlayerBuyPropeties", SelectedProprieties, GetPlayerServerId(closestPlayer))
+--                         RageUI.GoBack()
+--                         Wait(1000)
+--                         ESX.TriggerServerCallback("null:properties:GetProperties", function(result) 
+--                             ListProprieties = result
+--                         end)
+--                     end
+--                 })
+--                 RageUI.Button("Attribuer a vous", false, {}, true, {
+--                     onSelected = function()
+--                         TriggerServerEvent("null:properties:PlayerBuyPropeties", SelectedProprieties)
+--                         RageUI.GoBack()
+--                         Wait(1000)
+--                         ESX.TriggerServerCallback("null:properties:GetProperties", function(result) 
+--                             ListProprieties = result
+--                         end)
+--                     end
+--                 })
+--             end
+--         end)
+
+--         RageUI.IsVisible(BarFrigo, function()
+--             possiblesQty = {}
+--             for i = 1,10 do 
+--                 table.insert(possiblesQty, tostring(i))
+--             end
+--             for k, v in pairs(self2.drinksUnicorn) do
+--                 RageUI.List(v.name, possiblesQty, IndexBoissons, "Prix : " ..v.price*IndexBoissons.. " $", {}, true, {
+--                     onListChange = function(Index, Item)
+--                         IndexBoissons = Index;
+--                     end,
+--                     onSelected = function()
+--                         --argentEntreprise = DataMenu["accounts"].cash
+--                         --if argentEntreprise >= v.price then
+--                             TriggerServerEvent('Core:BuyDrinksforBar', v.value, v.name, v.price*IndexBoissons, IndexBoissons,  ESX.PlayerData.job.name)
+--                             --ESX.ShowNotification("Vous avez acheté(e) x " ..IndexBoissons.. " " .. v.name .. " pour " .. v.price*IndexBoissons .. "$")
+--                             --ESX.ShowNotification("Votre achat a été placé dans le frigo du "..ESX.PlayerData.job.label)
+--                             Wait(100)
+--                             --TriggerServerEvent("Core:AddMoneyToSocietyCache", position, "removesocietymoney", society, "cash", v.price*IndexBoissons, job2)
+
+--                         --else
+--                         --    ESX.ShowNotification('~r~Votre entreprise n\'a pas assez d\'argent.')
+--                         --end
+--                     end
+--                 })
+--             end
+--         end, function()
+--         end)
+    
+
+--         RageUI.IsVisible(EMSBoutique, function()
+--             possiblesQty = {}
+--             RageUI.Separator("↓ Soins~s~ ↓")
+--             for i = 1,20 do 
+--                 table.insert(possiblesQty, tostring(i))
+--             end
+--             for k, v in pairs(self3.Zonah) do
+--                 RageUI.List(v.name, possiblesQty, IndexSoins, "Prix : " ..v.price*IndexSoins.. " $", {}, true, {
+--                     onListChange = function(Index, Item)
+--                         IndexSoins = Index;
+--                     end,
+--                     onSelected = function()
+--                         --argentEntreprise = DataMenu["accounts"].cash
+--                         --if argentEntreprise >= v.price then
+--                             TriggerServerEvent('Core:BuyHealPharmapublique', v.value, v.name, v.price*IndexSoins, IndexSoins,  ESX.PlayerData.job.name)
+--                             --ESX.ShowNotification("Vous avez acheté(e) x " ..IndexSoins.. " " .. v.name .. " pour " .. v.price*IndexSoins .. "$")
+--                             --ESX.ShowNotification("Votre achat a été placé dans la pharmacie publique")
+--                             --Wait(100)
+--                             --TriggerServerEvent("Core:AddMoneyToSocietyCache", position, "removesocietymoney", society, "cash", v.price*IndexSoins, job2)
+--                         --else
+--                         --    ESX.ShowNotification('L\'hopital n\'a pas assez d\'argent.')
+--                         --end
+--                     end
+--                 })
+--             end
+--         end, function()
+--         end)
+
+--         RageUI.IsVisible(entrepriseGestion, function()
+--             if society.name == "gouvernement" then
+--                 for k,v in pairs(SocietyList) do 
+--                     if k == "gouvernement" then
+--                         goto pass 
+--                     end 
+--                     RageUI.Button(v.label, false, {RightLabel = v.state == true and "~g~Disponible~s~" or "~r~Indisponible~s~"}, true, {
+--                         onSelected = function()
+--                             SelectedEntrepriseGouv = k
+--                             --[[ESX.TriggerServerCallback("Core:GetSocietyInfo", function(result) 
+--                                 if result == nil then result = {} end
+--                                 if result.data == nil then result.data = {} end
+--                                 if SocietyList[SelectedEntrepriseGouv] and result.data.taxes then
+--                                     SocietyList[SelectedEntrepriseGouv].data.taxes = result.data.taxes
+--                                 end
+--                             end, society.name)]]
+
+--                             ESX.TriggerServerCallback("Null:GetMemberOfSociety", function(result, result2) 
+--                                 employeeList = result
+--                                 myGradeList = result2
+--                             end, "boss", ESX.PlayerData.job.name)
+--                         end
+--                     }, entrepriseGestion2)
+--                     ::pass::
+--                 end
+--             end
+--         end)
+--         RageUI.IsVisible(entrepriseGestion2, function()
+--             if SelectedEntrepriseGouv == nil then 
+--                 return RageUI.Separator("Chargement..")
+--             end
+--             local society = SocietyList[SelectedEntrepriseGouv]
+--             --local total = 0
+--             --if society.data and society.data["taxes"] then
+--             --    total = society.data["taxes"] or 0
+--             --end
+--             local NumberEmploye = 0
+--             if employeeList then
+--                 for k,v in pairs(employeeList) do 
+--                     NumberEmploye += 1
+--                 end
+--             end
+--             RageUI.Separator("Nom de l'entreprise : "..society.label)
+--             local labelStatus = society.state == true and "~g~Disponible~s~" or "~r~Indisponible~s~"
+--             RageUI.Separator("Status de l'entreprise : "..labelStatus)
+--             --RageUI.Separator("Total d'argent généré (taxes) : ~y~"..total.."$~s~")
+--             RageUI.Separator("Nombre d'employés : ~y~"..NumberEmploye.."~s~")
+--             RageUI.Button("Changer le nom de l'entreprise", false, {}, true, {
+--                 onSelected = function()
+--                     newname = null.fct.input("Nouveau nom de l'entreprise ?")
+--                     if not newname then return end
+--                     TriggerServerEvent("vsociety:changelabelsociety", society.name, newname)
+--                 end
+--             })
+--             RageUI.Button("Historique des comptes", nil, { RightLabel = nil }, true, {
+--                 onSelected = function()
+--                     ESX.TriggerServerCallback("Core:GetSocietyHistorique", function(result) 
+--                         SocietyHisto = result
+--                     end, society.name)
+--                 end
+--             }, historiqueSocieter2)
+--             if society.data and society.data.politique then
+--                 RageUI.Line()
+--                 for k,v in pairs(society.data.politique) do
+--                     if Config.Society.Politique[k] then
+--                         RageUI.Checkbox(k, Config.Society.Politique[k].description, v, {}, {
+--                             onChecked = function()
+--                                 society.data.politique[k] = true
+--                                 v = true
+--                                 TriggerServerEvent("Null:EditPolitique", k, society.data.politique[k])
+--                             end,
+--                             onUnChecked = function()
+--                                 society.data.politique[k] = false
+--                                 v = false
+--                                 TriggerServerEvent("Null:EditPolitique", k, society.data.politique[k])
+--                             end
+--                         })
+--                     else
+--                         RageUI.Checkbox(k, nil, v, {}, {
+--                             onChecked = function()
+--                                 society.data.politique[k] = true
+--                                 v = true
+--                                 TriggerServerEvent("Null:EditPolitique", k, society.data.politique[k])
+--                             end,
+--                             onUnChecked = function()
+--                                 society.data.politique[k] = false
+--                                 v = false
+--                                 TriggerServerEvent("Null:EditPolitique", k, society.data.politique[k])
+--                             end
+--                         })
+--                     end
+--                 end
+--             end
+--         end)
+        
+--         RageUI.IsVisible(historiqueSocieter2, function()
+--             if SocietyHisto == nil then
+--                 RageUI.Separator('Chargement en cours')
+--             else
+--                 if SocietyHistoRecherche ~= nil then
+--                     RageUI.Button("Arreter la recherche", nil, { RightLabel = nil }, true, {
+--                         onSelected = function()
+--                             SocietyHistoRecherche = nil
+--                         end
+--                     })
+--                 else
+--                     RageUI.Button("Rechercher", nil, { RightLabel = nil }, true, {
+--                         onSelected = function()
+--                             SocietyHistoRecherche = string.lower(null.fct.input("Que voulez vous chercher ?"))
+--                         end
+--                     })
+--                 end
+--                 RageUI.List("Type", {"Tous","Dépenses", "Gains"}, TypeHistIndex, nil, {}, true, {
+--                     onListChange = function(Index, Item)
+--                         TypeHistIndex = Index;
+--                     end
+--                 })
+--                 RageUI.Line()
+--                 for k,v in pairs(SocietyHisto) do
+--                     if TypeHistIndex == 2 then
+--                         if v.count > 0 then
+--                             goto continue
+--                         end
+--                     elseif TypeHistIndex == 3 then
+--                         if v.count < 0 then
+--                             goto continue
+--                         end
+--                     end
+--                     if SocietyHistoRecherche ~= nil then
+--                         if string.find(string.lower(v.label),SocietyHistoRecherche) or string.find(string.lower(v.info),SocietyHistoRecherche) then
+--                             RageUI.Button(v.label, v.info.."~n~Date: "..v.time, { RightLabel = v.count > 0 and "+"..v.count.."$" or v.count.."$" }, true, {
+--                                 onSelected = function()
+                                    
+--                                 end
+--                             })
+--                         end
+--                     else
+--                         RageUI.Button(v.label, v.info.."~n~Date: "..v.time, { RightLabel = v.count > 0 and "+"..v.count.."$" or v.count.."$" }, true, {
+--                             onSelected = function()
+                                
+--                             end
+--                         })
+--                     end
+
+--                     ::continue::
+--                 end
+--             end
+--         end)
+--         RageUI.IsVisible(cityInfo, function()
+--             if society.name ~= "gouvernement" then
+--                 RageUI.Button("Smic ( Salaire minimum par mois ) :", nil, {RightLabel = "Actuellement: ~y~"..SalaryData["Mensuel"].min.."$~s~"}, true, {})
+--                 RageUI.Button("Smic ( Salaire minimum / 30 Min ) :", nil, {RightLabel = "Actuellement: ~y~"..SalaryData["Pour 30 Min"].min.."$~s~"}, true, {})
+--                 RageUI.Line()
+--                 RageUI.Button("Montant Maximum pour les primes :", nil, {RightLabel = "Actuellement: ~y~"..SalaryData["Primes"].max.."$~s~"}, true, {})
+--                 RageUI.Line()
+--                 RageUI.Button("Taxes sur le retrait des comptes :", nil, {RightLabel = "Actuellement: ~y~"..taxesData.retrait.."%~s~"}, true, {})
+--                 RageUI.Button("Taxes sur les gains :", nil, {RightLabel = "Actuellement: ~y~"..taxesData.gains.."%~s~"}, true, {})
+--                 RageUI.Button("Taxes sur les salaires :", nil, {RightLabel = "Actuellement: ~y~"..taxesData.salaire.."%~s~"}, true, {})
+--                 RageUI.Button("Taxes sur les achats ( TVA ) :", nil, {RightLabel = "Actuellement: ~y~"..taxesData.tva.."%~s~"}, true, {})
+--                 --RageUI.Separator("Gouverneur : ~y~~s~")
+--             else
+--                 RageUI.Checkbox("Electricité de la ville", nil, not inBlackout, {}, {
+--                     onChecked = function()
+--                         inBlackout = not true
+--                         TriggerServerEvent("null:weather:changeBlackout", inBlackout)
+--                     end,
+--                     onUnChecked = function()
+--                         inBlackout = not false
+--                         TriggerServerEvent("null:weather:changeBlackout", inBlackout)
+--                     end
+--                 })
+--                 RageUI.Line()
+--                 RageUI.Button("Changer le smic ( Par mois )", nil, {RightLabel = "Actuellement: ~y~"..SalaryData["Mensuel"].min.."$~s~"}, true, {
+--                     onSelected = function()
+--                         local newValue = null.fct.input("Nouveau Smic :")
+--                         if not newValue then return end
+--                         TriggerServerEvent("Null:gouv:updateSalary", "Mensuel", newValue, "min")
+--                     end
+--                 })
+--                 RageUI.Button("Changer le smic ( / 30 Min )", nil, {RightLabel = "Actuellement: ~y~"..SalaryData["Pour 30 Min"].min.."$~s~"}, true, {
+--                     onSelected = function()
+--                         local newValue = null.fct.input("Nouveau Smic :")
+--                         if not newValue then return end
+--                         TriggerServerEvent("Null:gouv:updateSalary", "Pour 30 Min", newValue, "min")
+--                     end
+--                 })
+--                 RageUI.Button("Montant max pour les primes", nil, {RightLabel = "Actuellement: ~y~"..SalaryData["Primes"].max.."$~s~"}, true, {
+--                     onSelected = function()
+--                         local newValue = null.fct.input("Nouveau montant max pour les primes :")
+--                         if not newValue then return end
+--                         TriggerServerEvent("Null:gouv:updateSalary", "Primes", newValue, "max")
+--                     end
+--                 })
+--                 RageUI.Line()
+--                 RageUI.Button("Changer les taxes des retraits de compte", nil, {RightLabel = "Actuellement: ~y~"..taxesData.retrait.."%~s~"}, true, {
+--                     onSelected = function()
+--                         local newValue = null.fct.input("Nouveau montant :")
+--                         if not newValue then return end
+--                         TriggerServerEvent("Null:gouv:updateTaxes", "retrait", newValue)
+--                     end
+--                 })
+--                 RageUI.Button("Changer les taxes des gains des entreprises", nil, {RightLabel = "Actuellement: ~y~"..taxesData.gains.."%~s~"}, true, {
+--                     onSelected = function()
+--                         local newValue = null.fct.input("Nouveau montant :")
+--                         if not newValue then return end
+--                         TriggerServerEvent("Null:gouv:updateTaxes", "gains", newValue)
+--                     end
+--                 })
+--                 RageUI.Button("Changer les taxes sur les salaires", nil, {RightLabel = "Actuellement: ~y~"..taxesData.salaire.."%~s~"}, true, {
+--                     onSelected = function()
+--                         local newValue = null.fct.input("Nouveau montant :")
+--                         if not newValue then return end
+--                         TriggerServerEvent("Null:gouv:updateTaxes", "salaire", newValue)
+--                     end
+--                 })
+--                 RageUI.Button("Changer la TVA", nil, {RightLabel = "Actuellement: ~y~"..taxesData.tva.."%~s~"}, true, {
+--                     onSelected = function()
+--                         local newValue = null.fct.input("Nouveau montant :")
+--                         if not newValue then return end
+--                         TriggerServerEvent("Null:gouv:updateTaxes", "tva", newValue)
+--                     end
+--                 })
+--             end
+--         end)
+        
+--         RageUI.IsVisible(PolitiqueGestion, function()
+--             for k,v in pairs(SocietyList[ESX.PlayerData.job.name].data.politique) do
+--                 if Config.Society.Politique[k] then
+--                     RageUI.Checkbox(k, Config.Society.Politique[k].description, v, {}, {
+--                         onChecked = function()
+--                             --SocietyList[ESX.PlayerData.job.name].data.politique[k] = true
+--                             --v = true
+--                             --TriggerServerEvent("Null:EditPolitique", k, SocietyList[ESX.PlayerData.job.name].data.politique[k])
+--                         end,
+--                         onUnChecked = function()
+--                             --SocietyList[ESX.PlayerData.job.name].data.politique[k] = false
+--                             --v = false
+--                             --TriggerServerEvent("Null:EditPolitique", k, SocietyList[ESX.PlayerData.job.name].data.politique[k])
+--                         end
+--                     })
+--                 else
+--                     RageUI.Checkbox(k, "*Peut être obligatoire dans certains gouvernement*", v, {}, {
+--                         onChecked = function()
+--                             --SocietyList[ESX.PlayerData.job.name].data.politique[k] = true
+--                             --v = true
+--                             --TriggerServerEvent("Null:EditPolitique", k, SocietyList[ESX.PlayerData.job.name].data.politique[k])
+--                         end,
+--                         onUnChecked = function()
+--                             --SocietyList[ESX.PlayerData.job.name].data.politique[k] = false
+--                             --v = false
+--                             --TriggerServerEvent("Null:EditPolitique", k, SocietyList[ESX.PlayerData.job.name].data.politique[k])
+--                         end
+--                     })
+--                 end
+--             end
+--         end)
+
+
+--         RageUI.IsVisible(moneyActionMenu, function()
+--             RageUI.Separator("Argent : "..DataMenu["accounts"].cash.."$")
+--             RageUI.Separator("Argent sale : "..DataMenu["accounts"].dirtycash.."$")
+--             RageUI.List("Déposer", {"Argent", "Argent sale"}, IndexSelected, nil, {}, true, {
+--                 onListChange = function(Index, Item)
+--                     IndexSelected = Index;
+--                 end,
+--                 onSelected = function()
+--                     if IndexSelected == 1 then 
+--                         if UpdateOnscreenKeyboard() == 0 then return end
+--                         local result = null.fct.input('Montant :', false, 9000000, "number")
+--                         local valide, number = CheckQuantity(result)
+--                         if valide then
+--                             TriggerServerEvent("Core:AddMoneyToSocietyCache", position, "deposit", society, "cash", number, job2)
+--                         end
+--                     elseif IndexSelected == 2 then
+--                         if UpdateOnscreenKeyboard() == 0 then return end
+--                         local result = null.fct.input('Montant :', false, 9000000, "number")
+--                         local valide, number = CheckQuantity(result)
+--                         if valide then
+--                             TriggerServerEvent("Core:AddMoneyToSocietyCache", position, "deposit", society, "dirtycash", number, job2)
+--                         end
+--                     end
+--                 end
+--             })
+--             if ESX.PlayerData.job.grade_name ~= "boss" or ESX.PlayerData.job.grade_name ~= "gerant" then
+--                 RageUI.List("Prendre", {"Argent", "Argent sale"}, IndexSelected, nil, {}, true, {
+--                     onListChange = function(Index, Item)
+--                         IndexSelected = Index;
+--                     end,
+--                     onSelected = function()
+--                         if IndexSelected == 1 then 
+--                             if UpdateOnscreenKeyboard() == 0 then return end
+--                             local result = null.fct.input('Montant :', false, 9000000, "number")
+--                             local valide, number = CheckQuantity(result)
+--                             if valide then
+--                                 if DataMenu["accounts"].cash >= number then
+--                                     TriggerServerEvent("Core:AddMoneyToSocietyCache", position, "remove", society, "cash", number, job2)
+--                                 else 
+--                                     ESX.ShowNotification("Coffre entreprise~s~\nIl n'y a pas cette quantitée.")
+--                                 end
+--                             end
+--                         elseif IndexSelected == 2 then
+--                             if UpdateOnscreenKeyboard() == 0 then return end
+--                             local result = null.fct.input('Montant :', false, 9000000, "number")
+--                             local valide, number = CheckQuantity(result)
+--                             if valide then
+--                                 if DataMenu["accounts"].dirtycash >= number then
+--                                     TriggerServerEvent("Core:AddMoneyToSocietyCache", position, "remove", society, "dirtycash", number, job2)
+--                                 else 
+--                                     ESX.ShowNotification("Coffre entreprise~s~\nIl n'y a pas cette quantitée.")
+--                                 end
+--                             end
+--                         end
+--                     end
+--                 })
+--             end
+--             RageUI.Button("Historique de compte", nil, { RightLabel = nil }, true, {
+--                 onSelected = function()
+--                     ESX.TriggerServerCallback("Core:GetSocietyHistorique", function(result) 
+--                         SocietyHisto = result
+--                     end, ESX.PlayerData.job.name)
+--                 end
+--             }, historiqueSocieter)
+
+--         end, function()
+--         end)
+
+--         RageUI.IsVisible(historiqueSocieter, function()
+--             if SocietyHisto == nil then
+--                 RageUI.Separator('Chargement en cours')
+--             else
+--                 if SocietyHistoRecherche ~= nil then
+--                     RageUI.Button("Arreter la recherche", nil, { RightLabel = nil }, true, {
+--                         onSelected = function()
+--                             SocietyHistoRecherche = nil
+--                         end
+--                     })
+--                 else
+--                     RageUI.Button("Rechercher", nil, { RightLabel = nil }, true, {
+--                         onSelected = function()
+--                             SocietyHistoRecherche = string.lower(null.fct.input("Que voulez vous chercher ?"))
+--                         end
+--                     })
+--                 end
+--                 RageUI.List("Type", {"Tous","Dépenses", "Gains"}, TypeHistIndex, nil, {}, true, {
+--                     onListChange = function(Index, Item)
+--                         TypeHistIndex = Index;
+--                     end
+--                 })
+--                 RageUI.Line()
+--                 for k,v in pairs(SocietyHisto) do
+--                     if TypeHistIndex == 2 then
+--                         if v.count > 0 then
+--                             goto continue
+--                         end
+--                     elseif TypeHistIndex == 3 then
+--                         if v.count < 0 then
+--                             goto continue
+--                         end
+--                     end
+--                     if SocietyHistoRecherche ~= nil then
+--                         if string.find(string.lower(v.label),SocietyHistoRecherche) or string.find(string.lower(v.info),SocietyHistoRecherche) then
+--                             RageUI.Button(v.label, v.info.."~n~Date: "..v.time, { RightLabel = v.count > 0 and "+"..v.count.."$" or v.count.."$" }, true, {
+--                                 onSelected = function()
+                                    
+--                                 end
+--                             })
+--                         end
+--                     else
+--                         RageUI.Button(v.label, v.info.."~n~Date: "..v.time, { RightLabel = v.count > 0 and "+"..v.count.."$" or v.count.."$" }, true, {
+--                             onSelected = function()
+                                
+--                             end
+--                         })
+--                     end
+
+--                     ::continue::
+--                 end
+--             end
+--         end, function()
+--         end)
+
+--         RageUI.IsVisible(historiqueCustomSocieter, function()
+--             if SocietyHisto == nil then
+--                 RageUI.Separator('Chargement en cours')
+--             else
+--                 if SocietyHistoRecherche ~= nil then
+--                     RageUI.Button("Arreter la recherche", nil, { RightLabel = nil }, true, {
+--                         onSelected = function()
+--                             SocietyHistoRecherche = nil
+--                         end
+--                     })
+--                 else
+--                     RageUI.Button("Rechercher", nil, { RightLabel = nil }, true, {
+--                         onSelected = function()
+--                             SocietyHistoRecherche = string.lower(null.fct.input("Que voulez vous chercher ?"))
+--                         end
+--                     })
+--                 end
+--                 RageUI.Line()
+--                 for k,v in pairs(SocietyHisto) do
+--                     if SocietyHistoRecherche ~= nil then
+--                         if string.find(string.lower(v.label),SocietyHistoRecherche) or string.find(string.lower(v.info),SocietyHistoRecherche) then
+--                             RageUI.Button(v.label, v.info, { RightLabel = v.count > 0 and "+"..v.count or v.count }, true, {
+--                                 onSelected = function()
+                                    
+--                                 end
+--                             })
+--                         end
+--                     else
+--                         RageUI.Button(v.label, v.info, { RightLabel = v.count > 0 and "+"..v.count or v.count }, true, {
+--                             onSelected = function()
+                                
+--                             end
+--                         })
+--                     end
+
+--                     ::continue::
+--                 end
+--             end
+--         end, function()
+--         end)
+
+--         RageUI.IsVisible(employesListMenu, function()
+--             RageUI.Button("Recruter un employé", nil, {RightLabel = nil}, ESX.PlayerData.job.grade_name == "boss", {
+--                 onActive = function()
+--                     local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+--                     if closestDistance ~= -1 and closestDistance <= 3 then
+--                         PlayerMarker2(closestPlayer)
+--                     end
+--                 end, 
+--                 onSelected = function()
+--                     local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+--                     if closestDistance ~= -1 and closestDistance <= 3 then
+--                         TriggerServerEvent("Null:personalmenu:Boss_recruterplayer", GetPlayerServerId(closestPlayer), ESX.PlayerData.job.name)
+--                     else
+--                         ESX.ShowNotification('Aucun joueur à proximité',"error")
+--                     end
+--                 end
+--             })
+
+--             RageUI.Button("Virer un employé", nil, {RightLabel = nil}, ESX.PlayerData.job.grade_name == "boss", {
+--                 onActive = function()
+--                     local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+--                     if closestDistance ~= -1 and closestDistance <= 3 then
+--                         PlayerMarker2(closestPlayer)
+--                     end
+--                 end, 
+--                 onSelected = function()
+--                     local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+--                     if closestDistance ~= -1 and closestDistance <= 3 then
+--                         TriggerServerEvent("Null:personalmenu:Boss_virerplayer", GetPlayerServerId(closestPlayer))
+--                     else
+--                         ESX.ShowNotification('Aucun joueur à proximité',"error")
+--                     end
+--                 end
+--             })
+
+--             RageUI.Button("Promouvroir un employé", nil, {RightLabel = nil}, ESX.PlayerData.job.grade_name == "boss", {
+--                 onActive = function()
+--                     local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+--                     if closestDistance ~= -1 and closestDistance <= 3 then
+--                         PlayerMarker2(closestPlayer)
+--                     end
+--                 end, 
+--                 onSelected = function()
+--                     local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+--                     if closestDistance ~= -1 and closestDistance <= 3 then
+--                         TriggerServerEvent("Null:personalmenu:Boss_promouvoirplayer", GetPlayerServerId(closestPlayer))
+--                     else
+--                         ESX.ShowNotification('Aucun joueur à proximité',"error")
+--                     end
+--                 end
+--             })
+
+--             RageUI.Button("Rétrograder un employé", nil, {RightLabel = nil}, ESX.PlayerData.job.grade_name == "boss", {
+--                 onActive = function()
+--                     local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+--                     if closestDistance ~= -1 and closestDistance <= 3 then
+--                         PlayerMarker2(closestPlayer)
+--                     end
+--                 end, 
+--                 onSelected = function()
+--                     local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+--                     if closestDistance ~= -1 and closestDistance <= 3 then
+--                         TriggerServerEvent("Null:personalmenu:Boss_destituerplayer", GetPlayerServerId(closestPlayer))
+--                     else
+--                         ESX.ShowNotification('Aucun joueur à proximité',"error")
+--                     end
+--                 end
+--             })
+--             RageUI.Line()
+--             while employeeList == nil do
+--                 RageUI.Button('Rechercher', nil, {}, true, {
+--                     onSelected = function()
+--                         RechercheSocietyMembreList = string.lower(null.fct.input("Nom Prenom/Pseudo/Id unique/Identifier a rechercher"))
+--                     end
+--                 })
+--                 RageUI.Button('Arreter votre recherche', nil, {}, true, {
+--                     onSelected = function()
+--                         RechercheSocietyMembreList = nil
+--                     end
+--                 })
+--                 RageUI.Line()
+--                 return
+--             end
+--             RageUI.Button('Rechercher', nil, {}, true, {
+--                 onSelected = function()
+--                     RechercheSocietyMembreList = string.lower(null.fct.input("Nom Prenom/Pseudo/Id unique/Identifier a rechercher"))
+--                 end
+--             })
+--             RageUI.Button('Arreter votre recherche', nil, {}, true, {
+--                 onSelected = function()
+--                     RechercheSocietyMembreList = nil
+--                 end
+--             })
+--             RageUI.Line()
+--             for k,v in pairs(employeeList) do 
+--                 if myGradeList[tostring(v.job_grade)] ~= nil then
+--                     RageUI.Button(v.firstname..' '..v.lastname.." ("..v.idunique..")", nil, {RightLabel = myGradeList[tostring(v.job_grade)].label}, ESX.PlayerData.idunique ~= v.idunique and true or false, {
+--                         onSelected = function() 
+--                             EmployesSelected = v
+--                         end
+--                     }, employesActionsMenu)
+--                 end
+--             end
+--         end, function()
+--         end)
+
+--         RageUI.IsVisible(employesActionsMenu, function()
+--             if EmployesSelected ~= nil then
+--                 RageUI.Separator("Nom: "..EmployesSelected.name)
+--                 if myGradeList[tostring(EmployesSelected.job_grade)] ~= nil then
+--                     RageUI.Separator("Grade: "..myGradeList[tostring(EmployesSelected.job_grade)].label)
+--                 end
+--                 RageUI.Button("Virer", nil, {RightLabel = ""}, true, {
+--                     onSelected = function()
+--                         TriggerServerEvent("Core:ActionEmployesSociety", position, "virer", society, EmployesSelected, job2)
+--                         employeeList[EmployesSelected.idunique] = nil
+--                         RageUI.GoBack()
+--                     end
+--                 })
+--                 RageUI.Button("Promouvoir", nil, {RightLabel = ""}, true, {
+--                     onSelected = function()
+--                         TriggerServerEvent("Core:ActionEmployesSociety", position, "promouvoir", society, EmployesSelected, job2)
+--                         employeeList[EmployesSelected.idunique].job_grade = employeeList[EmployesSelected.idunique].job_grade+1
+--                         RageUI.GoBack()
+--                     end
+--                 })
+--             else
+--             end
+
+--         end, function()
+--         end)
+
+
+--         RageUI.IsVisible(gradeListMenu, function()
+
+--             if GradesList ~= nil then 
+--                 RageUI.Separator("Nombre de grades : "..SizeOfGrade(GradesList).."")
+--                 for k,v in pairs(GradesList) do
+--                     RageUI.Button(v.label.." ("..v.name..")", nil, {RightLabel = nil}, true, {
+--                         onSelected = function()
+--                             GradeSelected = k
+--                         end
+--                     }, actionGradeMenu)
+--                 end
+--             else 
+--                 RageUI.Separator("")
+--                 RageUI.Separator("Récupération des données ...")
+--                 RageUI.Separator("")
+--             end
+
+--         end, function()
+--         end)
+
+--         RageUI.IsVisible(actionGradeMenu, function()
+--             if GradeSelected ~= nil and GradesList[GradeSelected] then 
+--                 if GradesList[GradeSelected].mensuelpay == nil then GradesList[GradeSelected].mensuelpay = 0 end
+--                 RageUI.Separator("Grade : "..GradesList[GradeSelected].label.." ("..GradesList[GradeSelected].name..")")
+--                 RageUI.Separator("Salaire Mensuel : "..GradesList[GradeSelected].mensuelpay.."$")
+--                 RageUI.Separator("Salaire /30 Min : "..GradesList[GradeSelected].salary.."$")
+--                 RageUI.Button("Modifier le salaire Mensuel", nil, {RightLabel = nil}, not ActionDelete, {
+--                     onSelected = function()
+--                         local salaire = null.fct.input('Montant :', false, 9000000, "number")
+--                         if salaire and salaire ~= "" then 
+--                             salaire = tonumber(salaire)
+--                             if salaire <= SalaryData["Mensuel"].max and salaire >= SalaryData["Mensuel"].min then
+--                                 TriggerServerEvent("Core:setJobSalary", society.name, GradesList[GradeSelected].grade, salaire, "Mensuel")
+--                             else
+--                                 ESX.ShowNotification("Salaire Minimum : ~y~"..SalaryData["Mensuel"].min.."$~s~\nSalaire Maximum : ~y~"..SalaryData["Mensuel"].max.."$")
+--                             end
+--                         else 
+--                             ESX.ShowNotification("~s~Vous avez mal renseignez ce champ")
+--                         end
+--                     end
+--                 })
+--                 RageUI.Button("Modifier le salaire /30 Min", nil, {RightLabel = nil}, not ActionDelete, {
+--                     onSelected = function()
+--                         local salaire = null.fct.input('Montant :', false, 9000000, "number")
+--                         if salaire and salaire ~= "" then 
+--                             salaire = tonumber(salaire)
+--                             if salaire <= SalaryData["Pour 30 Min"].max and salaire >= SalaryData["Pour 30 Min"].min then
+--                                 TriggerServerEvent("Core:setJobSalary", society.name, GradesList[GradeSelected].grade, salaire, "Pour 30 Min")
+--                             else
+--                                 ESX.ShowNotification("Salaire Minimum : ~y~"..SalaryData["Pour 30 Min"].min.."$~s~\nSalaire Maximum : ~y~"..SalaryData["Pour 30 Min"].max.."$")
+--                             end
+--                         else 
+--                             ESX.ShowNotification("~s~Vous avez mal renseignez ce champ")
+--                         end
+--                     end
+--                 })
+--             end
+
+--         end, function()
+--         end)
+
+--         if not RageUI.Visible(menu) 
+--         and not RageUI.Visible(coffreMenu) 
+--         and not RageUI.Visible(PolitiqueGestion) 
+--         and not RageUI.Visible(entrepriseGestion) 
+--         and not RageUI.Visible(entrepriseGestion2) 
+--         and not RageUI.Visible(historiqueSocieter2) 
+--         and not RageUI.Visible(cityInfo) 
+--         and not RageUI.Visible(depoMenu) 
+--         and not RageUI.Visible(moneyActionMenu)
+--         and not RageUI.Visible(historiqueSocieter)
+--         and not RageUI.Visible(historiqueCustomSocieter)
+--         and not RageUI.Visible(AgentImmoListProprio)
+--         and not RageUI.Visible(AgentImmoListProprio2)
+--         and not RageUI.Visible(employesListMenu)
+--         and not RageUI.Visible(employesListMenu2)
+--         and not RageUI.Visible(BarFrigo)
+--         and not RageUI.Visible(EMSBoutique)
+--         and not RageUI.Visible(employesActionsMenu)
+--         and not RageUI.Visible(employesActionsMenu2)
+--         and not RageUI.Visible(gradeListMenu)
+--         and not RageUI.Visible(actionGradeMenu)
+--         then
+--             menu = RMenu:DeleteType('menu', true)
+--             coffreMenu = RMenu:DeleteType('coffreMenu', true)
+--             PolitiqueGestion = RMenu:DeleteType('PolitiqueGestion', true)
+--             depoMenu = RMenu:DeleteType('depoMenu', true)
+--             moneyActionMenu = RMenu:DeleteType('moneyActionMenu', true)
+--             historiqueSocieter = RMenu:DeleteType('historiqueSocieter', true)
+--             historiqueCustomSocieter = RMenu:DeleteType('historiqueCustomSocieter', true)
+--             AgentImmoListProprio = RMenu:DeleteType('AgentImmoListProprio', true)
+--             AgentImmoListProprio2 = RMenu:DeleteType('AgentImmoListProprio2', true)
+--             employesListMenu = RMenu:DeleteType('employesListMenu', true)
+--             employesListMenu2 = RMenu:DeleteType('employesListMenu2', true)
+--             employesActionsMenu = RMenu:DeleteType('employesActionsMenu', true)
+--             employesActionsMenu2 = RMenu:DeleteType('employesActionsMenu2', true)
+--             BarFrigo = RMenu:DeleteType('BarFrigo', true)
+--             EMSBoutique = RMenu:DeleteType('EMSBoutique', true)
+--             gradeListMenu = RMenu:DeleteType('gradeListMenu', true)
+--             actionGradeMenu = RMenu:DeleteType('actionGradeMenu', true)
+--             EmployesList = nil
+--             GradesList = nil
+--         end
+--     end
+-- end
+
+
+-- RegisterNetEvent("Core:UpdateCoffreSociety", function(newData, newWeight)
+--     DataMenu = newData
+--     DataMenu["weight"] = newWeight
+-- end)
+
+-- RegisterNetEvent("Core:GetEmployesList", function(list)
+--     EmployesList = list
+-- end)
+
+-- RegisterNetEvent("Core:UpdateEmployesList", function(list)
+--     EmployesList = list
+-- end)
+
+-- RegisterNetEvent("Core:GetGradeList", function(list)
+--     GradesList = list
+-- end)
+
+-- RegisterNetEvent("Core:UpdateGradeList", function(list)
+--     GradesList = list
+-- end)
+
+-- RegisterNetEvent("Core:OpenSocietyMenu")
+-- AddEventHandler("Core:OpenSocietyMenu", function(args, pos)
+--     OpenSocietyMenu(args, pos)
+-- end)
+-- RegisterNetEvent("AKService:OpenSocietyMenuGang")
+-- AddEventHandler("AKService:OpenSocietyMenuGang", function(args, pos)
+--     OpenSocietyMenu(args, pos,true)
+-- end)

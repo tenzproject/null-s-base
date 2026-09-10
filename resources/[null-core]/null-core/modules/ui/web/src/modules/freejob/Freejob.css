@@ -1,0 +1,554 @@
+/* ============================================================================
+   FREEJOB TABLET - Agence Intérimaire
+   ============================================================================ */
+
+.fj-tablet-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fjFadeIn 0.3s ease;
+  font-family: 'Outfit', sans-serif;
+}
+
+.fj-tablet-overlay.fj-hiding {
+  animation: fjFadeOut 0.25s ease forwards;
+}
+
+.fj-tablet {
+  width: 600px;
+  max-height: 80vh;
+  background: rgb(14, 14, 16);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fjSlideUp 0.35s ease;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+}
+
+.fj-hiding .fj-tablet {
+  animation: fjSlideDown 0.25s ease forwards;
+}
+
+/* Header */
+.fj-tablet-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.fj-tablet-header-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--fj-accent-15, rgba(59, 130, 246, 0.15));
+  color: var(--fj-accent, #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fj-tablet-header-text {
+  flex: 1;
+}
+
+.fj-tablet-header-text h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.fj-tablet-header-text p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.fj-tablet-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--bg-tertiary);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.fj-tablet-close:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* List */
+.fj-tablet-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fj-tablet-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.fj-tablet-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.fj-tablet-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* Card */
+.fj-tablet-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--bg-tertiary);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fj-tablet-card-image {
+  width: 120px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.fj-tablet-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fj-tablet-card:hover {
+  background: var(--fj-accent-8, rgba(59, 130, 246, 0.08));
+  border-color: var(--fj-accent-25, rgba(59, 130, 246, 0.25));
+  transform: translateX(4px);
+  box-shadow: 0 0 20px var(--fj-accent-8, rgba(59, 130, 246, 0.08));
+}
+
+.fj-tablet-card.fj-selected {
+  border-color: var(--fj-accent, #3b82f6);
+  background: var(--fj-accent-10, rgba(59, 130, 246, 0.1));
+}
+
+.fj-tablet-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.fj-tablet-card-info h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.fj-tablet-card-info p {
+  margin: 4px 0 0;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fj-tablet-card-meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.fj-tablet-card-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  color: var(--text-tertiary);
+  background: var(--bg-secondary);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.fj-tablet-card-arrow {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.fj-tablet-card:hover .fj-tablet-card-arrow {
+  color: var(--fj-accent, #3b82f6);
+  transform: translateX(2px);
+}
+
+/* Footer */
+.fj-tablet-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--bg-tertiary);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* ============================================================================
+   FREEJOB HUD - Task tracker during mission
+   ============================================================================ */
+
+.fjhud {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 220px;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 12px;
+  padding: 14px;
+  z-index: 8000;
+  font-family: 'Outfit', sans-serif;
+  animation: fjSlideRight 0.35s ease;
+}
+
+.fjhud.fjhud-hiding {
+  animation: fjSlideRightOut 0.3s ease forwards;
+}
+
+.fjhud-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.fjhud-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fjhud-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.fjhud-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fjhud-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.fjhud-stat-label {
+  flex: 1;
+}
+
+.fjhud-stat-value {
+  font-weight: 600;
+  color: #fff;
+  font-size: 12px;
+}
+
+.fjhud-stat-reward .fjhud-stat-value {
+  color: #22c55e;
+}
+
+.fjhud-progress {
+  margin-top: 10px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--bg-tertiary);
+  overflow: hidden;
+}
+
+.fjhud-progress-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--fj-accent, #3b82f6);
+  width: 0%;
+  animation: fjProgress linear forwards;
+}
+
+@keyframes fjProgress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* ============================================================================
+   FREEJOB MARKER - Replaces green DrawMarker on props
+   ============================================================================ */
+
+.fjmarker {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  z-index: 7000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  font-family: 'Outfit', sans-serif;
+}
+
+.fjmarker-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid var(--text-primary);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+  z-index: 2;
+}
+
+.fjmarker-pulse {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.25);
+  animation: fjPulse 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+.fjmarker-label {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--bg-primary);
+  padding: 3px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fjmarker-key {
+  margin-top: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  background: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes fjPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ============================================================================
+   FREEJOB INFO - Entrepôt info panel (keybinds etc.)
+   ============================================================================ */
+
+.fjinfo-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fjFadeIn 0.3s ease;
+  font-family: 'Outfit', sans-serif;
+  pointer-events: auto;
+}
+
+.fjinfo-overlay.fj-hiding {
+  animation: fjFadeOut 0.25s ease forwards;
+}
+
+.fjinfo {
+  width: 400px;
+  background: rgb(14, 14, 16);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 14px;
+  overflow: hidden;
+  animation: fjSlideUp 0.35s ease;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.fj-hiding .fjinfo {
+  animation: fjSlideDown 0.25s ease forwards;
+}
+
+.fjinfo-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.fjinfo-header h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.fjinfo-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--bg-tertiary);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.fjinfo-close:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.fjinfo-lines {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fjinfo-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bg-secondary);
+}
+
+.fjinfo-line-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fjinfo-line-key {
+  min-width: 36px;
+  height: 24px;
+  border-radius: 5px;
+  background: var(--bg-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.fjinfo-line-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  flex: 1;
+}
+
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
+.fj-spin {
+  animation: fjSpin 1s linear infinite;
+}
+
+@keyframes fjSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fjFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fjFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fjSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fjSlideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(20px); }
+}
+
+@keyframes fjSlideRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fjSlideRightOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(30px); }
+}

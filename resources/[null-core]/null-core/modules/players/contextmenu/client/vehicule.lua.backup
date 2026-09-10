@@ -1,0 +1,653 @@
+while nTable == nil do Wait(10) end
+
+function hasSaspJob()
+    local job = ESX.GetPlayerData().job.name
+    return job == 'sasp'
+end
+
+function hasDoaJob()
+    local job2 = ESX.GetPlayerData().job2.name
+    return job2 == 'doa'
+end
+local limitateurActif = false  -- Variable pour suivre l'état du limiteur
+function _Vehicule()
+    local loaded = {
+        [1] = false,
+    }
+    local hasKey = false
+    local vehLocked = false
+    local function ResetvehLock()
+        if LastEntityHit and DoesEntityExist(LastEntityHit) then
+            local locked = GetVehicleDoorLockStatus(LastEntityHit)
+            if locked == 1 then
+                vehLocked = false
+            elseif locked == 2 then
+                vehLocked = true
+            else
+                vehLocked = false
+            end
+        else
+            vehLocked = false
+        end
+    end
+    ResetvehLock()
+    ESX.TriggerServerCallback('Core:requestPlayerCars', function(isOwnedVehicle)
+        loaded[1] = true
+        if isOwnedVehicle then
+            hasKey = true
+        else
+            hasKey = false
+        end
+    end, GetVehicleNumberPlateText(LastEntityHit))
+    while loaded[1] == false do Wait(10) end
+    print(hasKey)
+    Action_Config = {
+        Vehicule = {
+            {
+                Type = "checkbox",
+                Label = "Fermer le véhicule",
+                Blocked = not hasKey,
+                IsChecked = vehLocked, 
+                OnRelease = function(isChecked)
+                    if hasKey and LastEntityHit and DoesEntityExist(LastEntityHit) then
+                        local locked = GetVehicleDoorLockStatus(LastEntityHit)
+                        if locked == 1 then
+                            vehLocked = true
+                            SetVehicleDoorsLocked(LastEntityHit, 2)
+                            ESX.ShowNotification("Vous avez ~r~fermé~s~ le véhicule.")
+                        elseif locked == 2 then
+                            vehLocked = false
+                            SetVehicleDoorsLocked(LastEntityHit, 1)	
+                            ESX.ShowNotification("Vous avez ~g~ouvert~s~ le véhicule.")
+                        end
+                    else
+                        ResetvehLock()
+                        ESX.ShowNotification("Aucun véhicule sélectionné.")
+                    end
+                end,
+            },  
+            --{
+               -- Type = "buttom",
+                --Label = ("Ouvrir le coffre"),
+                --IsRestricted = false,
+                --CloseOnClick = true,
+                --Blocked = false,
+                --OnClick = function() 
+                    --exports.ox_inventory:OpenTrunk(LastEntityHit)
+                --end
+            --},
+            {
+                Type = "buttom",
+                Label = ("Mettre de la musique"),
+                IsRestricted = false,
+                CloseOnClick = true,
+                Blocked = false,
+                OnClick = function() 
+                    ExecuteCommand("pmms")
+                end,
+            },
+            --[[{
+                
+                Type = "buttom-submenu",
+                Label = "Utiliser un item",
+                CloseOnClick = false,
+                Action = {
+                    {
+                        'Sabot',
+                        function()                           
+                            ExecuteCommand('sabot')
+                        end
+                    },
+                },
+            },]]
+            {
+                Type = "buttom-submenu",
+                Label = "Gestion vehicule",
+                CloseOnClick = false,
+                Action = {
+                    {
+                        'Allumer/Eteindre le moteur',
+                        function()                           
+                            if GetIsVehicleEngineRunning(LastEntityHit) then
+                                SetVehicleEngineOn(LastEntityHit, false, false, true)
+                            else
+                                SetVehicleEngineOn(LastEntityHit, true, false)
+                            end
+                        end
+                    },
+                    {
+                        'Limitateur de vitesse',
+                        function()                           
+                            local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+        
+                            if veh ~= 0 then  -- Vérifie si le joueur est bien dans un véhicule
+                                local currentSpeed = GetEntitySpeed(veh)  -- Récupère la vitesse actuelle du véhicule
+                                
+                                if limitateurActif then
+                                    -- Désactive le limiteur en rétablissant la vitesse max
+                                    SetEntityMaxSpeed(veh, 10000.0 / 3.6)  -- Vitesse élevée (délimité par l'utilisateur)
+                                    limitateurActif = false  -- Modifie l'état à désactivé
+                                else
+                                    -- Active le limiteur en fixant la vitesse max au niveau de la vitesse actuelle
+                                    SetEntityMaxSpeed(veh, currentSpeed)  -- Limite la vitesse max à la vitesse actuelle
+                                    limitateurActif = true  -- Modifie l'état à activé
+                                end
+                            end
+                        end
+                    },
+                    {
+                        'Conduite Automatique',
+                        function()
+                            if pilot then
+                                pilot = false
+                                ClearPedTasks(GetPlayerPed(-1))
+                            else
+                                waypoint = Citizen.InvokeNative(0xFA7C7F0AADF25D09, GetFirstBlipInfoId(8), Citizen.ResultAsVector())
+                            
+                                if(IsWaypointActive()) then
+                                    if(pilot) then
+                                        pilot = false
+                                        ClearPedTasks(GetPlayerPed(-1))
+                                    else
+                                        if(crash) then
+                                            crash = false                   
+                                            DeleteEntity(crash_ped_fl)
+                                            DeleteEntity(crash_ped_fr)
+                                            DeleteEntity(crash_ped_front)
+                                            DeleteEntity(crash_ped_rear)
+                                        end
+                                        pilot = true                             
+                                        TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 100.0, 1.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 1.0, 1)
+                                        Citizen.CreateThread(function()
+                                            while pilot do
+                                                Wait(100)
+                                                if(GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(-1))["x"], GetEntityCoords(GetPlayerPed(-1))["y"], GetEntityCoords(GetPlayerPed(-1))["z"], waypoint["x"], waypoint["y"], waypoint["z"], 0) < 10.0) then
+                                                    --while GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), 0)) - 1.0 > 0.0 do
+                                                        --SetVehicleForwardSpeed(GetVehiclePedIsIn(GetPlayerPed(-1), 0), GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), 0)) - 1.0)                                           
+                                                    --    Wait(100)
+                                                    --end
+                                                    pilot = false                                        
+                                                    ClearPedTasks(GetPlayerPed(-1))
+                                                end
+                                            end
+                                        end)
+                                    end
+                                else
+                                    ESX.ShowNotification('~r~N`oublier pas de définir une destination')
+                                end
+                            end
+                        end
+                    },
+                },
+            },
+            {
+                Type = "buttom-submenu",
+                Label = "Gestion des Portières",
+                IsRestricted = false,
+                CloseOnClick = false,
+                Blocked = false,
+                Action = {    
+                    {
+                        'Porte avant Gauche',
+                        function()
+                            local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(LastEntityHit))
+                            if dist < 3 then
+                                if GetVehicleDoorAngleRatio(LastEntityHit, 0) == 0 then
+                                    SetVehicleDoorOpen(LastEntityHit, 0, false, false)
+                                else
+                                    SetVehicleDoorShut(LastEntityHit, 0, false)
+                                end
+                            end
+                        end
+                    },
+                    {
+                        'Porte avant Droite',
+                        function()
+                            local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(LastEntityHit))
+                            if dist < 3 then
+                                if GetVehicleDoorAngleRatio(LastEntityHit, 1) == 0 then
+                                    SetVehicleDoorOpen(LastEntityHit, 1, false, false)
+                                else
+                                    SetVehicleDoorShut(LastEntityHit, 1, false)
+                                end
+                            end
+                        end
+                    },
+                    {
+                        'Porte arrière Gauche',
+                        function()
+                            local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(LastEntityHit))
+                            if dist < 3 then
+                                if GetVehicleDoorAngleRatio(LastEntityHit, 2) == 0 then
+                                    SetVehicleDoorOpen(LastEntityHit, 2, false, false)
+                                else
+                                    SetVehicleDoorShut(LastEntityHit, 2, false)
+                                end
+                            end
+                        end
+                    },
+                    {
+                        'Porte arrière Droite',
+                        function()
+                            local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(LastEntityHit))
+                            if dist < 3 then
+                                if GetVehicleDoorAngleRatio(LastEntityHit, 3) == 0 then
+                                    SetVehicleDoorOpen(LastEntityHit, 3, false, false)
+                                else
+                                    SetVehicleDoorShut(LastEntityHit, 3, false)
+                                end
+                            end
+                        end
+                    },
+                    {
+                        'Capot',
+                        function()
+                            local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(LastEntityHit))
+                            if dist < 3 then
+                                if GetVehicleDoorAngleRatio(LastEntityHit, 4) == 0 then
+                                    SetVehicleDoorOpen(LastEntityHit, 4, false, false)
+                                else
+                                    SetVehicleDoorShut(LastEntityHit, 4, false)
+                                end
+                            end
+                        end
+                    },
+                    {
+                        'Coffre',
+                        function()
+                            local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(LastEntityHit))
+                            if dist < 3 then
+                                if GetVehicleDoorAngleRatio(LastEntityHit, 5) == 0 then
+                                    SetVehicleDoorOpen(LastEntityHit, 5, false, false)
+                                else
+                                    SetVehicleDoorShut(LastEntityHit, 5, false)
+                                end
+                            end
+                        end
+                    },
+                    {
+                        'Tout ouvrir',
+                        function()
+                            local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(LastEntityHit)) -- Calcul de la distance
+                            if dist < 3 then -- Vérifie si le joueur est à moins de 3 unités du véhicule
+                                for i = 0, 5 do -- Les indices des portes (0 à 5)
+                                    if GetVehicleDoorAngleRatio(LastEntityHit, i) == 0 then
+                                        SetVehicleDoorOpen(LastEntityHit, i, false)
+                                    else
+                                        SetVehicleDoorShut(LastEntityHit, i, false)
+                                    end
+                                end
+                            end
+                        end
+                    },
+                },   
+            },
+            {
+                Type = "buttom-submenu",
+                Label = "Changer de place",
+                IsRestricted = false,
+                CloseOnClick = false,
+                Blocked = false,
+                Action = {    
+                    {
+                        'Conducteur',
+                        function()
+                            ExecuteCommand('conducteur')
+                        end
+                    },
+                    {
+                        'Passager',
+                        function()
+                            ExecuteCommand('passager')
+                        end
+                    },
+                    {
+                        'Arrière Gauche',
+                        function()
+                            ExecuteCommand('arrieregauche')
+                        end
+                    },
+                    {
+                        'Arrière Droite',
+                        function()
+                            ExecuteCommand('arrieredroite')
+                        end
+                    },
+                },   
+            },
+            {
+                Type = "checkbox",
+                Label = "Mode Drift",
+                IsChecked = driftmode,  -- Valeur initiale de la checkbox
+                OnRelease = function(isChecked)
+                    if GetVIP() then
+                        driftmode = isChecked
+                    else
+                        ESX.ShowNotification('Vous n\'etes pas vip')  
+                    end
+                end,
+            },
+            
+            {
+                Type = "buttom-submenu",
+                Label = "Outils de debug",
+                IsRestricted = false,
+                CloseOnClick = false,
+                Action = {
+                    {
+                        ("ID du véhicule : %s"):format(LastEntityHit),
+                        function()
+                            print(("ID du véhicule : %s"):format(LastEntityHit))
+                        end,
+                    },
+                    {
+                        ("Plaque du véhicule : %s"):format(GetVehicleNumberPlateText(LastEntityHit)),
+                        function()
+                            local plate = GetVehicleNumberPlateText(LastEntityHit)
+                            print(("Plaque du véhicule : %s"):format(plate))
+                        end,
+                    },
+                    {
+                        ("Modèle : %s"):format(GetDisplayNameFromVehicleModel(GetEntityModel(LastEntityHit))),
+                        function()
+                            local vehicleModel = GetDisplayNameFromVehicleModel(GetEntityModel(LastEntityHit))
+                            print(("Modèle du vehicule : %s"):format(vehicleModel))
+                        end,
+                    },
+                    {
+                        ("Position : %.2f, %.2f, %.2f"):format(GetEntityCoords(LastEntityHit).x, GetEntityCoords(LastEntityHit).y, GetEntityCoords(LastEntityHit).z),
+                        function()
+                            local vehicleposition = GetEntityCoords(LastEntityHit)
+                            print(("Position du vehicule : %s"):format(vehicleposition))
+                        end,
+                    },
+                },
+            },
+            
+            {
+                Type = "buttom-submenu",
+                Label = "Administration",
+                IsRestricted = true,
+                CloseOnClick = false,
+                Action = {
+                    {
+                        "Supprimer le véhicule", 
+                        function() 
+                            TriggerServerEvent("veh_actioncontext", "delete", NetworkGetNetworkIdFromEntity(LastEntityHit))
+                        end
+                        
+                    },
+                    {
+                        "Réparer", 
+                        function() 
+                            TriggerServerEvent("veh_actioncontext", "fix", NetworkGetNetworkIdFromEntity(LastEntityHit))
+                        end
+                        
+                    },
+                    {
+                        "Nettoyer", 
+                        function() 
+                            TriggerServerEvent("veh_actioncontext", "clean", NetworkGetNetworkIdFromEntity(LastEntityHit))
+                        end
+                        
+                    },
+                    {
+                        'Expulser les joueurs du véhicule',
+                        function()
+                            local veh = ESX.Game.GetClosestVehicle(GetEntityCoords(PlayerPedId()))
+                            if veh and veh ~= 0 then
+                                for seat = -1, GetVehicleModelNumberOfSeats(GetEntityModel(veh)) - 1 do
+                                    local ped = GetPedInVehicleSeat(veh, seat)
+                                    if ped and ped ~= 0 then
+                                        TaskLeaveVehicle(ped, veh, 0) -- Expulser le joueur du véhicule
+                                    end
+                                end
+                                ESX.ShowNotification("Tous les joueurs ont été expulsés du véhicule !")
+                            else
+                                ESX.ShowNotification("Aucun véhicule trouvé à proximité.")
+                            end
+                        end
+                    },  
+                    {
+                        Type = "checkbox",
+                        Label = "Freeze le véhicule",
+                        IsChecked = false,  -- Valeur initiale de la checkbox
+                        OnRelease = function(isChecked)
+                            if LastEntityHit and DoesEntityExist(LastEntityHit) then
+                                FreezeEntityPosition(LastEntityHit, isChecked)
+                                ESX.ShowNotification(isChecked and "L'objet est maintenant immobile." or "L'objet est maintenant mobile.")
+                            else
+                                ESX.ShowNotification("Aucun objet sélectionné.")
+                            end
+                        end,
+                    },           
+                    {
+                        Type = "checkbox",
+                        Label = "Fermer le véhicule",
+                        IsChecked = (function()
+                            if LastEntityHit and DoesEntityExist(LastEntityHit) then
+                                local locked = GetVehicleDoorLockStatus(LastEntityHit)
+                                if locked == 1 then
+                                    return false
+                                elseif locked == 2 then
+                                    return true
+                                else
+                                    return false
+                                end
+                            else
+                                return false
+                            end
+                        end)(), 
+                        OnRelease = function(isChecked)
+                            if LastEntityHit and DoesEntityExist(LastEntityHit) then
+                                local locked = GetVehicleDoorLockStatus(LastEntityHit)
+                                print(locked)
+                                if locked == 1 then
+                                    SetVehicleDoorsLocked(LastEntityHit, 2)
+                                    ESX.ShowNotification("Vous avez ~r~fermé~s~ le véhicule.")
+                                elseif locked == 2 then
+                                    SetVehicleDoorsLocked(LastEntityHit, 1)	
+                                    ESX.ShowNotification("Vous avez ~g~ouvert~s~ le véhicule.")
+                                end
+                                local vehicle = LastEntityHit
+                    
+                                if not IsEntityAVehicle(vehicle) then
+                                    vehicle = GetEntityAttachedTo(LastEntityHit)
+                                end
+                    
+                                if vehicle and IsEntityAVehicle(vehicle) then
+                                    local x, y, z = table.unpack(GetEntityCoords(vehicle))
+                                    local prop = CreateObject(`prop_toolchest_01`, x, y, z, true, true, false)
+                                    SetEntityAlpha(prop, 0, false)
+                                    FreezeEntityPosition(prop, true)
+                    
+                                    AttachEntityToEntity(vehicle, prop, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false, false, true, false, 0, true)
+                    
+                                    useGizmo(prop)
+                    
+                                    Citizen.Wait(3000)
+                    
+                                    local newCoords = GetEntityCoords(prop, true)
+                                    local newHeading = GetEntityHeading(prop)
+                    
+                                    DetachEntity(vehicle, true, true)
+                                    SetEntityCoords(vehicle, newCoords.x, newCoords.y, newCoords.z, false, false, false, true)
+                                    SetEntityHeading(vehicle, newHeading)
+                                    SetVehicleOnGroundProperly(vehicle)
+                    
+                                    DeleteEntity(prop)
+                    
+                                    Citizen.Wait(500)
+                                    SetVehicleGravityAmount(vehicle, 9.81)
+                                    FreezeEntityPosition(vehicle, false)
+                                    SetEntityVelocity(vehicle, 0.0, 0.0, 0.0)
+                                end
+                            end
+                        end,
+                    },         
+                    {
+                        "Faire le plein d'essence", 
+                        function() 
+                            SetVehicleFuelLevel(LastEntityHit, 100.0)   
+                        end
+                        
+                    },                          
+					{
+                        'Faire exploser le véhicule',
+                        function()
+                            NetworkExplodeVehicle(LastEntityHit, true, true)
+                        end
+                    },                      
+                    {
+                        'Faire un tonneau',
+                        function()
+                            if LastEntityHit and DoesEntityExist(LastEntityHit) then
+                                local veh = LastEntityHit
+                                local sliding = true
+                                local tiltDuration = 2000 
+                                local startTime = GetGameTimer()
+                                
+                                local vehicleHeading = GetEntityHeading(veh)
+                    
+                                local driver = GetPedInVehicleSeat(veh, -1)
+                                if driver and driver == PlayerPedId() then
+                                    TaskVehicleTempAction(PlayerPedId(), veh, 27, tiltDuration) 
+                                end
+                                
+                                ApplyForceToEntity(veh, 1, 0.0, 1.5, 2.0, 0.0, 0.0, 0.5, false, true, true, false, false, true)
+                                
+                                while (GetGameTimer() - startTime) < tiltDuration do
+                                    Citizen.Wait(10)
+                                    
+                                    if driver and driver == PlayerPedId() then
+                                        DisableControlAction(0, 59, true) 
+                                        DisableControlAction(0, 60, true) 
+                                    end
+                                    
+                                    local progress = (GetGameTimer() - startTime) / tiltDuration
+                                    local tiltAngle = progress * 90.0 
+                                    
+                                    SetEntityRotation(veh, 0.0, tiltAngle, vehicleHeading, 2, true)
+                                end
+                    
+                                Citizen.CreateThread(function()
+                                    while sliding do
+                                        Citizen.Wait(10)
+                    
+                                        ApplyForceToEntity(veh, 1, 0.0, -0.5, 0.0, 0.0, 0.0, 0.0, false, true, true, false, false, true)
+                    
+                                        local roll, pitch, yaw = table.unpack(GetEntityRotation(veh, 2))
+                                        if math.abs(roll) < 90.0 then
+                                            SetEntityRotation(veh, 0.0, 90.0, vehicleHeading, 2, true)
+                                        end
+                                    end
+                                end)
+                                Citizen.CreateThread(function()
+                                    Wait(10000)
+                                    sliding = false
+                                end)
+                    
+                                SetVehicleCanBreak(veh, false)
+                                Citizen.Wait(tiltDuration)
+                                
+                            end
+                        end
+                    },                  
+                }
+            }               
+        }
+    }
+    if hasSaspJob() then
+        table.insert(Action_Config.Vehicule, {
+            Type = "buttom-submenu",
+            Label = "Demande de renfort (SASP)",
+            CloseOnClick = false,
+            Action = {
+                {
+                    "Backup 1",
+                    function()
+                        TriggerEvent('Rvm-alert:B1sasp', GetEntityCoords(PlayerPedId()))
+                        ExecuteCommand('me fait une backup 1')
+                    end
+                },
+                {
+                    "Backup 2",
+                    function()
+                        TriggerEvent('Rvm-alert:B2sasp', GetEntityCoords(PlayerPedId()))
+                        ExecuteCommand('me fait une backup 2')
+                    end,
+                },
+                {
+                    "Backup 3",
+                    function()
+                        TriggerEvent('Rvm-alert:B3sasp', GetEntityCoords(PlayerPedId()))
+                        ExecuteCommand('me fait une backup 3')
+                    end,
+                },
+                {
+                    "Global SAMS",
+                    function()
+                        TriggerEvent('Rvm-alert:sams', GetEntityCoords(PlayerPedId()))
+                        ExecuteCommand('me fait une backup SAMS')
+                    end
+                },
+            },
+        })
+    end
+
+
+    if hasDoaJob() then
+        table.insert(Action_Config.Vehicule, {
+            Type = "buttom-submenu",
+            Label = "Demande de renfort (DOA)",
+            CloseOnClick = false,
+            Action = {
+                {
+                    "Backup DOA",
+                    function()
+                        TriggerEvent('Rvm-alert:doa', GetEntityCoords(PlayerPedId()))
+                        ExecuteCommand('me fait une backup DOA')
+                    end
+                },
+            },
+        })
+    end
+    return Action_Config
+
+end
+
+function OnCustom(vehicle)
+    SetVehicleModKit(vehicle, 0)
+
+    SetVehicleMod(vehicle, 15, GetNumVehicleMods(vehicle, 15) - 1)
+    
+    SetVehicleMod(vehicle, 11, GetNumVehicleMods(vehicle, 11) - 1)
+    
+    SetVehicleMod(vehicle, 12, GetNumVehicleMods(vehicle, 12) - 1)
+    
+    SetVehicleMod(vehicle, 13, GetNumVehicleMods(vehicle, 13) - 1)
+    
+    ToggleVehicleMod(vehicle, 18, true)
+end
+
+
+function GetServerEntityId(entity)
+    return NetworkGetNetworkIdFromEntity(entity)
+end
+ 
+ 
+RegisterNetEvent("veh_actioncontext_response", function(action, _entity)
+     entity = NetworkGetEntityFromNetworkId(_entity)
+     if action == "custom" then
+         OnCustom(entity)
+     elseif action == "fix" then
+         TriggerServerEvent("qs-garages:fix_sv", entity)
+         SetVehicleFixed(entity)
+         SetVehicleDeformationFixed(entity)
+     elseif action == "clean" then
+         SetVehicleDirtLevel(entity, 0.0)
+     elseif action == "delete" then
+         DeleteEntity(entity)
+     end
+end)
+ 

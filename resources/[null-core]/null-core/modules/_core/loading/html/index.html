@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Null Loading</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="config.js"></script>
+    <script src="null-blur.js"></script>
+</head>
+
+<body class="shutters-hidden">
+    <div id="app" style="height: 100%;">
+        <!-- Background -->
+        <div class="bg-container">
+            <div class="bg-image"></div>
+        </div>
+
+        <!-- Main Content Wrapper -->
+        <div class="content-wrapper">
+
+            <!-- Header / Logo -->
+            <header class="header">
+                <div class="logo-area">
+                    <img src="img/logo.png" alt="Logo" id="server-logo">
+                    <div class="server-info">
+                        <h1 id="server-name">Null V4</h1>
+                        <span class="subtitle">ROLEPLAY SERIOUS</span>
+                    </div>
+                </div>
+
+                <!-- Player Info (visible only in enter phase) -->
+                <div class="player-info-header" style="display: none;">
+                    <div class="player-info-item">
+                        <span class="info-label">IDENTITÉ</span>
+                        <span class="info-value" id="player-name">John Doe</span>
+                    </div>
+                    <div class="player-info-item">
+                        <span class="info-label">SEXE</span>
+                        <span class="info-value" id="player-gender">Homme</span>
+                    </div>
+                    <div class="player-info-item vip-item" id="vip-item" style="display: none;">
+                        <span class="info-label">VIP</span>
+                        <span class="info-value vip-badge" id="player-vip">Premium</span>
+                        <span class="info-sublabel" id="vip-days">30 jours restants</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Phase 1: Loading -->
+            <div id="loading-phase" class="phase active">
+                <div class="tips-container">
+                    <p><i class="fa-solid fa-circle-info"></i> Astuce: Rejoignez le Discord pour suivre les mises à jour
+                        et le règlement.</p>
+                </div>
+
+                <div class="loading-panel">
+                    <div class="loading-details-left">
+                        <p id="status-text">Initialisation des ressources...</p>
+                    </div>
+
+                    <!-- <div class="loading-details-right">
+                        <div class="progress-percentage" id="progress-text">0%</div>
+                    </div> -->
+
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 1.5: Blur Addon Proposal -->
+            <div id="blur-proposal" class="phase hidden">
+                <div class="bp-container">
+                    <div class="bp-left">
+                        <h2 class="bp-title">Flou Réaliste</h2>
+                        <p class="bp-subtitle">Un système unique qui rend nos interfaces beaucoup plus propres.</p>
+
+                        <div class="bp-description">
+                            <p>Nous proposons un addon ReShade qui applique un véritable flou derrière nos UIs en jeu.
+                                L'installation prend environ 2 minutes et ne se fait qu'une seule fois.</p>
+                        </div>
+
+                        <div class="bp-steps">
+                            <div class="bp-step">
+                                <span class="bp-step-num">1</span>
+                                <div class="bp-step-content">
+                                    <span class="bp-step-label">Télécharger l'addon</span>
+                                    <span class="bp-step-detail">Récupérez le fichier sur <a
+                                            href="https://www.nexusmods.com/gta5/mods/1909?tab=files&file_id=3119"
+                                            class="bp-link" target="_blank">NexusMods</a></span>
+                                </div>
+                            </div>
+                            <div class="bp-step">
+                                <span class="bp-step-num">2</span>
+                                <div class="bp-step-content">
+                                    <span class="bp-step-label">Installer le fichier</span>
+                                    <span class="bp-step-detail">Placez le <code>.addon64</code> dans
+                                        <code>FiveM\FiveM.app\plugins</code></span>
+                                </div>
+                            </div>
+                            <div class="bp-step">
+                                <span class="bp-step-num">3</span>
+                                <div class="bp-step-content">
+                                    <span class="bp-step-label">Redémarrer le jeu</span>
+                                    <span class="bp-step-detail">Relancez FiveM, le flou sera actif
+                                        automatiquement.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bp-trust">
+                            <div class="bp-trust-item">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span>100% autorisé par FiveM — aucun risque de bannissement</span>
+                            </div>
+                            <div class="bp-trust-item">
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                <span>Analyse <a
+                                        href="https://www.virustotal.com/gui/file/6e74b39a5156b60acf652af82022d3dc777bc370313cad8782e2b4a373004ffb/detection"
+                                        class="bp-link" target="_blank">VirusTotal</a> — 100% sûr</span>
+                            </div>
+                            <div class="bp-trust-item">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>Plus d'informations sur <a href="https://www.nexusmods.com/gta5/mods/1909"
+                                        class="bp-link" target="_blank">NexusMods</a></span>
+                            </div>
+                        </div>
+
+                        <div class="bp-dependency">
+                            <span class="bp-dependency-label">Dépendance requise :</span>
+                            <span class="bp-dependency-value">ReShade</span>
+                        </div>
+                    </div>
+
+                    <div class="bp-right">
+                        <div class="bp-comparison">
+                            <div class="bp-comparison-split">
+                                <div class="bp-split-side bp-split-before">
+                                    <img src="img/game-background.jpg" alt="Sans l'addon">
+                                </div>
+                                <div class="bp-split-side bp-split-after">
+                                    <img src="img/game-background.jpg" alt="Avec l'addon">
+                                </div>
+                                <div class="bp-split-labels">
+                                    <span class="bp-split-label bp-split-label-before">Sans l'addon</span>
+                                    <span class="bp-split-label bp-split-label-after">Avec l'addon</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-actions">
+                    <button class="bp-btn bp-btn-primary" type="button" id="bp-install-btn">
+                        <span>J'ai installé l'addon</span>
+                    </button>
+                    <button class="bp-btn bp-btn-secondary" type="button" id="bp-skip-btn">
+                        <span>Plus tard</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Phase 2: Enter Spawn -->
+            <div id="enter-phase" class="phase hidden">
+                <div class="enter-panel">
+                    <h2>BIENVENUE SUR <span class="enter-accent" id="enter-server-name">Null</span></h2>
+                    <p>Votre aventure commence maintenant.</p>
+
+                    <div class="action-area">
+                        <button class="enter-back-btn" type="button" id="enter-back-btn" title="Retour au flou">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <button class="enter-key-btn" type="button">
+                            <span class="enter-key-btn-text">
+                                <span class="enter-key-btn-label">Entrer en jeu</span>
+                                <small>cliquez pour rejoindre la partie</small>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer: Music & Socials -->
+            <footer class="footer">
+                <!-- Music Player -->
+                <div class="music-player glass-card">
+                    <div class="album-art">
+                        <img src="img/music.png" alt="Album">
+                        <div class="vinyl-effect"></div>
+                    </div>
+                    <div class="music-content">
+                        <div class="track-info">
+                            <div class="scrolling-text">
+                                <span id="track-name">Chargement...</span>
+                            </div>
+                            <span id="track-artist">Null Sound</span>
+                        </div>
+                        <div class="music-controls">
+                            <button id="prev-btn" class="control-btn" type="button" aria-label="Précédent">
+                                <i class="fa-solid fa-backward-step"></i>
+                            </button>
+                            <button id="play-btn" class="control-btn play-pause" type="button"
+                                aria-label="Lecture/Pause">
+                                <i class="fa-solid fa-play"></i>
+                            </button>
+                            <button id="next-btn" class="control-btn" type="button" aria-label="Suivant">
+                                <i class="fa-solid fa-forward-step"></i>
+                            </button>
+                            <div class="volume-wrap">
+                                <i class="fa-solid fa-volume-low"></i>
+                                <input type="range" class="volume-slider" min="0" max="100" value="15"
+                                    id="volume-control" aria-label="Volume">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Socials -->
+                <div class="socials glass-card">
+                    <div class="social-item">
+                        <i class="fa-brands fa-discord"></i>
+                        <span>discord.gg/null</span>
+                    </div>
+                    <div class="social-item">
+                        <i class="fa-brands fa-tiktok"></i>
+                        <span>@Nullfr</span>
+                    </div>
+                </div>
+
+                <!-- Player Accounts Info (visible only in enter phase) -->
+                <div class="player-info-footer" style="display: none;">
+                    <div class="player-info-item">
+                        <span class="info-label">ARGENT PROPRE</span>
+                        <span class="info-value money" id="player-cash">0 $</span>
+                    </div>
+                    <div class="player-info-item">
+                        <span class="info-label">ARGENT SALE</span>
+                        <span class="info-value money" id="player-dirty">0 $</span>
+                    </div>
+                    <div class="player-info-item">
+                        <span class="info-label">BANQUE</span>
+                        <span class="info-value money" id="player-bank">0 $</span>
+                    </div>
+                    <div class="player-info-item">
+                        <span class="info-label">TEMPS DE JEU</span>
+                        <span class="info-value" id="player-playtime">0h 0m</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Shutters (after content for natural stacking) -->
+        <div class="shutters-wrapper">
+            <div class="shutter shutter-top" data-null-blur="12"></div>
+            <div class="shutter shutter-bottom" data-null-blur="12"></div>
+        </div>
+
+        <!-- See More Panel (modal) -->
+        <div id="see-more-panel" class="sm-panel hidden" aria-hidden="true">
+            <div class="sm-panel-backdrop"></div>
+            <div class="sm-panel-window">
+                <div class="sm-panel-header">
+                    <div class="sm-panel-title-wrap">
+                        <h3 id="sm-panel-title">Centre d'information</h3>
+                        <span id="sm-panel-subtitle">Patchnotes • Équipe • Galerie</span>
+                    </div>
+                    <button id="sm-panel-close" class="sm-panel-close" type="button" aria-label="Fermer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="sm-panel-tabs">
+                    <button class="sm-tab active" data-tab="patchnotes" type="button">
+                        <span>Patch notes</span>
+                    </button>
+                    <button class="sm-tab" data-tab="team" type="button">
+                        <span>Équipe</span>
+                    </button>
+                    <button class="sm-tab" data-tab="gallery" type="button">
+                        <span>Galerie</span>
+                    </button>
+                </div>
+                <div class="sm-panel-body">
+                    <div class="sm-tab-pane active" data-pane="patchnotes" id="sm-pane-patchnotes"></div>
+                    <div class="sm-tab-pane" data-pane="team" id="sm-pane-team"></div>
+                    <div class="sm-tab-pane" data-pane="gallery" id="sm-pane-gallery"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

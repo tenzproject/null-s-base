@@ -1,0 +1,1219 @@
+/* ==========================================================================
+   SHOP UI - Modern React UI (matching boutique/tablet style)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* Overlay */
+.shopui-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  animation: shopuiOverlayIn 0.3s ease-out;
+  font-family: 'Outfit', sans-serif;
+}
+
+.shopui-overlay.shopui-hiding {
+  animation: shopuiOverlayOut 0.3s ease-in forwards;
+}
+
+@keyframes shopuiOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shopuiOverlayOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* Container */
+.shopui-container {
+  isolation: isolate;
+  width: 85vw;
+  height: 80vh;
+  max-width: 1400px;
+  display: flex;
+  background: rgb(10, 10, 10);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  animation: shopuiSlideIn 0.4s ease-out;
+  position: relative;
+}
+
+.shopui-hiding .shopui-container {
+  animation: shopuiSlideOut 0.3s ease-in forwards;
+}
+
+@keyframes shopuiSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes shopuiSlideOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+}
+
+/* ==========================================================================
+   BRAND HERO (sidebar top banner)
+   ========================================================================== */
+.shopui-brand-hero {
+  position: relative;
+  padding: 22px 18px 20px 18px;
+  border-bottom: 1px solid var(--bg-tertiary);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.shopui-brand-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 85% 10%, var(--border-strong), transparent 60%),
+    radial-gradient(circle at 10% 90%, rgba(0, 0, 0, 0.35), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shopui-brand-hero-shine {
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(115deg, transparent 30%, var(--bg-tertiary) 50%, transparent 70%);
+  transform: rotate(10deg);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.shopui-brand-hero-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.shopui-brand-logo {
+  width: 100%;
+  max-width: 160px;
+  max-height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+  user-select: none;
+  pointer-events: none;
+}
+
+.shopui-brand-logo-fallback {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  background: var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+}
+
+.shopui-brand-hero-text h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+}
+
+.shopui-brand-hero-text p {
+  margin: 4px 0 0 0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Ambient brand tint behind content */
+.shopui-brand-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.9;
+  z-index: 0;
+}
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+.shopui-sidebar {
+  width: 240px;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(12, 12, 12, 1);
+  border-right: 1px solid var(--bg-tertiary);
+}
+
+.shopui-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.shopui-sidebar-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.shopui-sidebar-title h1 {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.shopui-sidebar-title p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 2px 0 0 0;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Money section */
+.shopui-money-section {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.shopui-money-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.shopui-money-item svg {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+/* Sidebar nav */
+.shopui-sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.shopui-sidebar-nav::-webkit-scrollbar {
+  width: 3px;
+}
+
+.shopui-sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shopui-sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.shopui-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+  text-align: left;
+  width: 100%;
+  position: relative;
+}
+
+.shopui-sidebar-item:hover {
+  background: var(--bg-secondary);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.shopui-sidebar-item.active {
+  background: var(--bg-tertiary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.shopui-sidebar-indicator {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 16px;
+  border-radius: 0 4px 4px 0;
+  animation: shopuiIndicatorIn 0.25s ease-out;
+}
+
+@keyframes shopuiIndicatorIn {
+  from { transform: translateY(-50%) scaleY(0); opacity: 0; }
+  to   { transform: translateY(-50%) scaleY(1); opacity: 1; }
+}
+
+.shopui-sidebar-item span {
+  flex: 1;
+}
+
+.shopui-sidebar-arrow {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  color: var(--text-tertiary);
+}
+
+.shopui-sidebar-item:hover .shopui-sidebar-arrow,
+.shopui-sidebar-item.active .shopui-sidebar-arrow {
+  opacity: 1;
+}
+
+/* Sidebar footer */
+.shopui-sidebar-footer {
+  padding: 12px;
+  border-top: 1px solid var(--bg-tertiary);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shopui-cart-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+  position: relative;
+  color: var(--text-secondary);
+}
+
+.shopui-cart-btn:hover {
+  background: var(--bg-tertiary);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.shopui-cart-btn.active {
+  background: var(--bg-tertiary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.shopui-cart-btn span {
+  /*flex: 1;*/
+  text-align: left;
+}
+
+.shopui-cart-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  padding: 2px 7px;
+  border-radius: 10px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.shopui-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.shopui-close-btn:hover {
+  background: #ff4444;
+  color: white;
+}
+
+/* ==========================================================================
+   CONTENT AREA
+   ========================================================================== */
+.shopui-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.shopui-content>*:not(.shopui-brand-ambient) {
+  position: relative;
+  z-index: 1;
+}
+
+.shopui-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.shopui-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shopui-content::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+/* Content header */
+.shopui-content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.shopui-content-header-info h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.shopui-content-header-info p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 4px 0 0 0;
+}
+
+/* Search */
+.shopui-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  min-width: 220px;
+  transition: border-color 0.2s ease;
+}
+
+.shopui-search:focus-within {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.shopui-search svg {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.shopui-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  width: 100%;
+}
+
+.shopui-search input::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* ==========================================================================
+   ITEMS GRID
+   ========================================================================== */
+.shopui-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  align-content: start;
+}
+
+.shopui-item-card {
+  background: rgba(12, 12, 12, 1);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+  cursor: default;
+  animation: shopuiItemIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes shopuiItemIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.shopui-item-card:hover {
+  /* background: var(--bg-secondary); */
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.shopui-item-image {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+}
+
+.shopui-item-image img {
+  max-width: 64px;
+  max-height: 64px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.shopui-item-image-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.shopui-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shopui-item-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shopui-item-price {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.shopui-item-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-secondary);
+}
+
+.shopui-item-add-btn:hover {
+  background: var(--bg-tertiary);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.shopui-item-add-btn.in-cart {
+  color: white !important;
+}
+
+/* Empty state */
+.shopui-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: var(--text-tertiary);
+  grid-column: 1 / -1;
+}
+
+.shopui-empty p {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   CART VIEW
+   ========================================================================== */
+.shopui-cart-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.shopui-cart-header {
+  margin-bottom: 16px;
+}
+
+.shopui-section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.shopui-section-header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.shopui-section-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.shopui-section-header p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 2px 0 0 0;
+}
+
+/* Cart items */
+.shopui-cart-items {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 4px;
+}
+
+.shopui-cart-items::-webkit-scrollbar {
+  width: 3px;
+}
+
+.shopui-cart-items::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+}
+
+.shopui-cart-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+
+.shopui-cart-item:hover {
+  background: var(--bg-secondary);
+}
+
+.shopui-cart-item-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.shopui-cart-item-image img {
+  max-width: 32px;
+  max-height: 32px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+}
+
+.shopui-cart-item-image-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.shopui-cart-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.shopui-cart-item-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shopui-cart-item-price {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Quantity controls */
+.shopui-cart-item-quantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.shopui-cart-item-quantity button {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: none;
+  background: var(--bg-tertiary);
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.shopui-cart-item-quantity button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.shopui-cart-item-quantity button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.shopui-cart-item-quantity span {
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  min-width: 20px;
+  text-align: center;
+}
+
+.shopui-cart-item-total {
+  font-size: 14px;
+  font-weight: 700;
+  min-width: 70px;
+  text-align: right;
+}
+
+.shopui-cart-item-remove {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  /*background: rgba(255, 60, 60, 0.1);*/
+  color: #ff4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.shopui-cart-item-remove:hover {
+  background: rgba(255, 60, 60, 0.2);
+}
+
+/* ==========================================================================
+   CART FOOTER
+   ========================================================================== */
+.shopui-cart-footer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--bg-tertiary);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.shopui-cart-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.shopui-cart-total span:first-child {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.shopui-cart-total-amount {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* Payment */
+.shopui-cart-payment {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shopui-cart-payment-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.shopui-cart-payment-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.shopui-pay-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+  position: relative;
+}
+
+.shopui-pay-btn:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.shopui-pay-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.shopui-pay-btn svg:first-child {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.shopui-pay-btn div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.shopui-pay-btn div span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.shopui-pay-btn div small {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.shopui-pay-btn.cash:hover:not(:disabled) {
+  background: #2ecc71;
+  color: white;
+}
+
+.shopui-pay-btn.bank:hover:not(:disabled) {
+  background: #3498db;
+  color: white;
+}
+
+.shopui-pay-warning {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #e74c3c;
+}
+
+/* ==========================================================================
+   NOTIFICATION
+   ========================================================================== */
+.shopui-notification {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  animation: shopuiNotifIn 0.3s ease-out;
+  z-index: 100;
+  white-space: nowrap;
+}
+
+.shopui-notification.success {
+  background: rgba(46, 204, 113, 0.15);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.shopui-notification.success svg {
+  color: #2ecc71;
+}
+
+.shopui-notification.error {
+  background: rgba(231, 76, 60, 0.15);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.shopui-notification.error svg {
+  color: #e74c3c;
+}
+
+@keyframes shopuiNotifIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ============================================
+   REPAIR VIEW
+   ============================================ */
+
+.shopui-repair-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.shopui-repair-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 4px;
+}
+
+.shopui-repair-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.shopui-repair-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.shopui-repair-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shopui-repair-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.shopui-repair-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shopui-repair-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.shopui-repair-card:hover {
+  background: var(--bg-secondary);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.shopui-repair-card.repair-ready {
+  border-color: rgba(46, 204, 113, 0.2);
+  background: rgba(46, 204, 113, 0.03);
+}
+
+.shopui-repair-card.repair-progress {
+  border-color: var(--bg-secondary);
+}
+
+.shopui-repair-card-image {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.shopui-repair-card-image img {
+  max-width: 36px;
+  max-height: 36px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.shopui-repair-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.shopui-repair-card-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shopui-repair-durability {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shopui-repair-durability-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.shopui-repair-durability-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.shopui-repair-durability-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 32px;
+  text-align: right;
+}
+
+.shopui-repair-card-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.shopui-repair-card-price {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.shopui-repair-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text-secondary);
+}
+
+.shopui-repair-btn:hover {
+  background: var(--bg-tertiary);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.shopui-repair-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.shopui-repair-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.shopui-repair-progress-text {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.shopui-repair-ready-text {
+  font-size: 12px;
+  color: #2ecc71;
+  font-weight: 500;
+}
+
+.shopui-repair-pickup-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.shopui-repair-pickup-btn:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}

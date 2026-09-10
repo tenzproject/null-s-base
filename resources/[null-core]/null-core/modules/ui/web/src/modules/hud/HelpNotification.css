@@ -1,0 +1,78 @@
+/* HelpNotification — small contextual hint card (replaces native GTA help
+   notification shown bottom-left). Prefix: .hn-                                */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+.hn-wrapper {
+  pointer-events: none;
+  font-family: 'Outfit', sans-serif;
+}
+
+.hn-card {
+  display: flex;
+  align-items: center;
+  gap: 1vh;
+  padding: 0.7vh 1.2vh 0.7vh 0.7vh;
+  border-radius: 9px;
+  background: var(--bg-primary);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  color: var(--text-primary);
+  max-width: 32vw;
+  will-change: transform, opacity;
+  transform: scale(1);
+  opacity: 1;
+}
+
+.hn-card.hn-entering {
+  animation: hnPopIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.hn-card.hn-leaving {
+  animation: hnPopOut 0.2s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+
+@keyframes hnPopIn {
+  from { opacity: 0; transform: translateY(-4px) scale(0.92); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes hnPopOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-4px) scale(0.92); }
+}
+
+/* Key badge — rounded square with the mapped key */
+.hn-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4vh;
+  height: 2.4vh;
+  padding: 0 0.55vh;
+  border-radius: 6px;
+  background: var(--hn-accent, rgba(100, 100, 100, 0.8));
+  color: #0f0f10;
+  font-size: 1.35vh;
+  font-weight: 700;
+  letter-spacing: 0.05vh;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--hn-accent, rgba(100,100,100,0.5)) 35%, transparent);
+  flex-shrink: 0;
+}
+
+.hn-message {
+  font-size: 1.35vh;
+  font-weight: 500;
+  letter-spacing: 0.02vh;
+  line-height: 1.2;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* GTA-style inline colored segments (~r~, ~g~, ~b~…) */
+.hn-msg-r { color: rgba(239, 68, 68, 0.95); }
+.hn-msg-g { color: rgba(46, 204, 113, 0.95); }
+.hn-msg-b { color: rgba(80, 150, 255, 0.95); }
+.hn-msg-y { color: rgba(255, 215, 80, 0.95); }
+.hn-msg-p { color: rgba(190, 120, 255, 0.95); }
+.hn-msg-o { color: rgba(255, 160, 60, 0.95); }
+.hn-msg-muted { color: var(--text-secondary); }

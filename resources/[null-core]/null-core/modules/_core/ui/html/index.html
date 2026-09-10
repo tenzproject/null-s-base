@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUI Core</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/hud.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="null-ui">
+        <div id="hud"></div>
+        <div id="notifications"></div>
+        <div id="inventory-notifications"></div>
+        <div id="icons"></div>
+        <div id="modals"></div>
+        
+        <iframe id="ui-nui" src="nui://null-core/modules/ui/side-menu/web/dist/index.html" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; pointer-events: none; z-index: 9999; display: none;"></iframe>
+        <iframe id="core-nui" src="nui://null-core/modules/ui/web/dist/index.html" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 10000;"></iframe>
+    </div>
+
+    <!-- mustache.js 4.2.0 on cdnjs is shipped as ESM (export default) → SyntaxError when loaded as regular script. 3.2.1 is the last UMD build. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.2.1/mustache.min.js"></script>
+
+    <script src="js/core/utils.js"></script>
+    <script src="js/core/events.js"></script>
+    <script src="js/core/state.js"></script>
+    <script src="js/modules/hud.js"></script>
+    <script src="js/modules/notifications.js"></script>
+    <script src="js/modules/sound.js"></script>
+    <script src="js/modules/clipboard.js"></script>
+    <script src="js/modules/ui-bridge.js"></script>
+    <script src="js/modules/interactions-bridge.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

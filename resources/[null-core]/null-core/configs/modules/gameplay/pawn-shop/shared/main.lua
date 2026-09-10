@@ -1,0 +1,29 @@
+Config.PawnShop = {
+    BlackListItem = {
+        ["opiumrecolte"] = true, 
+        ["opiumtraitement"] = true, 
+        ["methrecolte"] = true, 
+        ["methtraitement"] = true, 
+        ["lsd"] = true, 
+        ["lsdtraitement"] = true, 
+        ["heroinerecolte"] = true, 
+        ["traitementheroine"] = true, 
+        ["champignonavarrie"] = true, 
+        ["champignonmagique"] = true, 
+        ["Mongolienne"] = true, 
+        ["cocainerecolte"] = true, 
+        ["cocainetraitement"] = true, 
+        ["ecstasy"] = true, 
+        ["police_cuff"] = true, 
+        ["police_key"] = true, 
+        ["weedrecolte"] = true,
+        ['weedtraitement'] = true,
+        ['basic_cuff'] = true,
+        ['basic_key'] = true,
+        ['caisse_halloween'] = true,
+        ['caisse_ruby'] = true,
+        ['caisse_fidelite'] = true,
+        ['caisse_gold'] = true,
+        ['caisse_diamond'] = true
+    }
+}

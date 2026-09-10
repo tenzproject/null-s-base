@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./doorlock.css" />
+  </head>
+  <body>
+    <main id="prompt" class="doorlock-prompt is-hidden is-locked">
+      <div class="doorlock-icon-wrap">
+        <img id="icon" class="doorlock-icon" src="nui://null-core/modules/ui/web/src/modules/doorlock/lock.png" alt="" />
+      </div>
+      <section class="doorlock-copy">
+        <div id="label" class="doorlock-label">Porte</div>
+        <div id="status" class="doorlock-status">Verrouillee</div>
+      </section>
+      <section id="action" class="doorlock-action">
+        <span id="key" class="doorlock-key">E</span>
+        <span id="actionText">Interagir</span>
+      </section>
+    </main>
+    <script src="./doorlock.js"></script>
+  </body>
+</html>

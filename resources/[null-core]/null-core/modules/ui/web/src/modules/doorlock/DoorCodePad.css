@@ -1,0 +1,109 @@
+/* ============================================================================
+   Null Doorlock — Pad de code
+   ========================================================================== */
+
+.dcp-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 62;
+  font-family: 'Inter', system-ui, sans-serif;
+  animation: dcp-fade 0.15s ease;
+}
+@keyframes dcp-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.dcp-pad {
+  width: 296px;
+  background: rgba(18, 20, 27, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  animation: dcp-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes dcp-pop {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+.dcp-header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 15px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.dcp-header-icon {
+  width: 34px; height: 34px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 9px;
+  background: var(--dcp-accent-15, rgba(74,144,226,0.15));
+  border: 1px solid var(--dcp-accent-30, rgba(74,144,226,0.3));
+  color: var(--dcp-accent-70w, #b9d4f5);
+}
+.dcp-title { font-size: 13.5px; font-weight: 700; color: #fff; }
+.dcp-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+.dcp-close {
+  margin-left: auto;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 7px; cursor: pointer;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.6);
+  transition: all 0.15s ease;
+}
+.dcp-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+/* Display dots */
+.dcp-display {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px 16px 6px;
+}
+.dcp-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  transition: all 0.15s ease;
+}
+.dcp-dot.filled {
+  background: var(--dcp-accent, #4A90E2);
+  box-shadow: 0 0 8px var(--dcp-accent-50, rgba(74,144,226,0.5));
+  transform: scale(1.1);
+}
+
+/* Keypad */
+.dcp-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  padding: 16px;
+}
+.dcp-key {
+  height: 54px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 20px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  user-select: none;
+}
+.dcp-key:hover { background: rgba(255,255,255,0.09); }
+.dcp-key:active { transform: scale(0.94); background: var(--dcp-accent-20, rgba(74,144,226,0.2)); }
+
+.dcp-key-action { color: rgba(255,255,255,0.6); }
+.dcp-key-confirm {
+  background: var(--dcp-accent, #4A90E2);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 12px var(--dcp-accent-40, rgba(74,144,226,0.4));
+}
+.dcp-key-confirm:hover { filter: brightness(1.1); background: var(--dcp-accent, #4A90E2); }

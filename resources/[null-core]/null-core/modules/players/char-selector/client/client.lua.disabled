@@ -1,0 +1,330 @@
+local AeroEvent = TriggerServerEvent
+local FirstSpawn = true
+local IsInPersoMenu = false
+local CONNECTION_CAMERA = 0;
+InCharSelector = true
+
+local finishVerif = false
+
+exports("finishVerif", function()
+    finishVerif = true
+end)
+
+AddEventHandler('playerSpawned', function()
+	Citizen.CreateThread(function()
+        while not ESX.PlayerLoaded do Wait(10) end
+        while PlayerIsDead == nil do
+			Citizen.Wait(10)
+        end
+        if playerIsDead() then return end
+        if FirstSpawn then
+            finishVerif = false
+            if GetResourceState("detectrppack") == "started" then
+                Wait(1000)
+                ExecuteCommand("detectrppack")
+                while not finishVerif do Wait(100) end
+                Wait(1000)
+            end
+
+            ClearTimecycleModifier()
+            TriggerServerEvent("null:esx:enter", true)
+            ClearExtraTimecycleModifier()
+            ESX.TriggerServerCallback('Null:esx_skin:getPlayerSkin', function(skin, jobSkin)
+                if skin ~= nil then
+                    OpenPersoMenu(true)
+                    InCharSelector = true
+                else
+                    OpenPersoMenu(false)
+                    InCharSelector = true
+                end
+            end)
+            FirstSpawn = false
+        end
+	end)
+end)
+
+RegisterCommand("debug", function ()
+    TriggerScreenblurFadeOut(1000)
+    SetNuiFocus(false, false)
+    exports["null-core"]:ActiveFrontend(false)
+    null.DisplayHud(true)
+    pcall(function()
+        exports["null-core"]:setChatCanOpen(true)
+    end)
+    OpenPersoMenu(true)
+    SetPlayerControl(PlayerId(), true, 12)
+end)
+
+local ScriptClient = {}
+ScriptClient.Functions = {}
+ScriptClient.PlayerInformations = {
+    firstname = "",
+    lastname = "",
+    sex = "",
+    dateOfBirth = "",
+    money = 0,
+    bank = 0,
+    blackMoney = 0
+}
+
+function ScriptClient.Functions:GetPlayerInformations()
+    return ScriptClient.PlayerInformations
+end
+
+function ScriptClient.Functions:FormatInformations(data)
+    ScriptClient.PlayerInformations.firstname = data.firstname
+    ScriptClient.PlayerInformations.lastname = data.lastname
+    ScriptClient.PlayerInformations.sex = data.sex
+    ScriptClient.PlayerInformations.dateOfBirth = data.dateOfBirth
+    ScriptClient.PlayerInformations.money = data.money
+    ScriptClient.PlayerInformations.bank = data.bank
+    ScriptClient.PlayerInformations.blackMoney = data.blackMoney
+
+    ScriptClient.PlayerInformations.isexpired = data.isexpired
+    ScriptClient.PlayerInformations.vip = data.vip
+    ScriptClient.PlayerInformations.expirationmsg = data.expirationmsg
+end
+
+local function playerAccount(account)
+    ESX.PlayerData = ESX.GetPlayerData()
+    for k,v in pairs(ESX.PlayerData.accounts) do
+        if v.name == account then
+            return v.money..'$'
+        end
+    end
+end
+
+RegisterNetEvent('brx_spawn:OnPlayerConnect', function(data)
+    ScriptClient.Functions:FormatInformations(data)
+end)
+
+local CAMERA_POSITION = {
+    [1] = { coords = vector3(-1681.4123535156,-1132.6083984375,24.618837356567), rot = vector3(1.4105453491211, -6.6721293023875e-07, 70.965774536133) },
+    [2] = { coords = vector3(-1495.0319824219,-827.00604248047,46.987529754639), rot = vector3(-15.990926742554, -1.776279987098e-06, -41.002635955811) },
+    [3] = { coords = vector3(-1909.4598388672, 4594.5810546875, 22.447195053101), rot = vector3(-7.7229099273682, -8.6158871681619e-07, -135.48849487305) },
+    [4] = { coords = vector3(3326.9645996094, 5138.302734375, 31.319602966309), rot = vector3(-19.769958496094, 2.2681206246489e-07, -9.0288410186768) },
+    [5] = { coords = vector3(3375.3205566406, 5135.7651367188, 17.090915679932), rot = vector3(-5.8328413963318, 1.5018796375443e-06, -45.957286834717) },
+    [6] = { coords = vector3(1324.0700683594, 4221.107421875, 44.377075195312), rot = vector3(-21.344434738159, 9.1664708179451e-07, 32.150550842285) },
+    [7] = { coords = vector3(2770.8671875, 1411.0035400391, 76.942848205566), rot = vector3(-12.794981956482, 8.7551370597794e-07, 31.8342628479) },
+    [8] = { coords = vector3(-1578.2526855469, 5219.431640625, 14.621535301208), rot = vector3(-17.046340942383, -0.0, 157.57688903809) },
+    [9] = { coords = vector3(-582.57019042969, 4407.373046875, 44.216949462891), rot = vector3(-24.814863204956, 2.821868065439e-06, -37.403118133545) },
+    [10] = { coords = vector3(-1560.7396240234, 2118.7177734375, 71.918342590332), rot = vector3(4.7130393981934, 1.1779214901253e-06, 113.68918609619) }
+}
+function OpenPersoMenu(value)
+    local tryNr = 0
+    while GetVIPLoad() == false do
+        Wait(1)
+        tryNr = tryNr + 1
+        if tryNr > 2000 then
+            break
+        end
+    end
+    TriggerServerEvent("null:esx:enter", true)
+    --[[while GetVIP() == nil do
+        Wait(10)
+    end
+    while not GetVIPLoad() do
+        Wait(10)
+    end]]
+    TriggerServerEvent('brx_spawn:OnPlayerConnect')
+    Wait(500)
+
+    IsInPersoMenu = true
+    local CAMERA = CAMERA_POSITION[math.random(1,#CAMERA_POSITION)]
+    if (CAMERA) then
+        if (CONNECTION_CAMERA == 0) then
+            CONNECTION_CAMERA = CreateCameraPERSO("DEFAULT_SCRIPTED_CAMERA")
+        end
+        SetEntityVisible(PlayerPedId(), false)
+        SetCamCoord(CONNECTION_CAMERA, CAMERA.coords)
+        ShakeCam(CONNECTION_CAMERA, "HAND_SHAKE", 0.3)
+        SetCamRot(CONNECTION_CAMERA, CAMERA.rot.x, CAMERA.rot.y, CAMERA.rot.z, 2)
+        SetCamActive(CONNECTION_CAMERA, true)
+        SetFocusPosAndVel(CAMERA.coords, 0, 0, 0)
+        RenderScriptCams(1, 0, 500, false, false)
+    end
+
+    DoScreenFadeIn(2000)
+    DisplayRadar(false)
+    null.DisplayHud(false)
+    local isVip = false
+    local viptabl = {
+        VipTime = {
+            d = nil,
+            h = nil,
+        }
+    }
+
+    if GetVIP() then
+        isVip = GetVIP()
+        viptabl.VipTime.d = PlayerState.vip.time.days
+        viptabl.VipTime.h = PlayerState.vip.time.hours
+    end 
+    AnimpostfxStopAll()
+    local menu = RageUI.CreateMenu("", "Bienvenue sur "..ESX.Config("serverName"))
+    local preloadstream = RageUI.CreateSubMenu(menu, "", "Bienvenue sur "..ESX.Config("serverName"))
+    RageUI.Visible(menu, not RageUI.Visible(menu))
+    menu.Closable = false
+    local startMenu = LPH_NO_VIRTUALIZE(function()
+        while menu do
+            print("intoWhile 0 wait")
+            Citizen.Wait(0)
+            RageUI.IsVisible(menu, function()
+                local vipText = ""
+                local vipText2 = ""
+
+                if not isVip then
+                    --RageUI.Separator("⛔ Votre statut VIP à expiré ⛔")
+                    vipText = "⭐ Vous n'avez pas de statut VIP"
+                elseif isVip then
+                    vipText = "⌛ ~r~Expiration VIP~s~"
+                    vipText2 = viptabl.VipTime.d.." jours et "..ESX.Math.Round(viptabl.VipTime.h).." heures."
+                end
+
+                if ESX.PlayerData == nil then
+                    ESX.PlayerData.lastname = ""
+                    ESX.PlayerData.firstname = ""
+                    ESX.PlayerData.dateofbirth = ""
+                    ESX.PlayerData.sex = ""
+                else
+                    if ESX.PlayerData.lastname == nil then
+                        ESX.PlayerData.lastname = ""
+                    end
+                    if ESX.PlayerData.firstname == nil then
+                        ESX.PlayerData.firstname = ""
+                    end
+                    if ESX.PlayerData.dateofbirth == nil then
+                        ESX.PlayerData.dateofbirth = ""
+                    end
+                    if ESX.PlayerData.sex == nil then
+                        ESX.PlayerData.sex = ""
+                    end
+                end
+
+                if value then
+                    RageUI.Button(''..ESX.PlayerData.firstname.." "..ESX.PlayerData.lastname, nil, {}, true, {
+                        onSelected = function()
+                    
+                            RageUI.Visible(menu, false)
+                            DoScreenFadeOut(5000)
+                            
+                            while not IsScreenFadedOut() do
+                                Citizen.Wait(0)
+                            end
+                            getBaseSkin()
+                            if (CONNECTION_CAMERA ~= 0) then
+                                DestroyCam(CONNECTION_CAMERA);
+                                ClearFocus()
+                                RenderScriptCams(false, false, false, 0, 0)
+                                CONNECTION_CAMERA = 0
+                            end
+                            SetEntityVisible(PlayerPedId(), true)
+                            DoScreenFadeIn(2000)
+                            while not IsScreenFadedIn() do
+                                Citizen.Wait(0)
+                            end
+                            
+                            InCharSelector = false
+
+                            Citizen.Wait(2000)
+                            
+                            TriggerEvent("pma-voice:mutePlayer")
+                            DisplayRadar(true)
+                            --exports["lc-inventory-v2"]:lockInventory(false)
+                            IsInPersoMenu = false
+                            Citizen.Wait(200)
+                            TriggerServerEvent("null:esx:enter", false)
+                            null.DisplayHud(true)
+                        end
+                    })
+                    RageUI.Info(ESX.PlayerData.firstname.." "..ESX.PlayerData.lastname, {
+                        'Sexe',
+                        'Date de Naissance',
+                        'Argent',
+                        'Argent Sale',
+                        'Argent en Banque',
+                        vipText,
+                    }, {
+                        ESX.PlayerData.sex == "1" and "Femme" or "Homme",
+                        ESX.PlayerData.dateofbirth,
+                        playerAccount('cash'),
+                        playerAccount('dirtycash'),
+                        playerAccount('bank'),
+                        vipText2,
+                    })
+                end
+                if not value then
+                    RageUI.Button('Crée son Personnage', nil, {}, true, {
+                        onSelected = function()
+                            RageUI.Visible(menu, false)
+                            if (CONNECTION_CAMERA ~= 0) then
+                                DestroyCam(CONNECTION_CAMERA);
+                                ClearFocus()
+                                RenderScriptCams(false, false, false, 0, 0)
+                                CONNECTION_CAMERA = 0
+                            end
+                            SetEntityVisible(PlayerPedId(), true)
+                            InCharSelector = false
+                            --TriggerEvent("pma-voice:mutePlayer")
+                            TriggerEvent('null-ui:openCreator', true)
+                            --TriggerEvent('brx_spawn:playerSpawned')
+                            IsInPersoMenu = false
+                        end
+                    })
+
+                    RageUI.Info("Bienvenue sur "..ESX.Config("serverColor")..ESX.Config("serverName").."~s~", {
+                        "Appuyez sur "..ESX.Config("serverColor").."ENTER~s~ pour créer votre personnage",
+                        "",
+                        ESX.Config("serverDiscord"),
+                    }, {
+                        "",
+                        "",
+                        "",
+                    })
+                end
+            end, function()
+            end)
+            
+            RageUI.IsVisible(preloadstream, function()
+                while not IsScreenFadedIn() do
+                    Citizen.Wait(0)
+                end
+                RageUI.Button("Souhaitez-vous Précharger les vêtements ?", nil, {}, true, {
+                    onSelected = function()
+                        RageUI.CloseAll()
+                        TriggerEvent("null:streams:preload:open")
+                    end
+                })
+            end, function()
+            end)
+
+            if not RageUI.Visible(menu) and not RageUI.Visible(preloadstream) then
+                menu = RMenu:DeleteType('menu', true)
+            end
+        end
+    end)
+    startMenu()
+end
+
+function CreateCameraPERSO(name)
+    local camera = CreateCam(name or "DEFAULT_SCRIPTED_CAMERA")
+    while (camera == -1) do
+        camera = CreateCam(name or "DEFAULT_SCRIPTED_CAMERA");
+        Citizen.Wait(1.0)
+    end
+    return camera
+end
+
+
+function getBaseSkin()
+    ESX.TriggerServerCallback('Null:esx_skin:getPlayerSkin', function(skin, jobSkin)
+        local isMale = skin.sex == 0
+        TriggerEvent('skinchanger:loadDefaultModel', isMale, function()
+            ESX.TriggerServerCallback('Null:esx_skin:getPlayerSkin', function(skin)
+                TriggerEvent('Null:skinchanger:loadSkin', skin)
+                TriggerEvent('esx:restoreLoadout')
+            end)
+        end)
+
+    end)
+end

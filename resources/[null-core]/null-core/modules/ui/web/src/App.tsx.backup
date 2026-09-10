@@ -1,0 +1,292 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import InputDialog from '@modules/interactions/InputDialog';
+import ConfirmDialog from '@modules/interactions/ConfirmDialog';
+import Interaction3D from '@modules/interactions/Interaction3D';
+import InfoDialog from '@modules/interactions/InfoDialog';
+import AnnouncementDialog from '@modules/interactions/AnnouncementDialog';
+import Menu from '@modules/menu/Menu';
+import { MenuState } from '@modules/menu/types';
+import HUDEditor from '@modules/hud-editor/HUDEditor';
+import '@modules/menu/index.css';
+
+interface ServerConfig {
+  serverName: string;
+  serverColor: string;
+  serverIcon: string;
+  serverDiscord: string;
+}
+
+function App() {
+  // Interactions state
+  const [inputVisible, setInputVisible] = useState(false);
+  const [inputData, setInputData] = useState<any>(null);
+  
+  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [confirmData, setConfirmData] = useState<any>(null);
+  
+  const [hudEditorVisible, setHudEditorVisible] = useState(false);
+  
+  const [serverConfig, setServerConfig] = useState<ServerConfig>({
+    serverName: 'Null',
+    serverColor: '#42a5f5',
+    serverIcon: '',
+    serverDiscord: ''
+  });
+
+  // Menu state
+  const [menuState, setMenuState] = useState<MenuState>({
+    visible: false,
+    title: '',
+    subtitle: '',
+    items: [],
+    selectedIndex: 0,
+    position: { x: 0.170, y: 0.030 },
+    previewImage: undefined,
+    maxVisibleItems: 10
+  });
+  const [cursorEnabled, setCursorEnabled] = useState(false);
+
+  const handleMessage = useCallback((event: MessageEvent) => {
+    // const data = event.data;
+    // const action = data.action || data.type;
+ 
+    const { action, data } = event.data
+
+    switch (action) {
+      // Config 
+      case 'setConfig':
+        console.log(data);
+        setServerConfig({
+          serverName: data.serverName || data?.serverName || 'Null',
+          serverColor: data.serverColor || data?.serverColor || '#42a5f5',
+          serverIcon: data.serverIcon || data?.serverIcon || '',
+          serverDiscord: data.serverDiscord || data?.serverDiscord || ''
+        }); 
+        
+        // Also handle menu default position from config
+        if (data?.defaultPosition || data.defaultPosition) {
+          setMenuState(prev => ({
+            ...prev,
+            position: data?.defaultPosition || data.defaultPosition
+          }));
+        }
+        break;
+
+      // Input Dialog
+      case 'openInput':
+        setInputData(data);
+        setInputVisible(true);
+        break;
+
+      case 'closeInput':
+        setInputVisible(false);
+        setInputData(null);
+        break;
+
+      // Confirm Dialog
+      case 'openConfirm':
+        setConfirmData(data);
+        setConfirmVisible(true);
+        break;
+
+      case 'closeConfirm':
+        setConfirmVisible(false);
+        setConfirmData(null);
+        break;
+
+      // Menu (RageUI)
+      case 'openMenu':
+        setMenuState(prev => ({
+          ...prev,
+          visible: true,
+          title: data?.title || data.title || '',
+          subtitle: data?.subtitle || data.subtitle || '',
+          position: data?.position || data.position || prev.position,
+          maxVisibleItems: data?.maxVisibleItems || data.maxVisibleItems || 10,
+          selectedIndex: 0
+        }));
+        break;
+
+      case 'closeMenu':
+        setMenuState(prev => ({ ...prev, visible: false, previewImage: undefined }));
+        setCursorEnabled(false);
+        break;
+      
+      case 'setCursor':
+        setCursorEnabled(data?.enabled || data.enabled || false);
+        break;
+
+      case 'setPreview':
+        setMenuState(prev => ({ ...prev, previewImage: data?.image || data.image }));
+        break;
+
+      case 'setItems':
+        setMenuState(prev => {
+          const items = data?.items || data.items || [];
+          const isSelectable = (item?: MenuState['items'][number]) => 
+            item && item.type !== 'separator' && item.type !== 'info' && item.type !== 'infopanel';
+          let selectedIndex = data?.index !== undefined ? data.index : 
+                             data.index !== undefined ? data.index : prev.selectedIndex;
+
+          if (!isSelectable(items[selectedIndex])) {
+            const firstSelectable = items.findIndex(isSelectable);
+            selectedIndex = firstSelectable !== -1 ? firstSelectable : 0;
+          }
+
+          return {
+            ...prev,
+            items,
+            selectedIndex
+          };
+        });
+        break;
+
+      case 'updateTitle':
+        setMenuState(prev => ({ ...prev, title: data?.title || data.title }));
+        break;
+
+      case 'updateSubtitle':
+        setMenuState(prev => ({ ...prev, subtitle: data?.subtitle || data.subtitle }));
+        break; 
+
+      case 'navigate':
+        setMenuState(prev => {
+          let newIndex = prev.selectedIndex
+          const enabledItems = prev.items.map((item, i) => ({ item, i })).filter(x => x.item.type !== 'separator' && x.item.type !== 'info' && x.item.type !== 'infopanel')
+          const currentEnabledIndex = enabledItems.findIndex(x => x.i === prev.selectedIndex)
+          if (data.direction === 'up') {
+            let nextEnabledIndex = currentEnabledIndex - 1
+            if (nextEnabledIndex < 0) nextEnabledIndex = enabledItems.length - 1
+            newIndex = enabledItems[nextEnabledIndex]?.i ?? prev.selectedIndex
+          } else if (data.direction === 'down') {
+            let nextEnabledIndex = currentEnabledIndex + 1
+            if (nextEnabledIndex >= enabledItems.length) nextEnabledIndex = 0
+            newIndex = enabledItems[nextEnabledIndex]?.i ?? prev.selectedIndex
+          } else if (data.direction === 'left' || data.direction === 'right') {
+            const item = prev.items[prev.selectedIndex]
+            if (item) {
+              const newItems = [...prev.items]
+              if (item.type === 'list' && item.items) {
+                let val = (item.value as number) || 1
+                if (data.direction === 'left') {
+                  val = val <= 1 ? item.items.length : val - 1
+                } else {
+                  val = val >= item.items.length ? 1 : val + 1
+                }
+                newItems[prev.selectedIndex] = { ...item, value: val }
+                fetch(`https://${GetParentResourceName()}/itemChanged`, {
+                  method: 'POST',
+                  body: JSON.stringify({ index: prev.selectedIndex, value: val })
+                })
+              } else if (item.type === 'slider') {
+                let val = (item.value as number) || 1
+                if (data.direction === 'left') {
+                  val = Math.max(item.min || 1, val - 1)
+                } else {
+                  val = Math.min(item.max || 100, val + 1)
+                }
+                newItems[prev.selectedIndex] = { ...item, value: val }
+                fetch(`https://${GetParentResourceName()}/itemChanged`, {
+                  method: 'POST',
+                  body: JSON.stringify({ index: prev.selectedIndex, value: val })
+                })
+              }
+              return { ...prev, items: newItems }
+            }
+          }
+          fetch(`https://${GetParentResourceName()}/indexChanged`, {
+            method: 'POST',
+            body: JSON.stringify({ index: newIndex })
+          })
+          return { ...prev, selectedIndex: newIndex }
+        })
+        break
+
+      case 'select':
+        setMenuState(prev => {
+          const selectedItem = prev.items[prev.selectedIndex];
+          if (selectedItem) {
+            fetch(`https://${GetParentResourceName()}/itemSelected`, {
+              method: 'POST',
+              body: JSON.stringify({ index: prev.selectedIndex, value: selectedItem.value })
+            });
+          }
+          return prev;
+        });
+        break;
+
+      case 'openHUDEditor':
+        setHudEditorVisible(true);
+        break;
+
+      case 'closeHUDEditor':
+        setHudEditorVisible(false);
+        break;
+    
+      }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [handleMessage]);
+
+  return (
+    <div className="null-ui-container">
+      {/* Interactions Module */}
+      <InputDialog 
+        visible={inputVisible}
+        data={inputData}
+        onClose={() => setInputVisible(false)}
+        serverConfig={serverConfig}
+      />
+      
+      <ConfirmDialog 
+        visible={confirmVisible}
+        data={confirmData}
+        onClose={() => setConfirmVisible(false)}
+        serverConfig={serverConfig}
+      />
+
+      <Interaction3D 
+        serverConfig={serverConfig}
+      />
+
+      <InfoDialog 
+        serverConfig={serverConfig}
+      />
+
+      <AnnouncementDialog 
+        serverConfig={serverConfig}
+      />
+
+      {/* Menu Module (RageUI) */}
+      {menuState.visible && (
+        <Menu
+          title={menuState.title}
+          subtitle={menuState.subtitle}
+          items={menuState.items}
+          selectedIndex={menuState.selectedIndex}
+          position={menuState.position}
+          previewImage={menuState.previewImage}
+          maxVisibleItems={menuState.maxVisibleItems}
+        />
+      )}
+
+      {/* HUD Editor */}
+      <HUDEditor
+        visible={hudEditorVisible}
+        onClose={() => setHudEditorVisible(false)}
+        primaryColor={serverConfig.serverColor}
+      />
+    </div>
+  );
+}
+
+function GetParentResourceName(): string {
+  // Dans un iframe, on ne peut pas utiliser GetParentResourceName natif
+  // On retourne le nom de la resource parent (null-core)
+  return 'null-core'
+}
+
+export default App;

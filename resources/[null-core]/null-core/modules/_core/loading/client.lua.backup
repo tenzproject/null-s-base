@@ -1,0 +1,221 @@
+local firstSpawn = true
+local cam = nil
+local spawnCoords = nil
+ 
+AddEventHandler('playerSpawned', function()
+    if not firstSpawn then return end
+    Citizen.CreateThread(function()
+        while not ESX.PlayerLoaded do 
+            Wait(10) 
+        end
+
+        spawnCoords = GetEntityCoords(PlayerPedId())
+
+        if GetIsLoadingScreenActive() then
+            local serverName = GetConvar('serverName', 'Null V4')
+            local serverCHAR = GetConvar('serverCHAR', 'img/logo.png')
+            local hexcolor = GetConvar('hexcolor', '#44a5ff')
+
+            SendLoadingScreenMessage(json.encode({
+                type = 'INIT_CORE',
+                serverName = serverName,
+                serverCHAR = serverCHAR,
+                hexcolor = hexcolor
+            }))
+            SetNuiFocus(false, false)
+            -- Wait(15000)
+
+            for i = 0, 100, 10 do
+                local msg = i < 30 and 'Chargement des ressources protégées...' or
+                            i < 60 and 'Chargement du framework...' or
+                            i < 90 and 'Initialisation des modules core...' or
+                            'Finalisation...'
+                
+                SendLoadingScreenMessage(json.encode({
+                    type = 'UPDATE_PROGRESS',
+                    progress = i,
+                    message = msg
+                }))
+                Wait(1500)
+            end
+             
+            -- Get player data
+            local xPlayer = ESX.GetPlayerData()
+
+            -- if xPlayer.skin == nil or (#xPlayer.skin <= 0) then
+            --     ShutdownLoadingScreenNui()
+            --     ShutdownLoadingScreen()
+            --     TriggerEvent("null:newCreator:open", true)
+            --     return
+            -- end
+
+            -- Check if player has existing character
+            ESX.TriggerServerCallback('Null:esx_skin:getPlayerSkin', function(skin, jobSkin)
+                local hasCharacter = skin ~= nil
+                if not hasCharacter then
+                    -- New player - open character creator directly
+                    ShutdownLoadingScreenNui()
+                    ShutdownLoadingScreen()
+                    TriggerEvent("null:newCreator:open", true)
+                    firstSpawn = false
+                    return
+                end
+                
+                -- Existing player - show enter screen
+                ShowEnterScreen(xPlayer)
+            end)
+        else
+            SetupEnterCamera()
+            Wait(1500)
+            print('[Loading Screen] DestroyCam')
+            RenderScriptCams(false, false, 0, true, true)
+            DestroyCam(cam, false)
+            cam = nil
+            
+            SetEntityVisible(PlayerPedId(), true)
+            FreezeEntityPosition(PlayerPedId(), false)
+            SetEntityCoords(PlayerPedId(), spawnCoords)
+            DisplayRadar(true)
+            null.DisplayHud(true)
+        end
+
+        print('[Loading Screen] DisplayHud False')
+
+        -- DoScreenFadeIn removed - game is already visible after shutters opened
+        Wait(500)
+        
+        firstSpawn = false
+    end)
+end)
+
+function ShowEnterScreen(xPlayer)
+                firstname = xPlayer.firstname or 'John',
+                lastname = xPlayer.lastname or 'Doe',
+                sex = xPlayer.sex or '0',
+                accounts = {},
+                playtime = 0,
+                vip = {
+                    isVip = false,
+                    type = nil,
+                    time = {}
+                }
+            }
+            
+            -- Get accounts
+            if xPlayer.accounts then
+                for _, account in ipairs(xPlayer.accounts) do
+                    playerData.accounts[account.name] = account.money
+                end
+            end
+            
+            -- Get playtime (in minutes)
+            if xPlayer.playtime then
+                playerData.playtime = xPlayer.playtime
+            end
+            
+            -- Get VIP info (if exists in your system)
+            -- Adjust this based on your VIP system
+            if xPlayer.vip then
+                playerData.vip = xPlayer.vip
+            end
+            
+            SendLoadingScreenMessage(json.encode({
+                type = 'SHOW_ENTER_SCREEN',
+                playerData = playerData
+            }))
+            
+            SetupEnterCamera()
+
+            local waitingForEnter = true
+
+            while waitingForEnter do
+                Wait(0)
+                if IsControlJustReleased(0, 18) or IsControlJustPressed(0, 176) or IsControlJustPressed(0, 191) then
+                    waitingForEnter = false
+                    SendLoadingScreenMessage(json.encode({ type = 'TRIGGER_ENTER' }))
+                end
+            end
+
+            Wait(1200)
+
+            SendLoadingScreenMessage(json.encode({ type = 'FADE_OUT' }))
+
+            RenderScriptCams(false, false, 0, true, true)
+            DestroyCam(cam, false)
+            cam = nil
+            
+            SetEntityVisible(PlayerPedId(), true)
+            FreezeEntityPosition(PlayerPedId(), false)
+            SetEntityCoords(PlayerPedId(), spawnCoords)
+
+            Wait(2000) -- Wait for shutters to fully hide
+
+            ShutdownLoadingScreenNui()
+            ShutdownLoadingScreen()
+
+            DisplayRadar(true)
+            null.DisplayHud(true)
+        else
+            SetupEnterCamera()
+            Wait(1500)
+            print('[Loading Screen] DestroyCam')
+            RenderScriptCams(false, false, 0, true, true)
+            DestroyCam(cam, false)
+            cam = nil
+            
+            SetEntityVisible(PlayerPedId(), true)
+            FreezeEntityPosition(PlayerPedId(), false)
+            SetEntityCoords(PlayerPedId(), spawnCoords)
+            DisplayRadar(true)
+            null.DisplayHud(true)
+        end
+
+        print('[Loading Screen] DisplayHud False')
+
+        -- DoScreenFadeIn removed - game is already visible after shutters opened
+        Wait(500)
+        
+        firstSpawn = false
+    end)
+end)
+
+-- Handle resource restart
+if GetResourceState(GetCurrentResourceName()) == 'started' then
+    Citizen.CreateThread(function()
+        if NetworkIsPlayerActive(PlayerId()) then
+            TriggerEvent('playerSpawned')
+        end
+    end)
+end
+
+function SetupEnterCamera()
+    local coords = vector3(-1560.7396240234, 2118.7177734375, 71.918342590332)
+    local rot = vector3(4.7130393981934, 1.1779214901253e-06, 113.68918609619)
+    
+    SetEntityVisible(PlayerPedId(), false)
+    FreezeEntityPosition(PlayerPedId(), true)
+    SetEntityCoords(PlayerPedId(), coords)
+    
+    cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
+    SetCamCoord(cam, coords)
+    SetCamRot(cam, rot.x, rot.y, rot.z, 2)
+    SetCamActive(cam, true)
+    RenderScriptCams(true, false, 0, true, true)
+    
+    DisplayRadar(false)
+    null.DisplayHud(false)
+end
+
+
+RegisterCommand("debug", function ()
+    TriggerScreenblurFadeOut(1000)
+    SetNuiFocus(false, false)
+    exports["null-core"]:ActiveFrontend(false)
+    null.DisplayHud(true)
+    pcall(function()
+        exports["chat"]:setChatCanOpen(true)
+    end)
+    SetPlayerControl(PlayerId(), true, 12)
+    ShutdownLoadingScreen()
+    ShutdownLoadingScreenNui()
+end)

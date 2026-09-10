@@ -1,0 +1,311 @@
+Bank = {
+    History = {},
+    Virement = {}
+}
+  
+  function GetDate()
+    local date = os.date('*t')
+  
+    if date.day < 10 then date.day = '0' .. tostring(date.day) end
+    if date.month < 10 then date.month = '0' .. tostring(date.month) end
+    if date.hour < 10 then date.hour = '0' .. tostring(date.hour) end
+    if date.min < 10 then date.min = '0' .. tostring(date.min) end
+    if date.sec < 10 then date.sec = '0' .. tostring(date.sec) end
+  
+    local time = date.day .. '.' .. date.month .. '.' .. date.year .. ' - ' .. (date.hour) .. ':' .. date.min .. ':' .. date.sec
+    
+    return time
+  end
+  
+  Citizen.CreateThread(function()
+    MySQL.Async.fetchAll("SELECT * FROM vbank", {}, function(result)
+        for k, v in pairs(result) do 
+            if not Bank.History[v.identifier] then 
+                Bank.History[v.identifier] = {}
+                Bank.History[v.identifier].bankid = v.bankid
+                Bank.History[v.identifier].identifier = v.identifier
+                Bank.History[v.identifier].Historique = {}
+                local HistoryPlayer = json.decode(v.history)
+                for p,n in pairs(HistoryPlayer) do
+                    Bank.History[v.identifier].Historique[p] = {}
+                    Bank.History[v.identifier].Historique[p].Title = n.Title
+                    Bank.History[v.identifier].Historique[p].amount = n.amount
+                    Bank.History[v.identifier].Historique[p].Description = n.Description
+                    Bank.History[v.identifier].Historique[p].type = n.type
+                    Bank.History[v.identifier].Historique[p].Date = n.Date
+                end
+                if v.Virement ~= nil and v.Virement ~= '[]' then 
+                  local VirementPlayer = json.decode(v.Virement)
+                  Bank.History[v.identifier].Virement = {}
+                  for p,n in pairs(VirementPlayer) do 
+                      Bank.History[v.identifier].Virement[p] = {}
+                      Bank.History[v.identifier].Virement[p].id = n.id
+                      Bank.History[v.identifier].Virement[p].amount = n.amount
+                      Bank.History[v.identifier].Virement[p].Description = n.Description
+                      Bank.History[v.identifier].Virement[p].Date = n.Date
+                  end
+                end
+            end
+            if not Bank.Virement[v.bankid] then 
+              Bank.Virement[v.bankid] = {}
+              Bank.Virement[v.bankid].identifier = v.identifier
+            end
+        end   
+    end)
+  end)
+  
+  RegisterNetEvent('Null:RVirement', function(id)
+      local xPlayer = ESX.GetPlayerFromId(source)
+      if Bank.History[xPlayer.identifier].Virement[id] then
+          xPlayer.addAccountMoney(eBank.Bank.AccountName, Bank.History[xPlayer.identifier].Virement[id].amount)
+          xPlayer.showNotification('Vous avez accepter un virement de ~g~'..Bank.History[xPlayer.identifier].Virement[id].amount..'$~s~')
+          Bank.History[xPlayer.identifier].Virement[id] = nil
+          TriggerClientEvent('Null:ReceiveInformaionsBank', xPlayer.source, Bank.History[xPlayer.identifier])
+      end
+  end)
+  
+  Bank.AddTransaction = function(src, Info) 
+    local xPlayer = ESX.GetPlayerFromId(src)
+    if (xPlayer) then 
+        if Bank.History[xPlayer.identifier] then 
+            TransactionID = os.time()..' '..math.random(1000,9999)
+            while Bank.History[xPlayer.identifier].Historique[TransactionID] do 
+                TransactionID = os.time()..' '..math.random(1000,9999)
+                Wait(1)
+            end
+            Bank.History[xPlayer.identifier].Historique[TransactionID] = {}
+            Bank.History[xPlayer.identifier].Historique[TransactionID].Title = Info.Title
+            Bank.History[xPlayer.identifier].Historique[TransactionID].amount = Info.amount
+            Bank.History[xPlayer.identifier].Historique[TransactionID].Description = Info.Description
+            Bank.History[xPlayer.identifier].Historique[TransactionID].type = Info.type
+            Bank.History[xPlayer.identifier].Historique[TransactionID].Date = GetDate()
+            TriggerClientEvent('Null:ReceiveInformaionsBank', xPlayer.source, Bank.History[xPlayer.identifier])
+        end
+    end
+  end
+  
+  Bank.AddTransactionOffline = function(identifier, Info) 
+      local xPlayer = ESX.GetPlayerFromId(identifier)
+      if not (xPlayer) then 
+          if Bank.History[identifier] then 
+              TransactionID = os.time()..' '..math.random(1000,9999)
+              while Bank.History[identifier].Historique[TransactionID] do 
+                  TransactionID = os.time()..' '..math.random(1000,9999)
+                  Wait(1)
+              end
+              Bank.History[identifier].Historique[TransactionID] = {}
+              Bank.History[identifier].Historique[TransactionID].Title = Info.Title
+              Bank.History[identifier].Historique[TransactionID].amount = Info.amount
+              Bank.History[identifier].Historique[TransactionID].Description = Info.Description
+              Bank.History[identifier].Historique[TransactionID].type = Info.type
+              Bank.History[identifier].Historique[TransactionID].Date = GetDate()
+              MySQL.Async.execute('UPDATE vbank SET history = @history WHERE identifier = @license',{
+                  ['@license'] = identifier,
+                  ['@history'] = json.encode(Bank.History[identifier].Historique),
+              })
+          end
+      else
+          Bank.AddTransaction(xPlayer.source, Info)
+      end
+  end
+  
+  AddEventHandler('playerDropped', function (reason)
+    local xPlayer = ESX.GetPlayerFromId(source)
+  
+    if (xPlayer) then 
+        if Bank.History[xPlayer.identifier] then 
+            if Bank.History[xPlayer.identifier].Historique then 
+              if Bank.History[xPlayer.identifier].Virement then Virement = json.encode(Bank.History[xPlayer.identifier].Virement) else Virement = nil end
+                MySQL.Async.fetchAll('SELECT * FROM `vbank` WHERE `identifier` = @license', {
+                    ['@license'] = xPlayer.identifier
+                }, function(result)
+                    if result[1] then
+                        MySQL.Async.execute('UPDATE vbank SET history = @history, Virement = @Virement WHERE identifier = @license',{
+                            ['@license'] = xPlayer.identifier,
+                            ['@history'] = json.encode(Bank.History[xPlayer.identifier].Historique),
+                            ['@Virement'] = Virement,
+                        })
+                    else
+                      MySQL.Async.execute("INSERT INTO vbank (identifier, history, bankid) VALUES (@identifier, @history, @bankid)", {
+                          ["@identifier"] = xPlayer.identifier,
+                          ["@history"] = json.encode(Bank.History[xPlayer.identifier].Historique),
+                          ['@bankid'] = Bank.History[xPlayer.identifier].bankid,
+                      })
+                    end
+                end)
+            end
+        end
+    end
+  end)
+  
+  RegisterNetEvent('Null:GetInformationsBank', function()
+    local src = source
+    local xPlayer = ESX.GetPlayerFromId(src)
+    if Bank.History[xPlayer.identifier] then 
+        TriggerClientEvent('Null:ReceiveInformaionsBank', src, Bank.History[xPlayer.identifier])
+    else
+      local BankID = 'IBAN-'..os.time()
+      Bank.History[xPlayer.identifier] = {}
+      Bank.History[xPlayer.identifier].bankid = BankID
+      if not Bank.Virement[BankID] then 
+          Bank.Virement[BankID] = {}
+          Bank.Virement[BankID].identifier = xPlayer.identifier
+        end
+      Bank.History[xPlayer.identifier].identifier = xPlayer.identifier
+      Bank.History[xPlayer.identifier].Historique = {}
+      Bank.History[xPlayer.identifier].Historique['1'] = {}
+      Bank.History[xPlayer.identifier].Historique['1'].amount = 0
+      Bank.History[xPlayer.identifier].Historique['1'].Title = 'Création du Compte'
+      Bank.History[xPlayer.identifier].Historique['1'].Description = 'Ouverture d\'un compte Bancaire.'
+      Bank.History[xPlayer.identifier].Historique['1'].type = 'Création'
+      Bank.History[xPlayer.identifier].Historique['1'].Date = GetDate()
+      MySQL.Async.execute("INSERT INTO vbank (identifier, history, bankid) VALUES (@identifier, @history, @bankid)", {
+          ["@identifier"] = xPlayer.identifier,
+          ["@history"] = json.encode(Bank.History[xPlayer.identifier].Historique),
+          ['@bankid'] = Bank.History[xPlayer.identifier].bankid,
+      })
+      TriggerClientEvent('Null:ReceiveInformaionsBank', src, Bank.History[xPlayer.identifier])
+    end
+  end)
+
+RegisterServerEvent("Null:banque:sendVirement")
+AddEventHandler("Null:banque:sendVirement", function(data)
+    local playerSrc = source
+    if (not playerSrc) then return end
+
+    local playerSelected = ESX.GetPlayerFromId(playerSrc)
+    if (not playerSelected) then return end
+
+    if (not data) then return end
+
+    if (not Bank.Virement[data.IBAN]) then 
+        playerSelected.showNotification("~r~L'IBAN renseigné n'existe pas.")
+        return 
+    end
+
+    if (playerSelected.getAccount(eBank.Bank.AccountName).money >= tonumber(data.MONTANT)) and (tonumber(data.MONTANT) > 0) then
+        local targetSelected = ESX.GetPlayerFromIdentifier(Bank.Virement[data.IBAN].identifier)
+        if (targetSelected) then
+            if playerSelected.identifier == Bank.Virement[data.IBAN].identifier then 
+                return playerSelected.showNotification("~r~Vous ne pouvez pas vous envoyer d'argent.")
+            else
+                playerSelected.removeAccountMoney(eBank.Bank.AccountName, data.MONTANT)
+                targetSelected.addAccountMoney(eBank.Bank.AccountName, data.MONTANT)
+                playerSelected.showNotification('Vous avez envoyer un virement a ( ~g~'..data.IBAN..' ~s~)')
+                targetSelected.showNotification('Vous avez reçu un virement de ~g~'..data.MONTANT..'$')
+                Bank.AddTransaction(targetSelected.source, {
+                    amount = '~g~+'..data.MONTANT..'~s~',
+                    Title = 'Virement reçu : '..Bank.History[playerSelected.identifier].bankid,
+                    Description = data.RAISON,
+                    type = 'Virement reçu',
+                    Date = GetDate(),
+                })
+                Bank.AddTransaction(playerSelected.source, {
+                    amount = '~r~-'..data.MONTANT..'~s~',
+                    Title = 'Virement envoyé : '..data.IBAN,
+                    Description = data.RAISON,
+                    type = 'Virement envoyé',
+                    Date = GetDate(),
+                })
+            end
+        else
+            if Bank.Virement[data.IBAN] then 
+                playerSelected.removeAccountMoney(eBank.Bank.AccountName, data.MONTANT)
+                playerSelected.showNotification('Vous avez envoyer un virement a ( ~g~'..data.IBAN..' ~s~)')
+                if (not Bank.History[Bank.Virement[data.IBAN].identifier].Virement) then 
+                    Bank.History[Bank.Virement[data.IBAN].identifier].Virement = {} 
+                end
+                while (not Bank.History[Bank.Virement[data.IBAN].identifier].Virement) do 
+                    Wait(500) 
+                end
+                local NumberTransaction = os.time()
+                while Bank.History[Bank.Virement[data.IBAN].identifier].Virement[NumberTransaction] do 
+                    Wait(500)
+                    NumberTransaction = os.time() + 1
+                end
+                Bank.History[Bank.Virement[data.IBAN].identifier].Virement[NumberTransaction] = {}
+                Bank.History[Bank.Virement[data.IBAN].identifier].Virement[NumberTransaction].id = NumberTransaction
+                Bank.History[Bank.Virement[data.IBAN].identifier].Virement[NumberTransaction].amount = data.MONTANT
+                Bank.History[Bank.Virement[data.IBAN].identifier].Virement[NumberTransaction].Description = data.RAISON
+                Bank.History[Bank.Virement[data.IBAN].identifier].Virement[NumberTransaction].Date = GetDate()
+                MySQL.Async.execute('UPDATE vbank SET Virement = @Virement WHERE identifier = @license',{
+                    ['@license'] = Bank.Virement[data.IBAN].identifier,
+                    ['@Virement'] = json.encode(Bank.History[Bank.Virement[data.IBAN].identifier].Virement),
+                })
+                Bank.AddTransactionOffline(Bank.Virement[data.IBAN].identifier, {
+                    amount = '~g~+'..data.MONTANT..'~s~',
+                    Title = 'Virement reçu : '..Bank.History[playerSelected.identifier].bankid,
+                    Description = data.RAISON,
+                    type = 'Virement reçu',
+                    Date = GetDate(),
+                })
+                Bank.AddTransaction(playerSelected.source, {
+                    amount = '~r~-'..data.MONTANT..'~s~',
+                    Title = 'Virement envoyé : '..data.IBAN,
+                    Description = data.RAISON,
+                    type = 'Virement envoyé',
+                    Date = GetDate(),
+                })
+            end
+        end
+    else
+        playerSelected.showNotification("~r~Vous n'avez pas assez d'argent sur votre compte bancaire.")
+        return 
+    end
+end)
+  
+  local function QuantityOk(number)
+      number = tonumber(number)
+  
+      if type(number) == "number" then
+          number = ESX.Math.Round(number)
+  
+          if number > 0 then
+              return true, number
+          end
+      end
+  
+      return false, number
+  end
+  
+  RegisterNetEvent('Null:ActionBank', function(type, amount)
+      local xPlayer = ESX.GetPlayerFromId(source)
+      local IsOk, amount = QuantityOk(amount) 
+      if IsOk then
+          if type == 'withdraw' then
+              if xPlayer.getAccount(eBank.Bank.AccountName).money >= amount then 
+                  xPlayer.removeAccountMoney(eBank.Bank.AccountName, amount)
+                  xPlayer.addAccountMoney(eBank.Money.AccountName, amount)
+                  xPlayer.showNotification('Vous avez retirer '..amount..'$')
+                  if amount >= eBank.History.MinimumTransactionPrice then 
+                      Bank.AddTransaction(xPlayer.source, {
+                          amount = '~r~-'..amount..'~s~',
+                          Title = 'Retrait ATM',
+                          Description = 'Retrait d\'argent dans un ATM',
+                          type = 'Retrait',
+                          Date = GetDate(),
+                      })
+                  end
+              end
+          elseif type == 'deposit' then
+              if xPlayer.getAccount(eBank.Money.AccountName).money >= amount then 
+                  xPlayer.removeAccountMoney(eBank.Money.AccountName, amount)
+                  xPlayer.addAccountMoney(eBank.Bank.AccountName, amount)
+                  xPlayer.showNotification('Vous avez déposer '..amount..'$')
+                  if amount >= eBank.History.MinimumTransactionPrice then 
+                      Bank.AddTransaction(xPlayer.source, {
+                          amount = '~g~+'..amount..'~s~',
+                          Title = 'Dépôt',
+                          Description = 'Dépôt d\'argent',
+                          type = 'Dépôt',
+                          Date = GetDate(),
+                      })
+                  end
+              end
+          end
+      else
+          xPlayer.showNotification('Quantité invalide')
+      end
+  end)
+  
+  
