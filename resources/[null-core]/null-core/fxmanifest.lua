@@ -1,7 +1,7 @@
 fx_version "adamant"
 lua54 'yes'
 game "gta5"
-zz
+
 name 'null-core'
 author 'Null'
 version "4.0.40"

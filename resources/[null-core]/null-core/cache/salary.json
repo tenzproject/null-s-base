@@ -1,1 +1,1 @@
-{"Primes":{"min":0,"max":10000},"Mensuel":{"min":900,"max":7500},"Pour 30 Min":{"min":0,"max":50}}
+{"Primes":{"max":10000,"min":0},"Mensuel":{"max":7500,"min":900},"Pour 30 Min":{"max":50,"min":0}}
