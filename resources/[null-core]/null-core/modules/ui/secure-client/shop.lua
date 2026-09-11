@@ -12,6 +12,11 @@ local shopPreviewSkins = {}
 local shopChangedSkins = {}
 local shopIsDragging = false
 local shopLastMouseX = 0
+local shopLastMouseY = 0
+local shopCamYaw = 0.0
+local shopCamPitch = 0.0
+local shopCamDistance = 2.2
+local shopCamTargetZ = 0.2
 local shopCurrentCategory = "torso_1"
 local shopMode = "clothes" -- "clothes" or "accessories"
 local shopPreviewPedsActive = false
@@ -63,6 +68,28 @@ local function IsMale()
 end
 
 -- Camera
+local function IsUtilsShopModeActive()
+    return shopMode == "barber" or shopMode == "makeup" or shopMode == "tattoo"
+end
+
+local function UpdateUtilsShopCam()
+    if not DoesCamExist(shopCam) then return end
+
+    local coords = GetEntityCoords(PlayerPedId())
+    local targetZ = coords.z + shopCamTargetZ
+    local yaw = math.rad(shopCamYaw)
+    local pitch = math.rad(shopCamPitch)
+    local horizontalDistance = math.cos(pitch) * shopCamDistance
+
+    SetCamCoord(
+        shopCam,
+        coords.x + math.sin(yaw) * horizontalDistance,
+        coords.y + math.cos(yaw) * horizontalDistance,
+        targetZ + math.sin(pitch) * shopCamDistance
+    )
+    PointCamAtCoord(shopCam, coords.x, coords.y, targetZ)
+end
+
 local function CreateShopCam()
     if DoesCamExist(shopCam) then DestroyCam(shopCam, true) end
     if DoesCamExist(shopTransitionCam) then DestroyCam(shopTransitionCam, true) end
@@ -70,11 +97,26 @@ local function CreateShopCam()
     shopCam = CreateCam('DEFAULT_SCRIPTED_CAMERA', true)
     local coords = GetEntityCoords(PlayerPedId())
     SetEntityVisible(PlayerPedId(), true, 0)
-    SetCamCoord(shopCam, coords.x + 0.5, coords.y + 2.2, coords.z + 0.6)
-    SetCamRot(shopCam, 0.0, 0.0, 270.0, true)
+    shopCamYaw = 0.0
+    shopCamPitch = 0.0
+    if IsUtilsShopModeActive() then
+        shopCamDistance = 1.65
+        shopCamTargetZ = 0.82
+        SetCamCoord(shopCam, coords.x, coords.y + shopCamDistance, coords.z + shopCamTargetZ)
+        SetCamFov(shopCam, 42.0)
+    else
+        shopCamDistance = 2.2
+        shopCamTargetZ = 0.2
+        SetCamCoord(shopCam, coords.x + 0.5, coords.y + 2.2, coords.z + 0.6)
+        SetCamRot(shopCam, 0.0, 0.0, 270.0, true)
+    end
     SetCamActive(shopCam, true)
     RenderScriptCams(true, true, 1000, true, true)
-    PointCamAtCoord(shopCam, coords.x, coords.y, coords.z + 0.2)
+    if IsUtilsShopModeActive() then
+        UpdateUtilsShopCam()
+    else
+        PointCamAtCoord(shopCam, coords.x, coords.y, coords.z + 0.2)
+    end
 end
 
 local function UpdateShopCamPosition()
@@ -122,6 +164,11 @@ local function DeleteShopCam()
     end
     shopCam = nil
     shopTransitionCam = nil
+    shopIsDragging = false
+    shopCamYaw = 0.0
+    shopCamPitch = 0.0
+    shopCamDistance = 2.2
+    shopCamTargetZ = 0.2
 end
 
 -- Preview Peds System
@@ -434,6 +481,14 @@ function OpenShop(mode, brandId)
                 brand = brand,
                 categories = SHOP_UTILS_CATEGORIES[shopMode] or {},
                 price = utilsCfg and utilsCfg.Price or 100,
+                skin = skin,
+                maxValues = {
+                    hair = GetNumberOfPedDrawableVariations(PlayerPedId(), 2),
+                    beard = GetNumHeadOverlayValues(1),
+                    eyebrows = GetNumHeadOverlayValues(2),
+                    colors = GetNumHairColors(),
+                    opacity = 10,
+                },
             }
             if shopMode == "tattoo" then
                 payload.tattoosList = buildTattooListsForFront()[pedtype] or {}
@@ -507,14 +562,21 @@ local function CloseShop(changeSkin)
 
     -- Branche modes utils (barber/makeup/tattoo)
     if isUtilsMode(shopMode) then
+        local initialSkin = shopUtilsInitial
+        local hadInitialSkin = next(initialSkin) ~= nil
         shopUtilsCart = {}
         shopUtilsInitial = {}
         shopUtilsInitialDecorations = {}
         if not changeSkin then
-            -- Restore depuis DB (annule le preview)
-            ESX.TriggerServerCallback('Null:esx_skin:getPlayerSkin', function(skin)
-                TriggerEvent('Null:skinchanger:loadSkin', skin)
-            end)
+            -- Restore the exact opening snapshot, including hair/beard/
+            -- eyebrow colors and opacities changed during the preview.
+            if hadInitialSkin then
+                TriggerEvent('Null:skinchanger:loadSkin', initialSkin)
+            else
+                ESX.TriggerServerCallback('Null:esx_skin:getPlayerSkin', function(skin)
+                    TriggerEvent('Null:skinchanger:loadSkin', skin)
+                end)
+            end
             -- Recharge les tattoos depuis le serveur
             TriggerServerEvent("null:tattoo:player:request:tattoo")
         end
@@ -818,6 +880,68 @@ RegisterNUICallback("shop:utils:getMaxVariations", function(data, cb)
         max = GetPedHeadOverlayNum(UTILS_OVERLAY_ID[utilsType])
     end
     cb({ max = max })
+end)
+
+-- Camera controls for the utils shop. The camera orbits the player's head
+-- while the NUI remains focused, so the preview can be inspected without
+-- changing the ped heading used by the rest of the game.
+RegisterNUICallback("shop:utils:startRotation", function(data, cb)
+    if not IsUtilsShopModeActive() then cb({}); return end
+    shopIsDragging = true
+    shopLastMouseX = tonumber(data and data.mouseX) or 0
+    shopLastMouseY = tonumber(data and data.mouseY) or 0
+    cb({})
+end)
+
+RegisterNUICallback("shop:utils:stopRotation", function(data, cb)
+    shopIsDragging = false
+    cb({})
+end)
+
+RegisterNUICallback("shop:utils:updateRotation", function(data, cb)
+    if shopIsDragging and IsUtilsShopModeActive() then
+        local currentX = tonumber(data and data.mouseX) or shopLastMouseX
+        local currentY = tonumber(data and data.mouseY) or shopLastMouseY
+        local deltaX = currentX - shopLastMouseX
+        local deltaY = currentY - shopLastMouseY
+        shopCamYaw = shopCamYaw + (deltaX * 0.35)
+        shopCamPitch = math.max(-28.0, math.min(28.0, shopCamPitch - (deltaY * 0.25)))
+        shopLastMouseX = currentX
+        shopLastMouseY = currentY
+        UpdateUtilsShopCam()
+    end
+    cb({})
+end)
+
+RegisterNUICallback("shop:utils:zoom", function(data, cb)
+    if IsUtilsShopModeActive() and DoesCamExist(shopCam) then
+        local delta = tonumber(data and data.delta) or 0
+        shopCamDistance = math.max(0.9, math.min(2.6, shopCamDistance + (delta > 0 and 0.12 or -0.12)))
+        UpdateUtilsShopCam()
+    end
+    cb({})
+end)
+
+local UTILS_EDITABLE_KEYS = {
+    hair_color_1 = true, hair_color_2 = true,
+    beard_2 = true, beard_3 = true, beard_4 = true,
+    eyebrows_2 = true, eyebrows_3 = true, eyebrows_4 = true,
+}
+
+RegisterNUICallback("shop:utils:update", function(data, cb)
+    local key = data and data.key
+    if not UTILS_EDITABLE_KEYS[key] then cb({ ok = false }); return end
+
+    local value = tonumber(data.value)
+    if not value then cb({ ok = false }); return end
+    if key == "beard_2" or key == "eyebrows_2" then
+        value = math.max(0, math.min(10, math.floor(value)))
+    else
+        value = math.max(0, math.min(GetNumHairColors() - 1, math.floor(value)))
+    end
+
+    TriggerEvent("Null:skinchanger:change", key, value)
+    cb({ ok = true, value = value })
 end)
 
 -- Applique en preview un item utils (barber/makeup).

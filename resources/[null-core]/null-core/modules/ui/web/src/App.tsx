@@ -1269,6 +1269,8 @@ function App() {
         visible={shopVisible}
         onClose={() => setShopVisible(false)}
         primaryColor={globalConfig.primaryColor}
+        serverIcon={serverConfig.serverIcon}
+        serverName={serverConfig.serverName}
       />
 
       {/* Dev Panel */}
