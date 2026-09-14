@@ -25,7 +25,15 @@ function formatMoney(n: number): string {
   return n.toLocaleString('fr-FR') + '$';
 }
 
-const MONTH_LABELS = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+const WEEKDAY_LABELS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+
+function parseBankTransactionDate(value: string): Date {
+  const match = value.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
+  if (match) {
+    return new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
+  }
+  return new Date(value);
+}
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   deposit: <ArrowDownToLine size={16} />,
@@ -162,33 +170,77 @@ const Bank: React.FC<BankProps> = ({ visible, onClose, primaryColor }) => {
   }, [data, handleClose]);
 
   // ---- Analytics ----
-  const monthlySpending = useMemo(() => {
+  const weeklySpending = useMemo(() => {
     if (!data) return [];
     const now = new Date();
-    const months: { label: string; total: number }[] = [];
-    for (let i = 5; i >= 0; i--) {
-      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      months.push({ label: MONTH_LABELS[d.getMonth()], total: 0 });
+    const days: { date: Date; label: string; dateLabel: string; total: number }[] = [];
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+      days.push({
+        date,
+        label: WEEKDAY_LABELS[date.getDay()],
+        dateLabel: [String(date.getDate()).padStart(2, '0'), String(date.getMonth() + 1).padStart(2, '0')].join('/'),
+        total: 0,
+      });
     }
+
     data.history.forEach(tx => {
-      if (tx.amount < 0) {
-        const parts = tx.date.split(' - ')[0]?.split('.');
-        if (parts && parts.length === 3) {
-          const txMonth = parseInt(parts[1]) - 1;
-          const txYear = parseInt(parts[2]);
-          for (let i = 0; i < months.length; i++) {
-            const d = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1);
-            if (d.getMonth() === txMonth && d.getFullYear() === txYear) {
-              months[i].total += Math.abs(tx.amount);
-            }
-          }
-        }
+      if (tx.amount >= 0) return;
+      const txDate = parseBankTransactionDate(tx.date);
+      if (Number.isNaN(txDate.getTime())) return;
+
+      const matchingDay = days.find(day =>
+        day.date.getFullYear() === txDate.getFullYear() &&
+        day.date.getMonth() === txDate.getMonth() &&
+        day.date.getDate() === txDate.getDate()
+      );
+      if (matchingDay) {
+        matchingDay.total += Math.abs(tx.amount);
       }
     });
-    return months;
+    return days;
   }, [data]);
 
-  const maxMonthly = useMemo(() => Math.max(...monthlySpending.map(m => m.total), 1), [monthlySpending]);
+  const maxWeekly = useMemo(
+    () => Math.max(...weeklySpending.map(day => day.total), 0),
+    [weeklySpending]
+  );
+
+  const chartScaleMax = maxWeekly || 1;
+
+  const weeklyTotal = useMemo(
+    () => weeklySpending.reduce((total, day) => total + day.total, 0),
+    [weeklySpending]
+  );
+
+  const weeklyChartPoints = useMemo(() => {
+    const width = 720;
+    const height = 220;
+    const left = 24;
+    const right = 14;
+    const top = 18;
+    const bottom = 48;
+    const plotWidth = width - left - right;
+    const plotHeight = height - top - bottom;
+
+    return weeklySpending.map((day, index) => ({
+      ...day,
+      x: left + (index * plotWidth) / Math.max(weeklySpending.length - 1, 1),
+      y: top + plotHeight - (day.total / chartScaleMax) * plotHeight,
+    }));
+  }, [weeklySpending, chartScaleMax]);
+
+  const weeklyLinePath = weeklyChartPoints
+    .map((point, index) =>
+      (index === 0 ? 'M' : 'L') + ' ' + point.x.toFixed(2) + ' ' + point.y.toFixed(2)
+    )
+    .join(' ');
+
+  const weeklyAreaPath = weeklyChartPoints.length > 0
+    ? weeklyLinePath +
+      ' L ' + weeklyChartPoints[weeklyChartPoints.length - 1].x.toFixed(2) +
+      ' 172 L ' + weeklyChartPoints[0].x.toFixed(2) + ' 172 Z'
+    : '';
 
   const categoryBreakdown = useMemo(() => {
     if (!data) return [];
@@ -460,27 +512,59 @@ const Bank: React.FC<BankProps> = ({ visible, onClose, primaryColor }) => {
         </div>
       </div>
 
-      {/* Monthly spending chart */}
+      {/* Real spending curve for the last seven days */}
       <div className="bank-section-header">
-        <span className="bank-section-title">Dépenses mensuelles</span>
+        <span className="bank-section-title">Dépenses — 7 derniers jours</span>
+        <span className="bank-section-count">{formatMoney(weeklyTotal)} au total</span>
       </div>
-      <div className="bank-chart-container">
-        <div className="bank-chart-bars">
-          {monthlySpending.map((m, i) => (
-            <div className="bank-chart-bar-col" key={i}>
-              <div className="bank-chart-bar-value">{m.total > 0 ? formatMoney(m.total) : ''}</div>
-              <div className="bank-chart-bar-track">
-                <div
-                  className="bank-chart-bar-fill"
-                  style={{
-                    height: `${Math.max((m.total / maxMonthly) * 100, 3)}%`,
-                    background: `rgba(${accentRgb}, ${0.4 + (i / 5) * 0.5})`,
-                  }}
-                />
-              </div>
-              <div className="bank-chart-bar-label">{m.label}</div>
-            </div>
-          ))}
+      <div className="bank-chart-container bank-weekly-chart">
+        <div className="bank-chart-head">
+          <span>Évolution quotidienne</span>
+          <span>Montants débités</span>
+        </div>
+        <div className="bank-line-chart">
+          <svg viewBox="0 0 720 220" role="img" aria-label="Courbe des dépenses des sept derniers jours">
+            <defs>
+              <linearGradient id="bank-weekly-area-gradient" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor="var(--bank-ui-accent)" stopOpacity="0.24" />
+                <stop offset="100%" stopColor="var(--bank-ui-accent)" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+
+            {[0, 0.25, 0.5, 0.75, 1].map((level) => {
+              const y = 18 + (1 - level) * 154;
+              return (
+                <g key={level}>
+                  <line className="bank-chart-gridline" x1="24" x2="706" y1={y} y2={y} />
+                  <text className="bank-chart-scale-label" x="24" y={y - 5}>
+                    {level === 0 ? '0$' : formatMoney(Math.round(maxWeekly * level))}
+                  </text>
+                </g>
+              );
+            })}
+
+            {weeklyAreaPath && <path className="bank-chart-area" d={weeklyAreaPath} />}
+            {weeklyLinePath && <path className="bank-chart-line" d={weeklyLinePath} />}
+
+            {weeklyChartPoints.map((point) => (
+              <g key={point.dateLabel} className="bank-chart-point">
+                <title>{point.label + ' ' + point.dateLabel + ' : ' + formatMoney(point.total)}</title>
+                <circle className="bank-chart-point-halo" cx={point.x} cy={point.y} r="7" />
+                <circle className="bank-chart-point-dot" cx={point.x} cy={point.y} r="3.5" />
+                {point.total > 0 && (
+                  <text className="bank-chart-point-value" x={point.x} y={point.y - 12} textAnchor="middle">
+                    {formatMoney(point.total)}
+                  </text>
+                )}
+                <text className="bank-chart-day-label" x={point.x} y="197" textAnchor="middle">
+                  {point.label}
+                </text>
+                <text className="bank-chart-date-label" x={point.x} y="211" textAnchor="middle">
+                  {point.dateLabel}
+                </text>
+              </g>
+            ))}
+          </svg>
         </div>
       </div>
 

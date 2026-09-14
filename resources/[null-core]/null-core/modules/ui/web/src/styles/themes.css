@@ -1,48 +1,106 @@
 :root {
-  --bg-primary: rgba(12, 12, 12, 0.92);
-  --bg-primary-full: rgba(12, 12, 12, 1.0);
-  --bg-secondary: rgba(255, 255, 255, 0.04);
-  --bg-tertiary: rgba(255, 255, 255, 0.08);
-  --bg-hover: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.07);
-  --border-strong: rgba(255, 255, 255, 0.12);
+  /* Design tokens from the reference dashboard. */
+  --background: 240 10% 9%;
+  --foreground: 0 0% 95%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 95%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 74 87% 50%;
+  --primary-foreground: 240 6% 4%;
+  --secondary: 240 3% 19%;
+  --secondary-foreground: 0 0% 95%;
+  --muted: 240 3% 16%;
+  --muted-foreground: 240 5% 65%;
+  --accent-foreground: 240 6% 4%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 95%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 74 87% 50%;
 
-  --text-primary: rgba(255, 255, 255, 0.92);
-  --text-secondary: rgba(255, 255, 255, 0.50);
-  --text-tertiary: rgba(255, 255, 255, 0.28);
+  /* Dashboard palette: #161518, #0B0B0B, #303032, #BEEE11. */
+  --dashboard-background: #161518;
+  --dashboard-primary: #0B0B0B;
+  --dashboard-secondary: #303032;
+  --dashboard-third: #1e1d1f;
+  --dashboard-fourth: #3B3B3DCC;
+  --dashboard-fifth: #D9D9D90D;
+  --dashboard-sixth: #3B3B3D;
+  --dashboard-seventh: #282729;
+  --dashboard-grey: #212022;
+  --dashboard-itemselected: #343336;
+  --dashboard-modalitem: #151517;
+  --dashboard-selectcolor: #151517;
+  --dashboard-white: #F3F3F3;
+  --dashboard-whitebg: #F3F3F31A;
+  --dashboard-green: #BEEE11;
+  --dashboard-greenbg: #2FC27A12;
+  --dashboard-greenbg2: #2b483b;
+  --dashboard-greenbg3: #3e4033;
+  --dashboard-greentext: #2FC27A;
+  --dashboard-blue: #2F7BC2;
+  --dashboard-bluebg: #2F7BC21A;
+  --dashboard-red: #d94c4c;
+  --dashboard-red2: #C42B2E;
+  --dashboard-redbg: #652329;
+  --dashboard-redtext: #DE3134;
 
-  --accent: #63b9ff;
-  --accent-glow: rgba(99, 185, 255, 0.18);
-  --accent-hover: rgba(99, 185, 255, 0.12);
+  --server-color: var(--dashboard-green);
+  --server-color-rgb: 190, 238, 17;
+  --primary-color: var(--dashboard-green);
+  --primary-color-rgb: 190, 238, 17;
 
-  --danger: rgba(255, 80, 80, 0.85);
-  --danger-glow: rgba(255, 80, 80, 0.15);
+  --bg-primary: var(--dashboard-primary);
+  --bg-primary-full: var(--dashboard-primary);
+  --bg-secondary: var(--dashboard-secondary);
+  --bg-tertiary: var(--dashboard-fourth);
+  --bg-hover: var(--dashboard-itemselected);
+  --border-color: var(--dashboard-fifth);
+  --border-strong: var(--dashboard-sixth);
 
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
-  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.40);
+  --text-primary: var(--dashboard-white);
+  --text-secondary: rgba(243, 243, 243, 0.70);
+  --text-tertiary: rgba(243, 243, 243, 0.43);
 
-  --radius: 12px;
-  --radius-sm: 8px;
-  --radius-xs: 6px;
+  --accent: var(--dashboard-green);
+  --accent-glow: rgba(190, 238, 17, 0.30);
+  --accent-hover: var(--dashboard-greenbg);
 
-  --font-base: 'Outfit', sans-serif;
+  --danger: var(--dashboard-red);
+  --danger-glow: var(--dashboard-redbg);
+
+  --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.10),
+    0 4px 6px -4px rgba(0, 0, 0, 0.10);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+  --radius: 0.5rem;
+  --radius-sm: 0.25rem;
+  --radius-xs: 0.25rem;
+
+  --font-base: 'DM Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  --shadow-color: rgba(0, 0, 0, 0.55);
+  --shadow-color: rgba(0, 0, 0, 0.25);
 
-  --surface-1: rgba(12, 12, 12, 0.94);
-  --surface-2: rgba(20, 20, 22, 0.92);
-  --surface-3: rgba(255, 255, 255, 0.03);
+  --surface-1: var(--dashboard-primary);
+  --surface-2: var(--dashboard-secondary);
+  --surface-3: var(--dashboard-fifth);
   --surface-blur: none;
-  --overlay-scrim: rgba(0, 0, 0, 0.6);
+  --overlay-scrim: rgba(0, 0, 0, 0.80);
+
+  --button-bg: var(--dashboard-sixth);
+  --button-bg-hover: var(--dashboard-itemselected);
+  --button-border: var(--dashboard-sixth);
+  --button-border-hover: var(--dashboard-green);
 }
 
 html[data-null-blur-addon="active"] {
-  --surface-1: rgba(12, 12, 12, 0.45);
-  --surface-2: rgba(18, 18, 20, 0.42);
-  --surface-3: rgba(255, 255, 255, 0.05);
+  --surface-1: rgba(11, 11, 11, 0.45);
+  --surface-2: rgba(48, 48, 50, 0.42);
+  --surface-3: rgba(217, 217, 217, 0.05);
   --surface-blur: blur(22px);
-  --overlay-scrim: rgba(0, 0, 0, 0.28);
+  --overlay-scrim: rgba(0, 0, 0, 0.80);
 }
 
 html[data-null-blur-addon="active"] [data-theme="light"] {
@@ -53,22 +111,77 @@ html[data-null-blur-addon="active"] [data-theme="light"] {
 
 /* Light Theme */
 [data-theme="light"] {
-  --bg-primary: rgba(240, 240, 240, 0.96);
-  --bg-primary-full: rgba(240, 240, 240, 1.0);
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 10% 3.9%;
+
+  --bg-primary: #ffffff;
+  --bg-primary-full: #ffffff;
   --bg-secondary: rgba(0, 0, 0, 0.04);
   --bg-tertiary: rgba(0, 0, 0, 0.07);
   --bg-hover: rgba(0, 0, 0, 0.05);
-
   --border-color: rgba(0, 0, 0, 0.08);
   --border-strong: rgba(0, 0, 0, 0.14);
-
   --text-primary: rgba(10, 10, 10, 1.0);
-  --text-secondary: rgba(10, 10, 10, 1.0);
-  --text-tertiary: rgba(10, 10, 10, 0.28);
-
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.12);
+  --text-secondary: rgba(10, 10, 10, 0.68);
+  --text-tertiary: rgba(10, 10, 10, 0.43);
+  --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.10),
+    0 4px 6px -4px rgba(0, 0, 0, 0.10);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-color: rgba(0, 0, 0, 0.18);
+  --button-bg: rgba(255, 255, 255, 0.58);
+  --button-bg-hover: rgba(255, 255, 255, 0.82);
+  --button-border: rgba(0, 0, 0, 0.12);
+  --button-border-hover: rgba(0, 0, 0, 0.22);
+}
+
+/* Shared button baseline. Module-specific button classes can override it. */
+button {
+  appearance: none;
+  border: 1px solid var(--button-border);
+  border-radius: var(--radius-sm);
+  background: var(--button-bg);
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease, transform 0.12s ease;
+}
+
+button:hover:not(:disabled) {
+  background: var(--button-bg-hover);
+  border-color: var(--button-border-hover);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 /* Modern Style (Default) */

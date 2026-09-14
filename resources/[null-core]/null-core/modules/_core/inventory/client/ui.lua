@@ -27,7 +27,8 @@ local InventoryPedConfig = {
     lightOffset = vector3(0.0, 1.0, 1.5),
     fadeDuration = 150.0,
     bgColor = { r = 12, g = 12, b = 14 },
-    targetAlpha = 235,
+    -- Keep the preview ped visible without painting an opaque rectangle over the scene.
+    targetAlpha = 0,
     lightColor = { r = 195, g = 255, b = 209 },
     cameraTilt = true,
     cameraTiltConfig = {

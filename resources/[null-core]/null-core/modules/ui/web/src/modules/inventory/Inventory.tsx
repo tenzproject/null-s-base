@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { generateAccentVars } from '@/utils/accentColors';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { soundManager } from '@core/SoundManager';
 import { Check } from 'lucide-react';
 import {
@@ -18,7 +17,6 @@ import './Inventory.css';
 interface InventoryProps {
   visible: boolean;
   onClose: () => void;
-  primaryColor: string;
   serverIcon?: string;
   serverName?: string;
 }
@@ -50,12 +48,10 @@ const getInventoryItemSlotKey = (item: InventoryItem) => {
   return `${item.type}:${item.name}:${uniqueId ?? item.slot ?? ''}`;
 };
 
-const Inventory: React.FC<InventoryProps> = ({ visible, onClose, primaryColor, serverIcon, serverName }) => {
+const Inventory: React.FC<InventoryProps> = ({ visible, onClose, serverIcon, serverName }) => {
   /* ---- Visibility state ---- */
   const [hiding, setHiding] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const niAccentVars = useMemo(() => generateAccentVars('--ni-accent', primaryColor), [primaryColor]);
-
   /* ---- Inventory data ---- */
   const [playerSex, setPlayerSex] = useState<'male' | 'female'>('male');
   const [leftInventory, setLeftInventory] = useState<InventoryItem[]>([]);
@@ -1045,7 +1041,6 @@ const Inventory: React.FC<InventoryProps> = ({ visible, onClose, primaryColor, s
   return (
     <div
       className={`ni-overlay ${overlayClass} ni-has-hub ${rightVisible ? 'ni-chest-open' : ''}`}
-      style={niAccentVars as React.CSSProperties}
     >
       {/* Left Panel — Player inventory */}
       <LeftPanel

@@ -303,6 +303,311 @@
   transform: translateY(0);
 }
 
+/* ==========================================================================
+   NULL CORE PROMPT — professional flat treatment
+   The dialog is shared by outfit names, amounts and every other NUI input.
+   Keep the accent token global so prompts never invent a module colour.
+   ========================================================================== */
+.input-dialog-overlay {
+  background: var(--overlay-scrim, rgba(8, 10, 12, 0.78));
+  transition: opacity 0.16s ease;
+}
+
+.input-dialog-overlay.visible {
+  animation: promptOverlayIn 0.16s ease-out both;
+}
+
+.input-dialog-overlay.hiding {
+  animation: promptOverlayOut 0.12s ease-in both;
+}
+
+@keyframes promptOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes promptOverlayOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.input-dialog-container {
+  width: min(430px, calc(100vw - 32px));
+  min-width: 0;
+  max-width: 430px;
+  max-height: min(80vh, 620px);
+  border: 1px solid var(--border-strong);
+  border-top: 2px solid var(--accent);
+  border-radius: 0;
+  background: var(--bg-primary-full);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.52);
+  animation: promptPanelIn 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.input-dialog-overlay.hiding .input-dialog-container {
+  animation: promptPanelOut 0.12s ease-in both;
+}
+
+@keyframes promptPanelIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes promptPanelOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(5px); }
+}
+
+.input-dialog-header {
+  min-height: 64px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--surface-1, var(--bg-primary-full));
+}
+
+.input-dialog-header::before,
+.input-dialog-header::after {
+  display: none;
+}
+
+.input-dialog-header-left {
+  gap: 10px;
+}
+
+.input-dialog-title-container {
+  gap: 3px;
+}
+
+.server-name {
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  opacity: 1;
+}
+
+.input-dialog-title {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.input-dialog-content {
+  padding: 22px 18px 20px;
+  background: var(--bg-primary-full);
+}
+
+.input-dialog-field {
+  margin-bottom: 18px;
+}
+
+.input-dialog-label {
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.input-required {
+  color: var(--accent);
+  margin-left: 4px;
+}
+
+.input-dialog-description {
+  margin: -2px 0 9px;
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+.input-dialog-input,
+.input-dialog-select,
+.input-dialog-textarea {
+  min-height: 42px;
+  padding: 11px 12px;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 0;
+  background: var(--surface-3, rgba(255, 255, 255, 0.06));
+  color: var(--text-primary);
+  font-size: 13px;
+  transition: border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.input-dialog-input:hover,
+.input-dialog-select:hover,
+.input-dialog-textarea:hover {
+  border-color: var(--border-strong) !important;
+  background: var(--bg-secondary);
+}
+
+.input-dialog-input:focus,
+.input-dialog-select:focus,
+.input-dialog-textarea:focus {
+  border-color: var(--accent) !important;
+  background: var(--bg-secondary);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.input-dialog-input::placeholder,
+.input-dialog-textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.input-dialog-textarea {
+  min-height: 108px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.input-dialog-checkbox {
+  border: 1px solid var(--border-color);
+  border-radius: 0;
+  background: var(--surface-3, rgba(255, 255, 255, 0.06));
+}
+
+.input-dialog-checkbox::before {
+  background-color: var(--accent);
+  border-radius: 0;
+}
+
+.input-dialog-checkbox:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-secondary);
+}
+
+.checkbox-custom {
+  border-radius: 0;
+}
+
+.input-dialog-error {
+  color: var(--danger);
+}
+
+.input-dialog-footer {
+  min-height: 70px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--border-color);
+  background: var(--surface-1, var(--bg-primary-full));
+}
+
+.input-dialog-button {
+  min-width: 104px;
+  min-height: 40px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.input-dialog-button.cancel {
+  border-color: var(--border-color);
+  background: transparent;
+  color: var(--text-tertiary);
+}
+
+.input-dialog-button.cancel:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.input-dialog-button.submit {
+  border-color: var(--accent) !important;
+  background: var(--accent) !important;
+  color: var(--bg-primary-full) !important;
+  box-shadow: none !important;
+}
+
+.input-dialog-button.submit:hover {
+  background: var(--accent) !important;
+  color: var(--bg-primary-full) !important;
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.input-dialog-button:focus-visible,
+.input-dialog-input:focus-visible,
+.input-dialog-select:focus-visible,
+.input-dialog-textarea:focus-visible,
+.input-dialog-checkbox:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.input-dialog-multiselect-trigger,
+.input-dialog-multiselect-search,
+.input-dialog-multiselect-dropdown {
+  border-radius: 0;
+}
+
+.input-dialog-multiselect-trigger {
+  border-color: var(--border-color);
+  background: var(--surface-3, rgba(255, 255, 255, 0.06));
+}
+
+.input-dialog-multiselect-trigger:hover,
+.input-dialog-multiselect-trigger.error {
+  border-color: var(--accent);
+}
+
+.input-dialog-multiselect-tag {
+  border-radius: 0;
+  background: var(--accent-hover) !important;
+  border-color: var(--accent-glow) !important;
+}
+
+.input-dialog-multiselect-dropdown {
+  border-color: var(--border-strong);
+  background: var(--bg-primary-full);
+  box-shadow: var(--shadow-sm);
+}
+
+.input-dialog-multiselect-option {
+  border-radius: 0;
+}
+
+.input-dialog-multiselect-option:hover,
+.input-dialog-multiselect-option.selected {
+  background: var(--accent-hover);
+}
+
+.input-dialog-slider-input::-webkit-slider-thumb,
+.input-dialog-slider-input::-moz-range-thumb {
+  border-radius: 0;
+  background: var(--accent);
+}
+
+.input-dialog-slider-value {
+  color: var(--accent) !important;
+}
+
+@media (max-width: 520px) {
+  .input-dialog-container {
+    width: calc(100vw - 24px);
+  }
+
+  .input-dialog-footer {
+    flex-direction: column-reverse;
+  }
+
+  .input-dialog-button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input-dialog-overlay,
+  .input-dialog-container,
+  .input-dialog-overlay.hiding .input-dialog-container {
+    animation: none;
+    transition: none;
+  }
+}
+
 /* ========== MULTI-SELECT ========== */
 .input-dialog-multiselect {
   position: relative;
@@ -626,4 +931,78 @@
   position: relative;
   right: auto;
   flex-shrink: 0;
+}
+
+/* Final cascade guard for control-specific rules above. */
+.input-dialog-container,
+.input-dialog-container *,
+.input-dialog-container *::before,
+.input-dialog-container *::after {
+  border-radius: 0;
+}
+
+.input-dialog-container {
+  border-top: 2px solid var(--accent);
+  background: var(--bg-primary-full);
+}
+
+.input-dialog-header,
+.input-dialog-footer {
+  background: var(--surface-1, var(--bg-primary-full));
+}
+
+.input-dialog-header::before,
+.input-dialog-header::after {
+  display: none;
+}
+
+.input-dialog-input,
+.input-dialog-select,
+.input-dialog-textarea,
+.input-dialog-multiselect-trigger,
+.input-dialog-multiselect-search {
+  border-color: var(--border-color) !important;
+  background: var(--surface-3, rgba(255, 255, 255, 0.06));
+}
+
+.input-dialog-input:focus,
+.input-dialog-select:focus,
+.input-dialog-textarea:focus,
+.input-dialog-multiselect-trigger:focus,
+.input-dialog-multiselect-search:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.input-dialog-multiselect-trigger:hover,
+.input-dialog-multiselect-trigger.error {
+  border-color: var(--accent) !important;
+}
+
+.input-dialog-multiselect-dropdown {
+  border-color: var(--border-strong);
+  background: var(--bg-primary-full);
+}
+
+.input-dialog-multiselect-tag {
+  background: var(--accent-hover) !important;
+  border-color: var(--accent-glow) !important;
+}
+
+.input-dialog-multiselect-option:hover,
+.input-dialog-multiselect-option.selected {
+  background: var(--accent-hover);
+}
+
+.input-dialog-slider-input::-webkit-slider-thumb,
+.input-dialog-slider-input::-moz-range-thumb {
+  border-radius: 0;
+  background: var(--accent);
+}
+
+.input-dialog-button.submit {
+  border-color: var(--accent) !important;
+  background: var(--accent) !important;
+  color: var(--bg-primary-full) !important;
+  box-shadow: none !important;
 }

@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: 'var(--server-color, #63b9ff)',
+        primary: 'var(--server-color, #BEEE11)',
         black: 'rgb(10, 10, 10)',
         // gray: {
         //   900: 'rgba(17, 24, 39, 1)', // Correspond à votre bg-gray-900
@@ -15,7 +15,7 @@ export default {
         // },
       },
       fontFamily: {
-        outfit: ['Outfit', 'sans-serif'],
+        outfit: ['DM Sans', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-out',

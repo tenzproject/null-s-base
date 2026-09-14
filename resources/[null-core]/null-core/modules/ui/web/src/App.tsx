@@ -1251,7 +1251,6 @@ function App() {
       <Inventory
         visible={inventoryVisible}
         onClose={() => setInventoryVisible(false)}
-        primaryColor={globalConfig.primaryColor}
         serverIcon={serverConfig.serverIcon}
         serverName={serverConfig.serverName}
       />

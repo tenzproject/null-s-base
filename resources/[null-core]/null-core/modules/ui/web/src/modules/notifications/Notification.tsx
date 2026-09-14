@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { NotificationData } from './types';
+import './Notification.css';
 
 interface NotificationProps {
   data: NotificationData;
@@ -232,7 +233,7 @@ const Notification: React.FC<NotificationProps> = ({
 
   return (
     <div
-      className="transition-all duration-300 ease-out"
+      className={'global-notification global-notification-' + data.type + (compactMode ? ' is-compact' : '') + ' transition-all duration-300 ease-out'}
       style={{
         position: 'relative',
         fontFamily: 'Outfit, sans-serif',

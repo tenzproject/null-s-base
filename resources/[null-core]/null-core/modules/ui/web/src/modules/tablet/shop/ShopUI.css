@@ -1226,3 +1226,622 @@
   filter: brightness(1.15);
   transform: translateY(-1px);
 }
+
+/* ==========================================================================
+   NULL SHOP / PROFESSIONAL REDESIGN
+   Shared by Ammu-Nation and supérettes.
+   ========================================================================== */
+
+.shopui-overlay {
+  --shop-ui-accent: var(--accent, #BEEE11);
+  --shop-ui-accent-rgb: var(--primary-color-rgb, 190, 238, 17);
+  --shop-ui-accent-08: rgba(var(--shop-ui-accent-rgb), 0.08);
+  --shop-ui-accent-12: rgba(var(--shop-ui-accent-rgb), 0.12);
+  --shop-ui-accent-22: rgba(var(--shop-ui-accent-rgb), 0.22);
+  --shop-surface-0: var(--dashboard-background, #161518);
+  --shop-surface-1: var(--dashboard-primary, #0B0B0B);
+  --shop-surface-2: var(--dashboard-secondary, #303032);
+  --shop-line: var(--border-color, rgba(235, 238, 245, 0.14));
+  --shop-line-strong: var(--border-strong, rgba(235, 238, 245, 0.24));
+  font-family: var(--font-base, 'DM Sans', sans-serif);
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.shopui-overlay,
+.shopui-overlay *,
+.shopui-overlay *::before,
+.shopui-overlay *::after {
+  border-radius: 0 !important;
+  box-sizing: border-box;
+}
+
+.shopui-container {
+  width: min(92vw, 1400px);
+  height: min(86vh, 860px);
+  max-width: none;
+  background: var(--shop-surface-1);
+  border: 1px solid var(--shop-line-strong);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.58), 0 0 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.shopui-sidebar {
+  width: 226px;
+  min-width: 226px;
+  background: rgba(11, 11, 11, 0.96);
+  border-right: 1px solid var(--shop-line);
+}
+
+.shopui-brand-hero,
+.shopui-sidebar-header {
+  min-height: 164px;
+  padding: 22px 18px;
+  align-items: flex-start;
+  justify-content: flex-end;
+  border-bottom: 1px solid var(--shop-line);
+  border-left: 2px solid var(--shop-ui-accent);
+}
+
+.shopui-brand-hero::before {
+  background:
+    linear-gradient(125deg, var(--shop-ui-accent-12), transparent 54%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.05), transparent 52%);
+}
+
+.shopui-brand-hero-shine {
+  opacity: 0.24;
+}
+
+.shopui-brand-hero-inner {
+  align-items: flex-start;
+  gap: 9px;
+  text-align: left;
+}
+
+.shopui-brand-logo {
+  max-width: 174px;
+  max-height: 76px;
+}
+
+.shopui-brand-logo-fallback,
+.shopui-sidebar-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--shop-ui-accent-12) !important;
+  border: 1px solid var(--shop-ui-accent-22);
+  color: var(--shop-ui-accent) !important;
+}
+
+.shopui-brand-hero-text h1,
+.shopui-sidebar-title h1 {
+  font-size: 14px;
+  letter-spacing: 0.12em;
+}
+
+.shopui-brand-hero-text p,
+.shopui-sidebar-title p {
+  color: var(--text-tertiary);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.shopui-sidebar-header {
+  min-height: 112px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.shopui-money-section {
+  gap: 4px;
+  padding: 10px;
+  border-bottom: 1px solid var(--shop-line);
+}
+
+.shopui-money-item {
+  padding: 7px 8px;
+  background: var(--shop-surface-2);
+  border: 1px solid var(--shop-line);
+  color: var(--text-secondary);
+}
+
+.shopui-money-item svg {
+  color: var(--shop-ui-accent);
+}
+
+.shopui-sidebar-nav {
+  gap: 1px;
+  padding: 10px;
+}
+
+.shopui-sidebar-item {
+  min-height: 42px;
+  gap: 10px;
+  padding: 10px 11px;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.shopui-sidebar-item:hover {
+  background: var(--shop-surface-2);
+  border-color: var(--shop-line);
+  color: var(--text-primary);
+}
+
+.shopui-sidebar-item.active {
+  background: var(--shop-ui-accent-08);
+  border-color: var(--shop-ui-accent-22);
+  color: var(--shop-ui-accent);
+}
+
+.shopui-sidebar-indicator {
+  left: -1px;
+  width: 2px;
+  height: 22px;
+  background: var(--shop-ui-accent) !important;
+}
+
+.shopui-sidebar-footer {
+  gap: 5px;
+  padding: 10px;
+  border-top: 1px solid var(--shop-line);
+}
+
+.shopui-cart-btn,
+.shopui-close-btn {
+  min-height: 38px;
+  padding: 9px 11px;
+  background: transparent;
+  border: 1px solid var(--shop-line);
+  color: var(--text-tertiary);
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.shopui-cart-btn:hover,
+.shopui-cart-btn.active {
+  background: var(--shop-ui-accent-08);
+  border-color: var(--shop-ui-accent-22);
+  color: var(--shop-ui-accent);
+}
+
+.shopui-cart-badge {
+  min-width: 19px;
+  padding: 3px 5px;
+  background: var(--shop-ui-accent) !important;
+  color: #0b0b0b;
+}
+
+.shopui-close-btn:hover {
+  background: rgba(217, 76, 76, 0.10);
+  border-color: rgba(217, 76, 76, 0.55);
+  color: #ef7777;
+}
+
+.shopui-content {
+  gap: 16px;
+  padding: 28px 26px;
+  background:
+    linear-gradient(135deg, rgba(var(--shop-ui-accent-rgb), 0.035), transparent 28%),
+    var(--shop-surface-0);
+}
+
+.shopui-content-header {
+  min-height: 48px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--shop-line);
+}
+
+.shopui-content-header-info h2 {
+  font-size: 21px;
+  letter-spacing: -0.02em;
+}
+
+.shopui-content-header-info p {
+  margin-top: 5px;
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+.shopui-search {
+  min-height: 38px;
+  padding: 8px 10px;
+  background: var(--shop-surface-2);
+  border: 1px solid var(--shop-line);
+  font-family: inherit;
+}
+
+.shopui-search:focus-within {
+  border-color: var(--shop-ui-accent);
+  box-shadow: 0 0 0 1px var(--shop-ui-accent-22);
+}
+
+.shopui-search input {
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.shopui-items-grid {
+  grid-template-columns: repeat(auto-fill, minmax(178px, 1fr));
+  gap: 8px;
+}
+
+.shopui-item-card {
+  min-width: 0;
+  padding: 11px;
+  gap: 8px;
+  background: var(--shop-surface-1);
+  border: 1px solid var(--shop-line);
+  border-left: 2px solid transparent;
+}
+
+.shopui-item-card:hover {
+  background: var(--shop-surface-2);
+  border-color: var(--shop-line-strong);
+  border-left-color: var(--shop-ui-accent);
+  transform: translateY(-2px);
+}
+
+.shopui-item-image {
+  height: 92px;
+  background: var(--shop-surface-2);
+  border: 1px solid var(--shop-line);
+}
+
+.shopui-item-image img {
+  max-width: 76px;
+  max-height: 76px;
+}
+
+.shopui-item-label {
+  color: var(--text-primary);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.shopui-item-price,
+.shopui-cart-item-total,
+.shopui-cart-total-amount,
+.shopui-repair-card-price {
+  color: var(--shop-ui-accent) !important;
+}
+
+.shopui-item-price {
+  font-size: 13px;
+}
+
+.shopui-item-add-btn {
+  min-height: 32px;
+  padding: 7px 9px;
+  background: transparent;
+  border: 1px solid var(--shop-ui-accent-22) !important;
+  color: var(--shop-ui-accent) !important;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.shopui-item-add-btn:hover {
+  background: var(--shop-ui-accent-12);
+  border-color: var(--shop-ui-accent) !important;
+}
+
+.shopui-item-add-btn.in-cart {
+  background: var(--shop-ui-accent) !important;
+  border-color: var(--shop-ui-accent) !important;
+  color: #0b0b0b !important;
+}
+
+.shopui-empty {
+  min-height: 220px;
+  padding: 30px 20px;
+  border: 1px dashed var(--shop-line-strong);
+  background: var(--shop-surface-1);
+}
+
+.shopui-empty svg {
+  color: var(--shop-ui-accent);
+  opacity: 0.7;
+}
+
+.shopui-cart-view,
+.shopui-repair-view {
+  gap: 14px;
+}
+
+.shopui-section-header h2 {
+  font-size: 19px;
+}
+
+.shopui-section-header p {
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+.shopui-cart-item,
+.shopui-cart-total,
+.shopui-pay-btn,
+.shopui-repair-card {
+  background: var(--shop-surface-1);
+  border: 1px solid var(--shop-line);
+}
+
+.shopui-cart-item {
+  min-height: 58px;
+  gap: 11px;
+  padding: 10px 12px;
+}
+
+.shopui-cart-item:hover,
+.shopui-pay-btn:hover:not(:disabled) {
+  background: var(--shop-surface-2);
+  border-color: var(--shop-line-strong);
+}
+
+.shopui-cart-item-image,
+.shopui-repair-card-image {
+  background: var(--shop-surface-2);
+  border: 1px solid var(--shop-line);
+}
+
+.shopui-cart-item-label,
+.shopui-repair-card-label {
+  color: var(--text-primary);
+  font-size: 11px;
+}
+
+.shopui-cart-item-price {
+  color: var(--text-tertiary);
+  font-size: 10px;
+}
+
+.shopui-cart-item-quantity {
+  gap: 4px;
+  padding: 3px;
+  background: var(--shop-surface-2);
+  border: 1px solid var(--shop-line);
+}
+
+.shopui-cart-item-quantity button {
+  width: 26px;
+  height: 26px;
+  background: transparent;
+  border: 1px solid var(--shop-line);
+}
+
+.shopui-cart-item-quantity button:hover:not(:disabled) {
+  background: var(--shop-ui-accent-12);
+  color: var(--shop-ui-accent);
+}
+
+.shopui-cart-item-remove {
+  border: 1px solid transparent;
+}
+
+.shopui-cart-item-remove:hover {
+  background: rgba(217, 76, 76, 0.10);
+  border-color: rgba(217, 76, 76, 0.45);
+}
+
+.shopui-cart-footer {
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--shop-line);
+}
+
+.shopui-cart-total {
+  padding: 11px 13px;
+}
+
+.shopui-cart-total span:first-child,
+.shopui-cart-payment-title {
+  color: var(--text-tertiary);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+}
+
+.shopui-cart-total-amount {
+  font-size: 19px;
+}
+
+.shopui-cart-payment-buttons {
+  gap: 8px;
+}
+
+.shopui-pay-btn {
+  min-height: 54px;
+  padding: 11px 12px;
+  border: 1px solid var(--shop-line);
+  font-family: inherit;
+}
+
+.shopui-pay-btn:hover:not(:disabled) {
+  color: var(--shop-ui-accent);
+}
+
+.shopui-pay-btn.cash:hover:not(:disabled),
+.shopui-pay-btn.bank:hover:not(:disabled) {
+  background: var(--shop-ui-accent-12);
+  border-color: var(--shop-ui-accent-22);
+}
+
+.shopui-pay-btn svg:first-child {
+  color: var(--shop-ui-accent);
+}
+
+.shopui-notification {
+  bottom: 18px;
+  padding: 10px 14px;
+  border: 1px solid var(--shop-ui-accent-22);
+  background: var(--shop-ui-accent-12);
+  color: var(--shop-ui-accent);
+  font-size: 11px;
+}
+
+.shopui-notification.success,
+.shopui-notification.error {
+  border-color: var(--shop-ui-accent-22);
+  background: var(--shop-ui-accent-12);
+}
+
+.shopui-notification.success svg,
+.shopui-notification.error svg {
+  color: var(--shop-ui-accent);
+}
+
+.shopui-repair-view {
+  height: 100%;
+}
+
+.shopui-repair-content {
+  gap: 14px;
+}
+
+.shopui-repair-section-title {
+  color: var(--text-secondary);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+}
+
+.shopui-repair-card {
+  min-height: 66px;
+  gap: 12px;
+  padding: 10px 12px;
+  border-left: 2px solid var(--shop-ui-accent);
+}
+
+.shopui-repair-card:hover {
+  background: var(--shop-surface-2);
+  border-color: var(--shop-line-strong);
+  border-left-color: var(--shop-ui-accent);
+}
+
+.shopui-repair-durability-bar,
+.shopui-repair-progress-bar {
+  height: 3px;
+  background: var(--shop-surface-2);
+}
+
+.shopui-repair-durability-fill,
+.shopui-repair-progress-fill {
+  background: var(--shop-ui-accent) !important;
+}
+
+.shopui-repair-btn {
+  min-height: 30px;
+  padding: 7px 10px;
+  background: transparent;
+  border: 1px solid var(--shop-ui-accent-22) !important;
+  color: var(--shop-ui-accent) !important;
+  font-family: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.shopui-repair-btn:hover {
+  background: var(--shop-ui-accent-12);
+  border-color: var(--shop-ui-accent) !important;
+}
+
+.shopui-repair-ready-text {
+  color: var(--shop-ui-accent);
+}
+
+.shopui-repair-pickup-btn {
+  min-height: 32px;
+  padding: 8px 11px;
+  background: var(--shop-ui-accent) !important;
+  color: #0b0b0b !important;
+  font-family: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 980px) {
+  .shopui-container {
+    width: 94vw;
+    height: 90vh;
+  }
+
+  .shopui-sidebar {
+    width: 190px;
+    min-width: 190px;
+  }
+
+  .shopui-content {
+    padding: 20px 18px;
+  }
+}
+
+@media (max-width: 680px) {
+  .shopui-container {
+    width: 96vw;
+    height: 94vh;
+    flex-direction: column;
+  }
+
+  .shopui-sidebar {
+    width: 100%;
+    min-width: 0;
+    max-height: 190px;
+    flex: 0 0 auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--shop-line);
+  }
+
+  .shopui-brand-hero,
+  .shopui-sidebar-header {
+    min-height: 82px;
+    padding: 13px 15px;
+  }
+
+  .shopui-brand-logo {
+    max-height: 48px;
+  }
+
+  .shopui-sidebar-nav {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    overflow: hidden;
+    padding: 6px;
+  }
+
+  .shopui-sidebar-item {
+    min-height: 38px;
+    justify-content: center;
+    padding: 7px 4px;
+  }
+
+  .shopui-sidebar-item span,
+  .shopui-sidebar-arrow,
+  .shopui-cart-badge {
+    display: none;
+  }
+
+  .shopui-sidebar-footer {
+    display: none;
+  }
+
+  .shopui-content {
+    min-height: 0;
+    padding: 16px 12px;
+  }
+
+  .shopui-content-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .shopui-search {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .shopui-cart-payment-buttons {
+    flex-direction: column;
+  }
+}

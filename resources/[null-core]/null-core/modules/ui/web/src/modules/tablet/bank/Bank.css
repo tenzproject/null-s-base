@@ -1631,3 +1631,830 @@
 .bank-pin-info.success {
   color: #4ade80;
 }
+
+/* ==========================================================================
+   NULL BANK / PROFESSIONAL REDESIGN
+   Flat financial workspace, strict geometry and global theme accent.
+   ========================================================================== */
+
+.bank-overlay {
+  --bank-ui-accent: var(--accent, #BEEE11);
+  --bank-ui-accent-rgb: var(--primary-color-rgb, 190, 238, 17);
+  --bank-ui-accent-06: rgba(var(--bank-ui-accent-rgb), 0.06);
+  --bank-ui-accent-10: rgba(var(--bank-ui-accent-rgb), 0.10);
+  --bank-ui-accent-14: rgba(var(--bank-ui-accent-rgb), 0.14);
+  --bank-ui-accent-22: rgba(var(--bank-ui-accent-rgb), 0.22);
+  --bank-surface-0: var(--dashboard-background, #161518);
+  --bank-surface-1: var(--dashboard-primary, #0B0B0B);
+  --bank-surface-2: var(--dashboard-secondary, #303032);
+  --bank-line: var(--border-color, rgba(235, 238, 245, 0.14));
+  --bank-line-strong: var(--border-strong, rgba(235, 238, 245, 0.24));
+  font-family: var(--font-base, 'DM Sans', sans-serif);
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.bank-overlay,
+.bank-overlay *,
+.bank-overlay *::before,
+.bank-overlay *::after {
+  border-radius: 0 !important;
+  box-sizing: border-box;
+}
+
+.bank-container {
+  width: min(92vw, 1400px);
+  height: min(86vh, 860px);
+  max-width: none;
+  display: flex;
+  background: var(--bank-surface-1);
+  border: 1px solid var(--bank-line-strong);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.58), 0 0 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.bank-sidebar {
+  width: 226px;
+  min-width: 226px;
+  background: rgba(11, 11, 11, 0.96);
+  border-right: 1px solid var(--bank-line);
+}
+
+.bank-brand-hero,
+.bank-sidebar-header {
+  min-height: 164px;
+  padding: 22px 18px;
+  align-items: flex-start;
+  justify-content: flex-end;
+  border-bottom: 1px solid var(--bank-line);
+  border-left: 2px solid var(--bank-ui-accent);
+}
+
+.bank-brand-hero::after,
+.bank-sidebar-header::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--bank-ui-accent), transparent 75%);
+  opacity: 0.7;
+}
+
+.bank-brand-hero::before {
+  background:
+    linear-gradient(125deg, var(--bank-ui-accent-10), transparent 54%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.05), transparent 52%);
+}
+
+.bank-brand-hero-shine {
+  opacity: 0.24;
+}
+
+.bank-brand-hero-inner {
+  align-items: flex-start;
+  gap: 9px;
+  text-align: left;
+}
+
+.bank-brand-logo {
+  max-width: 174px;
+  max-height: 76px;
+  margin-bottom: 4px;
+}
+
+.bank-brand-logo-fallback,
+.bank-sidebar-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--bank-ui-accent-14) !important;
+  border: 1px solid var(--bank-ui-accent-22);
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-brand-hero-text h1,
+.bank-sidebar-title h1 {
+  font-size: 14px;
+  letter-spacing: 0.12em;
+}
+
+.bank-brand-hero-text p,
+.bank-sidebar-title p {
+  color: var(--text-tertiary);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.bank-sidebar-header {
+  min-height: 112px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.bank-sidebar-header::after {
+  display: none;
+}
+
+.bank-money-section {
+  gap: 4px;
+  padding: 10px;
+  border-bottom: 1px solid var(--bank-line);
+}
+
+.bank-money-item {
+  padding: 7px 8px;
+  background: var(--bank-surface-2);
+  border: 1px solid var(--bank-line);
+}
+
+.bank-sidebar-nav {
+  gap: 1px;
+  padding: 10px;
+}
+
+.bank-sidebar-item {
+  min-height: 42px;
+  gap: 10px;
+  padding: 10px 11px;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.bank-sidebar-item:hover {
+  background: var(--bank-surface-2);
+  border-color: var(--bank-line);
+  color: var(--text-primary);
+}
+
+.bank-sidebar-item.active {
+  background: var(--bank-ui-accent-10);
+  border-color: var(--bank-ui-accent-22);
+  color: var(--bank-ui-accent);
+}
+
+.bank-sidebar-indicator {
+  left: -1px;
+  width: 2px;
+  height: 22px;
+  background: var(--bank-ui-accent) !important;
+}
+
+.bank-nav-badge {
+  min-width: 19px;
+  padding: 3px 5px;
+  background: rgba(217, 76, 76, 0.14);
+  border: 1px solid rgba(217, 76, 76, 0.46);
+  color: #ef7777;
+}
+
+.bank-sidebar-footer {
+  padding: 10px;
+  border-top: 1px solid var(--bank-line);
+}
+
+.bank-close-btn {
+  min-height: 38px;
+  padding: 9px 11px;
+  background: transparent;
+  border: 1px solid var(--bank-line);
+  color: var(--text-tertiary);
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.bank-close-btn:hover {
+  background: rgba(217, 76, 76, 0.10);
+  border-color: rgba(217, 76, 76, 0.55);
+  color: #ef7777;
+}
+
+.bank-content {
+  gap: 16px;
+  padding: 28px 26px;
+  background:
+    linear-gradient(135deg, rgba(var(--bank-ui-accent-rgb), 0.035), transparent 28%),
+    var(--bank-surface-0);
+}
+
+.bank-content-header {
+  min-height: 48px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--bank-line);
+}
+
+.bank-content-header-info h2 {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.bank-content-header-info p {
+  margin-top: 5px;
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+.bank-content-header-info p span {
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-page {
+  gap: 14px;
+}
+
+.bank-section-header {
+  margin-top: 2px;
+  padding-top: 2px;
+  border-top: 1px solid transparent;
+}
+
+.bank-section-title {
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.bank-section-link {
+  color: var(--bank-ui-accent) !important;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bank-balance-strip {
+  gap: 8px;
+}
+
+.bank-strip-card {
+  min-height: 72px;
+  gap: 11px;
+  padding: 12px 13px;
+  margin: 0;
+  background: var(--bank-surface-1);
+  border: 1px solid var(--bank-line);
+  border-left: 2px solid var(--bank-ui-accent);
+}
+
+.bank-strip-card:hover {
+  background: var(--bank-surface-2);
+  border-color: var(--bank-line-strong);
+  border-left-color: var(--bank-ui-accent);
+}
+
+.bank-strip-icon,
+.bank-quick-icon,
+.bank-balance-icon,
+.bank-tx-icon,
+.bank-cat-icon,
+.bank-card-status-icon {
+  border: 1px solid var(--bank-line);
+}
+
+.bank-strip-icon {
+  width: 34px;
+  height: 34px;
+  background: var(--bank-ui-accent-10) !important;
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-strip-label,
+.bank-form-label,
+.bank-card-meta-label {
+  color: var(--text-tertiary);
+  font-size: 9px;
+  letter-spacing: 0.10em;
+}
+
+.bank-strip-amount {
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.bank-strip-amount.income {
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-strip-amount.negative,
+.bank-tx-amount.expense,
+.bank-cat-amount[style*="239"],
+.bank-pending-amount {
+  color: #ef7777;
+}
+
+.bank-quick-actions {
+  gap: 8px;
+}
+
+.bank-quick-card {
+  min-height: 82px;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bank-surface-1);
+  border: 1px solid var(--bank-line);
+  border-left: 2px solid var(--bank-ui-accent);
+}
+
+.bank-quick-card:hover {
+  background: var(--bank-surface-2);
+  border-color: var(--bank-line-strong);
+  border-left-color: var(--bank-ui-accent);
+}
+
+.bank-quick-card:nth-child(2) {
+  border-left-color: #d94c4c;
+}
+
+.bank-quick-icon {
+  width: 38px;
+  min-height: 54px;
+  background: var(--bank-ui-accent-10) !important;
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-quick-card:nth-child(2) .bank-quick-icon {
+  background: rgba(217, 76, 76, 0.10) !important;
+  border-color: rgba(217, 76, 76, 0.30);
+  color: #ef7777 !important;
+}
+
+.bank-quick-label {
+  color: var(--text-primary);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.bank-form-input,
+.bank-amount-input-wrapper,
+.bank-search,
+.bank-filter-search {
+  background: var(--bank-surface-2);
+  border: 1px solid var(--bank-line);
+  font-family: inherit;
+}
+
+.bank-form-input,
+.bank-amount-input-wrapper input,
+.bank-search input,
+.bank-filter-search input {
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.bank-form-input:focus,
+.bank-amount-input-wrapper:focus-within,
+.bank-search:focus-within,
+.bank-filter-search:focus-within {
+  border-color: var(--bank-ui-accent);
+  box-shadow: 0 0 0 1px var(--bank-ui-accent-22);
+}
+
+.bank-btn {
+  min-height: 36px;
+  padding: 9px 13px;
+  background: transparent;
+  border: 1px solid var(--bank-line-strong);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+}
+
+.bank-btn:hover:not(:disabled) {
+  background: var(--bank-surface-2);
+  border-color: var(--bank-ui-accent);
+  color: var(--bank-ui-accent);
+}
+
+.bank-btn-accent,
+.bank-btn-icon[style] {
+  background: var(--bank-ui-accent-10) !important;
+  border-color: var(--bank-ui-accent-22) !important;
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-btn-accent:hover:not(:disabled),
+.bank-btn-icon[style]:hover:not(:disabled) {
+  background: var(--bank-ui-accent-22) !important;
+  border-color: var(--bank-ui-accent) !important;
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-chart-container,
+.bank-tx-item,
+.bank-iban-box,
+.bank-pending-item,
+.bank-cat-item,
+.bank-credit-form,
+.bank-transfer-form,
+.bank-loan-card,
+.bank-card-meta-item,
+.bank-card-status {
+  background: var(--bank-surface-1);
+  border: 1px solid var(--bank-line);
+}
+
+.bank-chart-container {
+  padding: 14px;
+}
+
+.bank-chart-bars {
+  height: 132px;
+  gap: 9px;
+}
+
+.bank-chart-bar-track {
+  border-bottom: 1px solid var(--bank-line-strong);
+}
+
+.bank-chart-bar-fill {
+  background: var(--bank-ui-accent) !important;
+  box-shadow: 0 0 14px var(--bank-ui-accent-22);
+}
+
+.bank-chart-bar-label,
+.bank-chart-bar-value {
+  color: var(--text-tertiary);
+  font-size: 9px;
+}
+
+.bank-tx-list,
+.bank-pending-list {
+  gap: 4px;
+}
+
+.bank-tx-item,
+.bank-pending-item {
+  min-height: 58px;
+  gap: 12px;
+  padding: 10px 12px;
+}
+
+.bank-tx-item:hover,
+.bank-iban-box:hover {
+  background: var(--bank-surface-2);
+  border-color: var(--bank-line-strong);
+}
+
+.bank-tx-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--bank-ui-accent-10) !important;
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-tx-title,
+.bank-pending-from,
+.bank-cat-label {
+  color: var(--text-primary);
+  font-size: 11px;
+}
+
+.bank-tx-desc,
+.bank-pending-desc,
+.bank-tx-date,
+.bank-cat-count {
+  color: var(--text-tertiary);
+  font-size: 10px;
+}
+
+.bank-tx-amount.income,
+.bank-cat-amount {
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-iban-box {
+  padding: 12px 13px;
+}
+
+.bank-iban-text {
+  color: var(--text-primary);
+  font-size: 12px;
+}
+
+.bank-filter-chip,
+.bank-installment-option {
+  padding: 8px 11px;
+  background: transparent;
+  border: 1px solid var(--bank-line);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 10px;
+}
+
+.bank-filter-chip:hover,
+.bank-filter-chip[style],
+.bank-installment-option:hover {
+  background: var(--bank-ui-accent-10) !important;
+  border-color: var(--bank-ui-accent-22) !important;
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-cat-item {
+  gap: 10px;
+  padding: 10px 11px;
+}
+
+.bank-cat-icon {
+  width: 30px;
+  height: 30px;
+  background: var(--bank-ui-accent-10) !important;
+  color: var(--bank-ui-accent) !important;
+}
+
+.bank-credit-form,
+.bank-transfer-form {
+  gap: 12px;
+  padding: 14px;
+  border-left: 2px solid var(--bank-ui-accent);
+}
+
+.bank-credit-summary {
+  padding: 12px;
+  background: var(--bank-surface-2);
+  border: 1px solid var(--bank-line);
+}
+
+.bank-credit-stat-label,
+.bank-loan-detail-label {
+  color: var(--text-tertiary);
+  font-size: 9px;
+}
+
+.bank-credit-stat-value,
+.bank-loan-detail-value,
+.bank-loan-title {
+  color: var(--text-primary);
+  font-size: 12px;
+}
+
+.bank-loan-progress {
+  height: 3px;
+  background: var(--bank-surface-2);
+}
+
+.bank-loan-progress-fill {
+  background: var(--bank-ui-accent) !important;
+}
+
+.bank-loan-badge,
+.bank-card-status {
+  padding: 5px 8px;
+}
+
+.bank-loan-badge.active {
+  background: rgba(245, 158, 11, 0.10);
+  border: 1px solid rgba(245, 158, 11, 0.38);
+  color: #f2b84b;
+}
+
+.bank-loan-badge.paid,
+.bank-card-status.owned {
+  background: var(--bank-ui-accent-10);
+  border-color: var(--bank-ui-accent-22);
+  color: var(--bank-ui-accent);
+}
+
+.bank-card-status.missing {
+  background: rgba(217, 76, 76, 0.08);
+  border-color: rgba(217, 76, 76, 0.36);
+}
+
+.bank-warning-box {
+  padding: 10px 12px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.34);
+}
+
+.bank-card {
+  border: 1px solid var(--bank-line-strong);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.34);
+}
+
+.bank-card-chip {
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.bank-pin-cell {
+  background: var(--bank-surface-2);
+  border: 1px solid var(--bank-line);
+  color: var(--text-primary);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+}
+
+.bank-pin-cell:focus,
+.bank-pin-cell.filled {
+  background: var(--bank-ui-accent-10);
+  border-color: var(--bank-ui-accent);
+}
+
+.bank-pin-info.success {
+  color: var(--bank-ui-accent);
+}
+
+.bank-toast {
+  bottom: 18px;
+  padding: 10px 14px;
+  background: var(--bank-ui-accent-14);
+  border: 1px solid var(--bank-ui-accent-22);
+  color: var(--bank-ui-accent);
+  font-size: 11px;
+}
+
+@media (max-width: 980px) {
+  .bank-container {
+    width: 94vw;
+    height: 90vh;
+  }
+
+  .bank-sidebar {
+    width: 190px;
+    min-width: 190px;
+  }
+
+  .bank-content {
+    padding: 20px 18px;
+  }
+
+  .bank-balance-strip,
+  .bank-quick-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .bank-container {
+    width: 96vw;
+    height: 94vh;
+    flex-direction: column;
+  }
+
+  .bank-sidebar {
+    width: 100%;
+    min-width: 0;
+    max-height: 190px;
+    flex: 0 0 auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--bank-line);
+  }
+
+  .bank-brand-hero,
+  .bank-sidebar-header {
+    min-height: 82px;
+    padding: 13px 15px;
+  }
+
+  .bank-brand-logo {
+    max-height: 48px;
+  }
+
+  .bank-sidebar-nav {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    overflow: hidden;
+    padding: 6px;
+  }
+
+  .bank-sidebar-item {
+    min-height: 38px;
+    justify-content: center;
+    padding: 7px 4px;
+  }
+
+  .bank-sidebar-item span,
+  .bank-sidebar-arrow,
+  .bank-nav-badge {
+    display: none;
+  }
+
+  .bank-sidebar-footer {
+    display: none;
+  }
+
+  .bank-content {
+    min-height: 0;
+    padding: 16px 12px;
+  }
+
+  .bank-content-header-info h2 {
+    font-size: 17px;
+  }
+}
+
+/* Weekly spending line chart. */
+.bank-weekly-chart {
+  min-height: 244px;
+  padding: 13px 15px 10px;
+}
+
+.bank-chart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+  color: var(--text-tertiary);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.bank-line-chart {
+  width: 100%;
+  height: 220px;
+}
+
+.bank-line-chart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.bank-chart-gridline {
+  stroke: var(--bank-line);
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+  vector-effect: non-scaling-stroke;
+}
+
+.bank-chart-scale-label,
+.bank-chart-day-label,
+.bank-chart-date-label,
+.bank-chart-point-value {
+  fill: var(--text-tertiary);
+  font-family: var(--font-base, 'DM Sans', sans-serif);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.bank-chart-scale-label {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0;
+  opacity: 0.72;
+}
+
+.bank-chart-day-label {
+  fill: var(--text-secondary);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bank-chart-date-label {
+  fill: var(--text-tertiary);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.bank-chart-point-value {
+  fill: var(--bank-ui-accent);
+  font-size: 8px;
+  letter-spacing: 0;
+}
+
+.bank-chart-area {
+  fill: url(#bank-weekly-area-gradient);
+  stroke: none;
+}
+
+.bank-chart-line {
+  fill: none;
+  stroke: var(--bank-ui-accent);
+  stroke-width: 2.5;
+  stroke-linecap: square;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 5px var(--bank-ui-accent-22));
+}
+
+.bank-chart-point-halo {
+  fill: var(--bank-ui-accent);
+  opacity: 0.13;
+}
+
+.bank-chart-point-dot {
+  fill: var(--bank-surface-1);
+  stroke: var(--bank-ui-accent);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (max-width: 680px) {
+  .bank-weekly-chart {
+    min-height: 220px;
+  }
+
+  .bank-line-chart {
+    height: 198px;
+  }
+}

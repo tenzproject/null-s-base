@@ -230,6 +230,52 @@
   border-color: var(--bg-tertiary);
 }
 
+/* ==========================================================================
+   Shared professional prompt language
+   ========================================================================== */
+.info-dialog-container {
+  border: 1px solid var(--border-strong);
+  border-top: 2px solid var(--accent);
+  border-radius: 0;
+  background: var(--bg-primary-full);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.46);
+}
+
+.info-dialog-container.top-middle {
+  border-radius: 0;
+  border-top: 2px solid var(--accent);
+}
+
+.info-dialog-content {
+  background: var(--bg-primary-full);
+}
+
+.info-dialog-header {
+  margin-bottom: 16px;
+  padding: 14px 15px;
+  border-bottom-color: var(--border-color);
+}
+
+.info-icon,
+.info-item {
+  border-radius: 0;
+}
+
+.info-icon {
+  border-color: var(--border-color);
+  background: var(--surface-3);
+}
+
+.info-item {
+  border-color: var(--border-color);
+  background: var(--surface-3);
+}
+
+.info-item:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-secondary);
+}
+
 .info-item i {
   font-size: 13px;
   vertical-align: middle;
@@ -289,4 +335,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Final cascade guard for compact/info variants. */
+.info-dialog-container,
+.info-dialog-container *,
+.info-dialog-container *::before,
+.info-dialog-container *::after {
+  border-radius: 0;
+}
+
+.info-dialog-container {
+  border-top: 2px solid var(--accent);
+  background: var(--bg-primary-full);
+}
+
+.info-icon,
+.info-item {
+  border-color: var(--border-color);
+  background: var(--surface-3);
+}
+
+.info-item:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-secondary);
+}
+
+.progress-bar {
+  background: var(--bg-tertiary);
+}
+
+.progress-fill {
+  background: var(--accent) !important;
+  box-shadow: 0 0 8px var(--accent-glow);
 }
