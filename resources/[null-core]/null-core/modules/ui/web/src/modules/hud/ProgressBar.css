@@ -74,3 +74,35 @@
   border-radius: 2px;
   transition: width 100ms linear;
 }
+
+/* Progress HUD — restrained operational indicator. */
+.progress-bar-panel {
+  min-width: 220px;
+  padding: 9px 12px;
+  border: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  border-left: 2px solid var(--pb-accent, var(--accent, #BEEE11));
+  border-radius: 0;
+  background: var(--bg-primary, rgba(20, 22, 26, 0.94));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
+}
+
+.progress-bar-text {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.progress-bar-percent {
+  color: var(--pb-accent, var(--accent, #BEEE11));
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-bar-track,
+.progress-bar-fill {
+  border-radius: 0;
+}
+
+.progress-bar-track {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.12);
+}

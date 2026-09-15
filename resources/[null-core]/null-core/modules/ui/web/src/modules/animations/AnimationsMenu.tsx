@@ -43,7 +43,7 @@ const CATEGORIES: { id: AnimCategory; label: string; icon: React.ReactNode }[] =
 
 const STORAGE_KEY = 'animationsMenuPosition';
 
-const AnimationsMenu: React.FC<AnimationsMenuProps> = ({ visible, onClose, primaryColor }) => {
+const AnimationsMenu: React.FC<AnimationsMenuProps> = ({ visible, onClose }) => {
   const [category, setCategory] = useState<AnimCategory>('favorites');
   const [search, setSearch] = useState('');
   const [playing, setPlaying] = useState<string | null>(null);
@@ -267,7 +267,6 @@ const AnimationsMenu: React.FC<AnimationsMenuProps> = ({ visible, onClose, prima
                 key={cat.id}
                 className={`anims-category-btn ${category === cat.id ? 'active' : ''}`}
                 onClick={() => handleCategoryChange(cat.id)}
-                style={category === cat.id ? { backgroundColor: primaryColor } : {}}
               >
                 {cat.icon}
                 <span>{cat.label}</span>
@@ -334,12 +333,11 @@ const AnimationsMenu: React.FC<AnimationsMenuProps> = ({ visible, onClose, prima
                     <div
                       key={key}
                       className={`anims-item ${isPlaying ? 'playing' : ''}`}
-                      style={isPlaying ? { borderColor: `${primaryColor}60` } : {}}
                     >
                       <button
                         className="anims-item-play"
                         onClick={() => handlePlay(key, category)}
-                        style={isPlaying ? { backgroundColor: primaryColor } : {}}
+                        aria-label={`Jouer ${animName}`}
                       >
                         <Play size={14} />
                       </button>
@@ -350,9 +348,9 @@ const AnimationsMenu: React.FC<AnimationsMenuProps> = ({ visible, onClose, prima
                       <button
                         className={`anims-item-fav ${isFav ? 'active' : ''}`}
                         onClick={() => handleToggleFavorite(key)}
-                        style={isFav ? { color: primaryColor } : {}}
+                        aria-label={isFav ? `Retirer ${animName} des favoris` : `Ajouter ${animName} aux favoris`}
                       >
-                        <Heart size={14} fill={isFav ? primaryColor : 'none'} />
+                        <Heart size={14} fill={isFav ? 'currentColor' : 'none'} />
                       </button>
                     </div>
                   );

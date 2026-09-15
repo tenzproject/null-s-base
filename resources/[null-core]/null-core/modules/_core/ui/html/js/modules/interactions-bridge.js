@@ -132,6 +132,8 @@ const NullInteractionsBridge = {
             this.addComponent('wavePlayground');
         } else if (action === 'showcase:welcome:open' || action === 'showcase:tablet:open') {
             this.addComponent('showcase');
+        } else if (action === 'panelAdmin:open') {
+            this.addComponent('panel-admin');
         }
         // else if (action === 'objectives:start') {
         //     this.addComponent('objectives');
@@ -211,6 +213,8 @@ const NullInteractionsBridge = {
             this.removeComponent('freejob-info');
         } else if (action === 'showcase:close') {
             this.removeComponent('showcase');
+        } else if (action === 'panelAdmin:close') {
+            this.removeComponent('panel-admin');
         } else if (action === 'closeItemGrid') {
             this.removeComponent('menu:itemGrid');
             // } else if (action === 'objectives:stop') {
@@ -236,7 +240,7 @@ const NullInteractionsBridge = {
                 });
             }
         } else if (action === 'hideFocus') {
-            const modalComponents = ['input', 'confirm', 'hud-editor'];
+            const modalComponents = ['input', 'confirm', 'hud-editor', 'panel-admin'];
             const hasModalActive = Array.from(this.activeComponents).some(comp => modalComponents.includes(comp));
 
             if (!hasModalActive) {

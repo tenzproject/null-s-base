@@ -76,3 +76,38 @@
 .hn-msg-p { color: rgba(190, 120, 255, 0.95); }
 .hn-msg-o { color: rgba(255, 160, 60, 0.95); }
 .hn-msg-muted { color: var(--text-secondary); }
+
+/* Help notification — compact square status strip. */
+.hn-card {
+  position: relative;
+  gap: 1vh;
+  padding: 0.7vh 1.2vh 0.7vh 0.9vh;
+  border: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  border-left: 2px solid var(--hn-accent, var(--accent, #BEEE11));
+  border-radius: 0;
+  background: var(--bg-primary, rgba(20, 22, 26, 0.94));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
+}
+
+.hn-key {
+  min-width: 2.4vh;
+  height: 2.4vh;
+  border: 1px solid var(--hn-accent, var(--accent, #BEEE11));
+  border-radius: 0;
+  background: var(--hn-accent, var(--accent, #BEEE11));
+  color: #101308;
+  box-shadow: none;
+}
+
+.hn-message {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+  font-weight: 600;
+}
+
+.hn-msg-g,
+.hn-msg-b,
+.hn-msg-y,
+.hn-msg-p,
+.hn-msg-o {
+  color: var(--hn-accent, var(--accent, #BEEE11));
+}

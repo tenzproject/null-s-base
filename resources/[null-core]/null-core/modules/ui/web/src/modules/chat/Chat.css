@@ -1,0 +1,111 @@
+/* Chat HUD — compact, flat and readable over the game world. */
+.chat-root {
+  --chat-surface: rgba(9, 11, 13, 0.92);
+  --chat-surface-raised: rgba(19, 22, 25, 0.96);
+  --chat-line: rgba(255, 255, 255, 0.14);
+  --chat-text: rgba(255, 255, 255, 0.92);
+  --chat-muted: rgba(255, 255, 255, 0.52);
+  color: var(--chat-text);
+  isolation: isolate;
+}
+
+.chat-messages {
+  scrollbar-width: thin;
+  scrollbar-color: var(--chat-accent-scroll) transparent;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+}
+
+.chat-message {
+  position: relative;
+  padding: 0.46rem 0.7rem 0.46rem 0.85rem;
+  border-left: 2px solid var(--chat-accent-muted);
+  background: linear-gradient(90deg, rgba(9, 11, 13, 0.82), rgba(9, 11, 13, 0.34) 78%, transparent);
+  color: var(--chat-text) !important;
+}
+
+.chat-message strong {
+  color: var(--chat-accent);
+  font-weight: 700;
+}
+
+.chat-input-shell {
+  min-height: 2.7rem;
+  border: 1px solid var(--chat-line);
+  border-left: 2px solid var(--chat-accent);
+  border-radius: 0;
+  background: var(--chat-surface);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34);
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.chat-input-shell:focus-within {
+  border-color: var(--chat-accent-muted);
+  border-left-color: var(--chat-accent);
+  background: var(--chat-surface-raised);
+  box-shadow: 0 0 0 1px var(--chat-accent-faint), 0 10px 26px rgba(0, 0, 0, 0.34);
+}
+
+.chat-prompt-mark {
+  width: 1.15rem;
+  color: var(--chat-accent);
+  line-height: 1;
+  text-align: center;
+}
+
+.chat-input {
+  color: var(--chat-text) !important;
+  caret-color: var(--chat-accent);
+}
+
+.chat-input::placeholder {
+  color: var(--chat-muted);
+}
+
+.chat-input::-webkit-scrollbar,
+.chat-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-input::-webkit-scrollbar-track,
+.chat-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-input::-webkit-scrollbar-thumb,
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: var(--chat-accent-scroll);
+}
+
+.chat-input::-webkit-scrollbar-thumb:hover,
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--chat-accent);
+}
+
+.chat-suggestions {
+  border: 1px solid var(--chat-line);
+  border-top: 2px solid var(--chat-accent);
+  border-radius: 0;
+  background: var(--chat-surface);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34);
+}
+
+.chat-suggestion {
+  border-left: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.045);
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.chat-suggestion:hover {
+  border-left-color: var(--chat-accent);
+  background: var(--chat-accent-faint);
+}
+
+.chat-suggestion-command {
+  color: var(--chat-accent);
+}
+
+.chat-suggestion-param,
+.chat-suggestion-help {
+  color: var(--chat-muted) !important;
+}

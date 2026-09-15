@@ -109,7 +109,7 @@ const ModuleSelector: React.FC<ModuleSelectorProps> = ({
 
   return (
     <div
-      className="fixed top-0 left-1/2 -translate-x-1/2 z-[10001]"
+      className="hud-editor-panel fixed top-0 left-1/2 -translate-x-1/2 z-[10001]"
       data-tutorial="editor-panel"
       style={{
         width: '60%',

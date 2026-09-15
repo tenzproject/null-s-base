@@ -31,6 +31,18 @@ const progressBar = document.getElementById('progress-fill');
 const progressText = document.getElementById('progress-text');
 const serverNameEl = document.getElementById('server-name');
 const serverLogoEl = document.getElementById('server-logo');
+const serverBackgroundEl = document.querySelector('.bg-image');
+
+function applyServerBackground(value) {
+    if (!serverBackgroundEl) return;
+
+    const fallback = CFG.backgroundBanner || CFG.bannerUrl || 'img/background.png';
+    const background = typeof value === 'string' && value.trim() ? value.trim() : fallback;
+
+    // La bannière est un div (et non une balise img) afin de garder le cover
+    // et les transitions du loading screen existant.
+    serverBackgroundEl.style.backgroundImage = `url("${background.replace(/["\\]/g, '\\$&')}")`;
+}
 
 // Music Elements
 const playBtn = document.getElementById('play-btn');
@@ -68,6 +80,7 @@ function applyConfigContent() {
     // Server name / logo / subtitle
     if (CFG.serverName) serverNameEl.innerText = CFG.serverName;
     if (CFG.serverLogo) serverLogoEl.src = CFG.serverLogo;
+    applyServerBackground(CFG.backgroundBanner || CFG.bannerUrl);
     if (CFG.serverSubtitle) {
         const sub = document.querySelector('.server-info .subtitle');
         if (sub) sub.innerText = CFG.serverSubtitle;
@@ -203,6 +216,33 @@ window.addEventListener('message', function (event) {
         }
         if (data.serverCHAR) serverLogoEl.src = data.serverCHAR;
         if (data.hexcolor) applyAccent(data.hexcolor);
+        if (Object.prototype.hasOwnProperty.call(data, 'serverBackground')) {
+            applyServerBackground(data.serverBackground);
+        } else if (Object.prototype.hasOwnProperty.call(data, 'backgroundBanner')) {
+            applyServerBackground(data.backgroundBanner);
+        } else if (Object.prototype.hasOwnProperty.call(data, 'bannerUrl')) {
+            applyServerBackground(data.bannerUrl);
+        }
+    }
+
+    // Le Panel Admin peut modifier la bannière pendant que le loading screen
+    // est encore affiché. Le même message est également inoffensif une fois
+    // le loading screen fermé.
+    if (data.type === 'SERVER_CONFIG_UPDATED') {
+        if (data.serverName) {
+            serverNameEl.innerText = data.serverName;
+            const enterName = document.getElementById('enter-server-name');
+            if (enterName) enterName.innerText = String(data.serverName).split(' ')[0];
+        }
+        if (data.serverCHAR) serverLogoEl.src = data.serverCHAR;
+        if (data.hexcolor) applyAccent(data.hexcolor);
+        if (Object.prototype.hasOwnProperty.call(data, 'serverBackground')) {
+            applyServerBackground(data.serverBackground);
+        } else if (Object.prototype.hasOwnProperty.call(data, 'backgroundBanner')) {
+            applyServerBackground(data.backgroundBanner);
+        } else if (Object.prototype.hasOwnProperty.call(data, 'bannerUrl')) {
+            applyServerBackground(data.bannerUrl);
+        }
     }
 
     // Native FiveM Progress (70% du total)

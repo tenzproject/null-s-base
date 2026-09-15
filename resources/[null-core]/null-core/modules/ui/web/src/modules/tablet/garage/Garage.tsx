@@ -8,7 +8,6 @@ import {
 import './Garage.css';
 import { cacheImg } from '@/shared/cacheVersion';
 import { generateAccentVars } from '@/utils/accentColors';
-import WaveBackground from '@/components/WaveBackground';
 
 const GetParentResourceName = () => 'null-core';
 
@@ -57,7 +56,7 @@ const Garage: React.FC<GarageProps> = ({ visible, onClose, primaryColor, serverC
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
-  const accentColor = primaryColor || '#64abed';
+  const accentColor = primaryColor || '#BEEE11';
   const garageAccentVars = useMemo(() => generateAccentVars('--garage-accent', accentColor), [accentColor]);
 
   const showNotification = useCallback((message: string, type: 'success' | 'error') => {
@@ -276,8 +275,6 @@ const Garage: React.FC<GarageProps> = ({ visible, onClose, primaryColor, serverC
         className="garageui-container"
         style={garageAccentVars as React.CSSProperties}
       >
-        <WaveBackground accentColor={accentColor} opacity={0.5} />
-
         {/* Sidebar */}
         <div className="garageui-sidebar">
           {/* Brand Hero Header */}

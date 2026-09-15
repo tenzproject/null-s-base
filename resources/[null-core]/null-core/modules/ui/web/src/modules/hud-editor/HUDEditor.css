@@ -1,0 +1,154 @@
+/* HUD editor — flat control-room skin. Functionality and editor geometry stay intact. */
+
+.hud-editor-panel {
+  --hud-editor-surface: var(--bg-primary-full, #0d0f10);
+  --hud-editor-surface-2: var(--surface-2, #171a1d);
+  --hud-editor-surface-3: var(--surface-3, rgba(255, 255, 255, 0.07));
+  --hud-editor-line: var(--border-color, rgba(235, 238, 245, 0.14));
+  --hud-editor-line-strong: var(--border-strong, rgba(235, 238, 245, 0.24));
+  --hud-editor-accent: var(--accent, #BEEE11);
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+.hud-editor-panel > div {
+  overflow: hidden;
+  border: 1px solid var(--hud-editor-line-strong) !important;
+  border-top: 0 !important;
+  border-radius: 0 !important;
+  background: var(--hud-editor-surface) !important;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.48) !important;
+}
+
+.hud-editor-panel > div::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--hud-editor-accent);
+  content: '';
+  pointer-events: none;
+}
+
+.hud-editor-panel button {
+  border-radius: 0 !important;
+  border-color: var(--hud-editor-line) !important;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease !important;
+}
+
+.hud-editor-panel button:hover:not(:disabled) {
+  border-color: var(--hud-editor-accent) !important;
+  box-shadow: none !important;
+}
+
+.hud-editor-panel button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.hud-editor-panel [class*="rounded"] {
+  border-radius: 0 !important;
+}
+
+.hud-editor-panel [class*="bg-secondary"],
+.hud-editor-panel [style*="background-color: var(--bg-secondary)"] {
+  background-color: var(--hud-editor-surface-2) !important;
+}
+
+.hud-editor-panel input[type="text"] {
+  border-bottom: 1px solid var(--hud-editor-line) !important;
+  border-radius: 0 !important;
+}
+
+.hud-editor-panel input[type="text"]:focus {
+  border-bottom-color: var(--hud-editor-accent) !important;
+}
+
+.hud-editor-panel input[type="color"] {
+  border-radius: 0 !important;
+  border-color: var(--hud-editor-line-strong) !important;
+}
+
+.hud-editor-panel label > div {
+  border-radius: 0 !important;
+}
+
+.hud-editor-panel label > div > div {
+  border-radius: 0 !important;
+}
+
+.hud-editor-module-card {
+  border: 1px solid var(--hud-editor-line) !important;
+  background: var(--hud-editor-surface-2) !important;
+}
+
+.hud-editor-module-card:hover {
+  border-color: var(--hud-editor-accent) !important;
+  background: var(--hud-editor-surface-3) !important;
+}
+
+.hud-editor-module-card > div {
+  border-top-color: var(--hud-editor-line) !important;
+}
+
+.hud-editor-module-card h3 {
+  letter-spacing: 0.01em;
+}
+
+.hud-editor-module-card button {
+  background: transparent !important;
+}
+
+.hud-editor-panel [data-tutorial="modules-grid"] {
+  scrollbar-width: thin;
+  scrollbar-color: var(--hud-editor-accent) transparent;
+}
+
+.hud-editor-panel [data-tutorial="modules-grid"]::-webkit-scrollbar,
+.hud-editor-panel > div > div::-webkit-scrollbar {
+  width: 4px;
+}
+
+.hud-editor-panel [data-tutorial="modules-grid"]::-webkit-scrollbar-track,
+.hud-editor-panel > div > div::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.hud-editor-panel [data-tutorial="modules-grid"]::-webkit-scrollbar-thumb,
+.hud-editor-panel > div > div::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: var(--hud-editor-accent);
+}
+
+/* Editor canvas */
+.hud-editor-workspace > div:first-child {
+  background: rgba(5, 7, 8, 0.72) !important;
+}
+
+.hud-editor-workspace > div:nth-child(2) {
+  background-image:
+    linear-gradient(rgba(190, 238, 17, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190, 238, 17, 0.06) 1px, transparent 1px) !important;
+  background-size: 50px 50px !important;
+}
+
+.hud-editor-draggable-frame {
+  border: 1px solid var(--accent, #BEEE11) !important;
+  border-radius: 0 !important;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.hud-editor-module-actions {
+  gap: 4px !important;
+}
+
+.hud-editor-module-actions button {
+  padding: 5px !important;
+  border: 1px solid rgba(235, 238, 245, 0.28) !important;
+  border-radius: 0 !important;
+  background: rgba(10, 12, 14, 0.94) !important;
+}
+
+.hud-editor-module-actions button:hover {
+  border-color: var(--accent, #BEEE11) !important;
+  background: rgba(190, 238, 17, 0.12) !important;
+}

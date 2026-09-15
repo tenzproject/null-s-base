@@ -232,14 +232,19 @@ function OpenSaveableMenu(submitCb, cancelCb, restrict)
 	end, cancelCb, restrict)
 end
 
-AddEventHandler('null:player:loadCharacter', function(skin)
-	if skin == nil then
+AddEventHandler('null:player:loadCharacter', function(skin, done)
+	local characterSkin = skin
+	if characterSkin == nil then
 		null.DebugPrint("No skin found, loading default")
-		TriggerEvent('Null:skinchanger:loadSkin', {sex = 0})
-	else
-		TriggerEvent('Null:skinchanger:loadSkin', skin)
+		characterSkin = { sex = 0 }
 	end
-	FirstSpawn = false
+
+	-- Le callback est déclenché uniquement après le changement de modèle et
+	-- l'application complète du skin sur le nouveau ped.
+	TriggerEvent('Null:skinchanger:loadSkin', characterSkin, function()
+		FirstSpawn = false
+		if done then done() end
+	end)
 end)
 
 RegisterNetEvent('esx:playerLoaded')

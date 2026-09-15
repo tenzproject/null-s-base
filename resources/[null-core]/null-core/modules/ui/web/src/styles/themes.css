@@ -48,7 +48,7 @@
 
   --server-color: var(--dashboard-green);
   --server-color-rgb: 190, 238, 17;
-  --primary-color: var(--dashboard-green);
+  --primary-color: var(--server-color);
   --primary-color-rgb: 190, 238, 17;
 
   --bg-primary: var(--dashboard-primary);
@@ -63,7 +63,7 @@
   --text-secondary: rgba(243, 243, 243, 0.70);
   --text-tertiary: rgba(243, 243, 243, 0.43);
 
-  --accent: var(--dashboard-green);
+  --accent: var(--server-color);
   --accent-glow: rgba(190, 238, 17, 0.30);
   --accent-hover: var(--dashboard-greenbg);
 
@@ -92,7 +92,7 @@
   --button-bg: var(--dashboard-sixth);
   --button-bg-hover: var(--dashboard-itemselected);
   --button-border: var(--dashboard-sixth);
-  --button-border-hover: var(--dashboard-green);
+  --button-border-hover: var(--server-color);
 }
 
 html[data-null-blur-addon="active"] {

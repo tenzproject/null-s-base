@@ -1681,3 +1681,251 @@ body:has(#blur-proposal.active) .footer {
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
+
+/* ==========================================================================
+   NULL LOADING REWORK — flat entry experience
+   ========================================================================== */
+:root {
+    --primary: #BEEE11;
+    --primary-glow: rgba(190, 238, 17, 0.22);
+    --glass-bg: rgba(11, 13, 12, 0.94);
+    --glass-border: rgba(255, 255, 255, 0.14);
+}
+
+body {
+    background: #070908;
+    font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+.bg-image {
+    filter: brightness(0.42) saturate(0.72);
+}
+
+.content-wrapper {
+    padding: 3.2rem;
+}
+
+.header {
+    margin-bottom: auto;
+}
+
+#server-logo {
+    filter: none;
+}
+
+.server-info h1 {
+    text-shadow: none;
+}
+
+.glass-card,
+#loading-phase .tips-container,
+.enter-panel,
+.sm-panel-window,
+.bp-container,
+.bp-btn,
+.music-player,
+.socials {
+    border-radius: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.glass-card,
+.music-player,
+.socials {
+    background: rgba(10, 12, 11, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42);
+}
+
+.shutter-top,
+.shutter-bottom {
+    border-width: 2px;
+    box-shadow: 0 10px 44px rgba(0, 0, 0, 0.76);
+}
+
+#loading-phase .progress-track {
+    height: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+#loading-phase .progress-fill {
+    background: var(--primary);
+    box-shadow: none;
+}
+
+#loading-phase .tips-container {
+    background: rgba(10, 12, 11, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    color: rgba(235, 241, 233, 0.68);
+}
+
+.enter-panel {
+    min-width: min(560px, 88vw);
+    padding: 40px 48px 36px;
+    background: rgba(10, 12, 11, 0.96);
+    border: 1px solid var(--primary);
+    box-shadow: 0 26px 64px rgba(0, 0, 0, 0.62);
+}
+
+.enter-panel::before {
+    display: none;
+}
+
+.enter-accent-line {
+    width: 100%;
+    height: 2px;
+    background: var(--primary);
+    box-shadow: none;
+}
+
+.enter-panel h2 {
+    text-shadow: none;
+}
+
+.enter-panel h2 .enter-accent {
+    color: var(--primary);
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    filter: none;
+}
+
+.enter-badge {
+    border-radius: 0;
+    color: var(--primary);
+}
+
+.enter-key-btn,
+.enter-back-btn,
+.control-btn,
+.volume-slider,
+.social-item {
+    border-radius: 0;
+}
+
+.enter-key-btn,
+.enter-back-btn {
+    background: #151917;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.enter-key-btn:hover,
+.enter-key-btn:focus,
+.enter-key-btn:focus-visible,
+.enter-key-btn:active,
+.enter-back-btn:hover {
+    background: rgba(190, 238, 17, 0.10);
+    border-color: var(--primary);
+    box-shadow: none;
+}
+
+.enter-key-btn::before,
+.enter-key-btn::after {
+    display: none;
+}
+
+.enter-key-btn-label {
+    color: #f4f7f2;
+}
+
+.enter-key-btn-text small,
+.enter-panel p {
+    color: rgba(230, 236, 229, 0.54);
+}
+
+.music-player,
+.socials {
+    padding: 1rem 1.15rem;
+}
+
+.album-art {
+    border-radius: 0;
+}
+
+.control-btn {
+    background: #151917;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.control-btn:hover,
+.control-btn:focus,
+.control-btn:focus-visible,
+.play-pause {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #0b0d0c;
+    box-shadow: none;
+}
+
+.volume-slider {
+    accent-color: var(--primary);
+}
+
+.social-item {
+    color: rgba(235, 241, 233, 0.68);
+}
+
+.social-item i,
+#track-name,
+.info-value.money {
+    color: var(--primary);
+}
+
+.sm-panel-backdrop {
+    background: rgba(3, 5, 5, 0.78);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.sm-panel-window,
+.bp-container {
+    background: #0b0d0c;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.64);
+}
+
+.sm-panel-header,
+.sm-panel-tabs,
+.bp-actions {
+    border-color: rgba(255, 255, 255, 0.10);
+}
+
+.sm-tab,
+.bp-step,
+.bp-trust-item,
+.bp-dependency,
+.bp-btn-secondary,
+.bp-split-label {
+    border-radius: 0;
+}
+
+.sm-tab.active,
+.bp-btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #0b0d0c;
+}
+
+.bp-link,
+.bp-split-label-after {
+    color: var(--primary);
+}
+
+.shutters-covering .shutter {
+    background: #070908;
+}
+
+/* CINEMATIC ENTER VIEW — keep the game visible once the transition is complete */
+.shutters-visible .shutter {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+/* La phase cinématique est désactivée : ne jamais afficher son interface. */
+#enter-phase,
+#blur-proposal,
+.shutters-wrapper {
+    display: none !important;
+}

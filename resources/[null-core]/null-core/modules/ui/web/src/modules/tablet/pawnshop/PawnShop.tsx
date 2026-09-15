@@ -48,7 +48,7 @@ const PawnShop: React.FC<PawnShopProps> = ({ visible, onClose, primaryColor }) =
   const [processing, setProcessing] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
 
-  const accentColor = primaryColor || '#e67e22';
+  const accentColor = primaryColor || '#BEEE11';
   const pawnshopAccentVars = useMemo(() => generateAccentVars('--pawnshop-accent', accentColor), [accentColor]);
 
   useEffect(() => {
@@ -183,7 +183,7 @@ const PawnShop: React.FC<PawnShopProps> = ({ visible, onClose, primaryColor }) =
 
           <nav className="pawnshop-sidebar-nav">
             {TABS.map(tab => (
-              <button key={tab.key} className={`pawnshop-sidebar-item ${activeTab === tab.key ? 'active' : ''}`} onClick={() => setActiveTab(tab.key)} style={activeTab === tab.key ? { backgroundColor: accentColor } : {}}>
+              <button key={tab.key} className={`pawnshop-sidebar-item ${activeTab === tab.key ? 'active' : ''}`} onClick={() => setActiveTab(tab.key)}>
                 {tab.icon}
                 <span>{tab.label}</span>
                 {tab.badge !== undefined && tab.badge > 0 && <span className="pawnshop-tab-badge" style={{ backgroundColor: accentColor }}>{tab.badge}</span>}

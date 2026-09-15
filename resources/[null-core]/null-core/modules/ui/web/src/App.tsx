@@ -73,6 +73,7 @@ import FreejobInfo from '@modules/freejob/FreejobInfo';
 import TaxiHUD from '@modules/tablet/taxi/TaxiHUD';
 import TaxiBoard from '@modules/tablet/taxi/TaxiBoard';
 import MeOverlay from '@modules/me/MeOverlay';
+import PanelAdmin from '@modules/panel-admin/PanelAdmin';
 import '@modules/menu/index.css';
 
 interface ServerConfig {
@@ -82,6 +83,90 @@ interface ServerConfig {
   serverIcon: string;
   serverDiscord: string;
   serverBackground: string;
+}
+
+const DEFAULT_ACCENT = '#BEEE11';
+
+function normalizeHexColor(value: unknown): string {
+  if (typeof value !== 'string') return DEFAULT_ACCENT;
+  const color = value.trim();
+  if (/^#[0-9a-fA-F]{3}$/.test(color)) {
+    return `#${color.slice(1).split('').map(char => char + char).join('').toUpperCase()}`;
+  }
+  return /^#[0-9a-fA-F]{6}$/.test(color) ? color.toUpperCase() : DEFAULT_ACCENT;
+}
+
+function applyGlobalBanner(value: unknown): void {
+  const root = document.documentElement;
+  const banner = typeof value === 'string' ? value.trim() : '';
+
+  if (banner) {
+    // URL contrôlée par le Panel Admin et validée côté serveur.
+    root.style.setProperty('--server-banner', `url("${banner.replace(/["\\]/g, '\\$&')}")`);
+  } else {
+    root.style.removeProperty('--server-banner');
+  }
+}
+
+function hexToRgb(hex: string): [number, number, number] {
+  const value = normalizeHexColor(hex).slice(1);
+  return [
+    parseInt(value.slice(0, 2), 16),
+    parseInt(value.slice(2, 4), 16),
+    parseInt(value.slice(4, 6), 16),
+  ];
+}
+
+function rgbToHsl([red, green, blue]: [number, number, number]): string {
+  const r = red / 255;
+  const g = green / 255;
+  const b = blue / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const lightness = (max + min) / 2;
+
+  if (max === min) return `0 0% ${Math.round(lightness * 100)}%`;
+
+  const delta = max - min;
+  const saturation = lightness > 0.5
+    ? delta / (2 - max - min)
+    : delta / (max + min);
+  let hue = 0;
+
+  if (max === r) hue = (g - b) / delta + (g < b ? 6 : 0);
+  else if (max === g) hue = (b - r) / delta + 2;
+  else hue = (r - g) / delta + 4;
+
+  hue /= 6;
+  return `${Math.round(hue * 360)} ${Math.round(saturation * 100)}% ${Math.round(lightness * 100)}%`;
+}
+
+function applyGlobalAccent(value: unknown): void {
+  const color = normalizeHexColor(value);
+  const [red, green, blue] = hexToRgb(color);
+  const rgb = `${red}, ${green}, ${blue}`;
+  const hsl = rgbToHsl([red, green, blue]);
+  const root = document.documentElement;
+
+  root.style.setProperty('--server-color', color);
+  root.style.setProperty('--server-color-rgb', rgb);
+  root.style.setProperty('--primary-color', color);
+  root.style.setProperty('--primary-color-rgb', rgb);
+  root.style.setProperty('--accent', color);
+  root.style.setProperty('--accent-08', `rgba(${rgb}, 0.08)`);
+  root.style.setProperty('--accent-09', `rgba(${rgb}, 0.09)`);
+  root.style.setProperty('--accent-20', `rgba(${rgb}, 0.20)`);
+  root.style.setProperty('--accent-48', `rgba(${rgb}, 0.48)`);
+  root.style.setProperty('--accent-hover', `rgba(${rgb}, 0.12)`);
+  root.style.setProperty('--accent-glow', `rgba(${rgb}, 0.30)`);
+  root.style.setProperty('--dashboard-green', color);
+  root.style.setProperty('--dashboard-greenbg', `rgba(${rgb}, 0.08)`);
+  root.style.setProperty('--dashboard-greenbg2', `rgba(${rgb}, 0.18)`);
+  root.style.setProperty('--dashboard-greenbg3', `rgba(${rgb}, 0.24)`);
+  root.style.setProperty('--dashboard-greentext', color);
+  root.style.setProperty('--button-border-hover', color);
+  root.style.setProperty('--primary', hsl);
+  root.style.setProperty('--ring', hsl);
 }
 
 function App() {
@@ -132,6 +217,7 @@ function App() {
   const [freejobInfoVisible, setFreejobInfoVisible] = useState(false);
   const [taxiBoardVisible, setTaxiBoardVisible] = useState(false);
   const [itemGridVisible, setItemGridVisible] = useState(false);
+  const [panelAdminVisible, setPanelAdminVisible] = useState(false);
   const [itemGridData, setItemGridData] = useState<{ items: GridItem[]; title: string; mode: 'item' | 'weapon' | 'vehicle' }>({ items: [], title: '', mode: 'item' });
   const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   const [statusBarColors, setStatusBarColors] = useState<any>({});
@@ -144,7 +230,7 @@ function App() {
 
   const [serverConfig, setServerConfig] = useState<ServerConfig>({
     serverName: 'Server Name',
-    serverColor: '#646464',
+    serverColor: DEFAULT_ACCENT,
     serverLuaColor: '~s~',
     serverIcon: '',
     serverDiscord: '',
@@ -153,7 +239,7 @@ function App() {
 
   // Global HUD config (theme, style, primary color)
   const [globalConfig, setGlobalConfig] = useState({
-    primaryColor: '#646464',
+    primaryColor: DEFAULT_ACCENT,
     theme: 'dark' as 'dark' | 'light',
     style: 'modern' as 'modern' | 'compact'
   });
@@ -213,7 +299,8 @@ function App() {
   useEffect(() => {
     // Keep legacy behaviour: also load global config from localStorage on mount.
 
-    // Load global config including custom primaryColor if player has set one
+    // Keep theme/style preferences locally. The accent always comes from
+    // server.cfg (hexcolor) once the server configuration is received.
     const savedGlobalConfig = localStorage.getItem('hudGlobalConfig');
     if (savedGlobalConfig) {
       try {
@@ -222,13 +309,21 @@ function App() {
           ...prev,
           theme: parsed.theme || prev.theme,
           style: parsed.style || prev.style,
-          primaryColor: parsed.primaryColor || prev.primaryColor // Load custom color if exists
+          primaryColor: prev.primaryColor
         }));
       } catch (error) {
         console.error('[App] Error loading global config:', error);
       }
     }
   }, []);
+
+  useEffect(() => {
+    applyGlobalAccent(globalConfig.primaryColor);
+  }, [globalConfig.primaryColor]);
+
+  useEffect(() => {
+    applyGlobalBanner(serverConfig.serverBackground);
+  }, [serverConfig.serverBackground]);
 
   const handleMessage = useCallback((event: MessageEvent) => {
     // const data = event.data;
@@ -240,40 +335,33 @@ function App() {
     switch (action) {
       // Config 
       case 'setConfig':
-        // Si serverColor est fourni, mettre à jour la config serveur
-        if (data?.serverColor || data?.data?.serverColor) {
-          const newServerColor = data?.serverColor || data?.data?.serverColor || '#42a5f5';
+        // Accepte les deux formats utilisés par les bridges legacy :
+        // { action, data: {...} } et { action, serverColor, ... }.
+        {
+          const incoming = data?.data ?? data;
+          const hasServerConfig = incoming && (
+            Object.prototype.hasOwnProperty.call(incoming, 'serverColor') ||
+            Object.prototype.hasOwnProperty.call(incoming, 'serverBackground') ||
+            Object.prototype.hasOwnProperty.call(incoming, 'backgroundBanner') ||
+            Object.prototype.hasOwnProperty.call(incoming, 'bannerUrl')
+          );
 
-          setServerConfig({
-            serverName: data?.serverName || data?.data?.serverName || 'Null',
-            serverColor: newServerColor,
-            serverLuaColor: data?.serverLuaColor || data?.data?.serverLuaColor || '~b~',
-            serverIcon: data?.serverIcon || data?.data?.serverIcon || '',
-            serverDiscord: data?.serverDiscord || data?.data?.serverDiscord || '',
-            serverBackground: data?.serverBackground || data?.data?.serverBackground || ''
-          });
+          if (hasServerConfig) {
+            const newServerColor = normalizeHexColor(incoming.serverColor);
+            const incomingBanner = incoming.serverBackground ?? incoming.backgroundBanner ?? incoming.bannerUrl;
 
-          // Ne mettre à jour primaryColor que si le joueur n'a pas de couleur personnalisée
-          // (une couleur différente de la couleur par défaut #646464)
-          const savedConfig = localStorage.getItem('hudGlobalConfig');
-          let hasCustomColor = false;
-
-          if (savedConfig) {
-            try {
-              const parsed = JSON.parse(savedConfig);
-              const savedColor = parsed.primaryColor;
-              // Considérer comme personnalisé seulement si différent de la couleur par défaut
-              hasCustomColor = savedColor && savedColor !== '#646464';
-            } catch (e) {
-              console.error('[App] Error parsing savedConfig:', e);
-            }
-          }
-
-          if (!hasCustomColor) {
-            setGlobalConfig(prev => ({
+            setServerConfig(prev => ({
               ...prev,
-              primaryColor: newServerColor
+              serverName: incoming.serverName ?? prev.serverName,
+              serverColor: newServerColor,
+              serverLuaColor: incoming.serverLuaColor ?? prev.serverLuaColor,
+              serverIcon: incoming.serverIcon ?? prev.serverIcon,
+              serverDiscord: incoming.serverDiscord ?? prev.serverDiscord,
+              serverBackground: incomingBanner ?? prev.serverBackground,
             }));
+
+            applyGlobalAccent(newServerColor);
+            setGlobalConfig(prev => ({ ...prev, primaryColor: newServerColor }));
           }
         }
 
@@ -908,6 +996,16 @@ function App() {
         console.log("openHUDEditor : setHudEditorVisible(true)");
         break;
 
+      case 'panelAdmin:open':
+        setPanelAdminVisible(true);
+        soundManager.play('open');
+        break;
+
+      case 'panelAdmin:close':
+        setPanelAdminVisible(false);
+        soundManager.play('close');
+        break;
+
       case 'closeHUDEditor':
         console.log("closeHUDEditor : setHudEditorVisible(false)");
         setHudEditorVisible(false);
@@ -1136,6 +1234,7 @@ function App() {
           maxVisibleItems={menuState.maxVisibleItems}
           primaryColor={globalConfig.primaryColor}
           serverLuaColor={serverConfig.serverLuaColor}
+          serverBackground={serverConfig.serverBackground}
           hudEditorOpen={hudEditorVisible}
           isHiding={menuHiding}
           transition={menuState.transition}
@@ -1472,6 +1571,14 @@ function App() {
         serverColor={serverConfig.serverColor}
         statusColors={statusBarColors}
         speedometerColors={speedometerColors}
+        serverConfig={serverConfig}
+      />
+
+      {/* Panel Admin */}
+      <PanelAdmin
+        visible={panelAdminVisible}
+        onClose={() => setPanelAdminVisible(false)}
+        primaryColor={globalConfig.primaryColor}
         serverConfig={serverConfig}
       />
     </div>

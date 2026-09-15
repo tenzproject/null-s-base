@@ -220,10 +220,11 @@ const MenuItemComponent = ({ item, isSelected, serverLuaColor, primaryColor }: M
         {/* Arrow for buttons */} 
         {item.type === 'button' && (
           <div 
-            className={`
+              className={`
+              menu-control menu-control-button
               flex items-center justify-center w-5 h-5 rounded -mr-1 border
               transition-all duration-200
-              ${isSelected ? '' : 'text-theme-tertiary border-theme'}
+              ${isSelected ? 'menu-control-selected' : 'text-theme-tertiary border-theme'}
             `}
             style={isSelected ? {
               backgroundColor: primaryColor || '#c0c0c0',
@@ -254,7 +255,7 @@ const MenuItemComponent = ({ item, isSelected, serverLuaColor, primaryColor }: M
         {/* Checkbox */}
         {item.type === 'checkbox' && (
           <div 
-            className="w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-150"
+            className={`menu-control menu-control-checkbox w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-150 ${item.checked ? 'menu-control-checked' : ''} ${isSelected ? 'menu-control-selected' : ''}`}
             style={{
               backgroundColor: item.checked ? primaryColor : 'transparent',
               borderColor: item.checked 

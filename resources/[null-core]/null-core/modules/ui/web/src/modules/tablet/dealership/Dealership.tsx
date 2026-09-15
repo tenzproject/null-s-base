@@ -3,6 +3,7 @@ import { DealershipData, DealershipVehicle, StockVehicle, DealerEmployee, Dealer
 import { Car, Bike, Ship, Search, X, ShoppingCart, Package, History, Settings, DollarSign, Eye, UserPlus, Wallet, Landmark, Tag, Palette, Users, ChevronRight, Banknote, TrendingUp, Building2, CheckCircle, Monitor, Trash2 } from 'lucide-react';
 import './Dealership.css';
 import { cacheImg } from '@shared/cacheVersion';
+import { generateAccentVars } from '@/utils/accentColors';
 
 const GetParentResourceName = () => 'null-core';
 
@@ -333,8 +334,9 @@ const Dealership: React.FC<DealershipProps> = ({ visible, onClose, primaryColor 
     return null;
   }
 
-  const accentColor = primaryColor || '#3b82f6';
+  const accentColor = primaryColor || '#BEEE11';
   const accentRgb = hexToRgb(accentColor);
+  const dealerAccentVars = useMemo(() => generateAccentVars('--dealer-accent', accentColor), [accentColor]);
   const isPublic = data.mode === 'public';
   const canSell = data.mode === 'employee' || data.mode === 'boss';
   const canBoss = data.mode === 'boss';
@@ -398,7 +400,7 @@ const Dealership: React.FC<DealershipProps> = ({ visible, onClose, primaryColor 
   return (
     <div className={`dealer-overlay ${isClosing ? 'dealer-closing' : ''}`}>
       <div className="dealer-backdrop" onClick={handleClose} />
-      <div className="dealer-container">
+      <div className="dealer-container" style={dealerAccentVars as React.CSSProperties}>
         <div className="dealer-main">
           {/* Left panel */}
           <div className="dealer-left">
@@ -501,7 +503,7 @@ const Dealership: React.FC<DealershipProps> = ({ visible, onClose, primaryColor 
                         </div>
                         <div className="dealer-card-body">
                           <div className="dealer-card-name">{v.label}</div>
-                          <div className="dealer-card-price" style={{ color: '#3b82f6' }}>{formatMoney(v.salePrice ?? Math.floor(v.price * saleMargin))}$</div>
+                          <div className="dealer-card-price" style={{ color: accentColor }}>{formatMoney(v.salePrice ?? Math.floor(v.price * saleMargin))}$</div>
                           <div className="dealer-card-category">{v.category}</div>
                         </div>
                       </div>
@@ -926,7 +928,7 @@ const Dealership: React.FC<DealershipProps> = ({ visible, onClose, primaryColor 
                   <div className="dealer-detail-info-row">
                     <DollarSign size={13} />
                     <span className="dealer-detail-info-label">Prix de vente client</span>
-                    <span className="dealer-detail-info-value" style={{ color: '#3b82f6' }}>
+                    <span className="dealer-detail-info-value" style={{ color: accentColor }}>
                       {formatMoney(selectedVehicle.salePrice ?? Math.floor(selectedVehicle.price * saleMargin))}$
                     </span>
                   </div>

@@ -1,5 +1,22 @@
 local UIReady = false
 
+local function getRuntimeConfig(name, fallback)
+    local value = GetConvar(name, '')
+    if value == '' and ESX and ESX.Config then
+        value = ESX.Config(name) or ''
+    end
+    return value ~= '' and value or (fallback or '')
+end
+
+local function getRuntimeBanner()
+    local banner = GetConvar('backgroundBanner', '')
+    if banner == '' then banner = GetConvar('bannerUrl', '') end
+    if banner == '' and ESX and ESX.Config then
+        banner = ESX.Config('backgroundBanner') or ESX.Config('bannerUrl') or ''
+    end
+    return banner
+end
+
 RegisterNUICallback('ui_ready', function(data, cb)
     UIReady = true
     null.InitPrint('^2UI ready (v' .. (data.version or '?') .. ')^7')
@@ -7,19 +24,19 @@ RegisterNUICallback('ui_ready', function(data, cb)
     SendNUIMessage({ 
         action = 'setConfig',
         data = {
-            serverName = ESX.Config and ESX.Config('serverName') or 'Null', 
-            serverColor = ESX.Config and ESX.Config('hexcolor') or '#9b59b6',
-            serverLuaColor = ESX.Config and ESX.Config('serverColor') or '~b~',
-            serverIcon = ESX.Config and ESX.Config('serverCHAR') or '',
-            serverDiscord = ESX.Config and ESX.Config('serverDiscord') or '',
-            serverBackground = ESX.Config and ESX.Config('backgroundBanner') or ''
+            serverName = getRuntimeConfig('serverName', 'Null'),
+            serverColor = getRuntimeConfig('hexcolor', '#BEEE11'),
+            serverLuaColor = getRuntimeConfig('serverColor', '~b~'),
+            serverIcon = getRuntimeConfig('serverCHAR', ''),
+            serverDiscord = getRuntimeConfig('serverDiscord', ''),
+            serverBackground = getRuntimeBanner()
         },
-        serverName = ESX.Config and ESX.Config('serverName') or 'Null', 
-        serverColor = ESX.Config and ESX.Config('hexcolor') or '#9b59b6',
-        serverLuaColor = ESX.Config and ESX.Config('serverColor') or '~b~',
-        serverIcon = ESX.Config and ESX.Config('serverCHAR') or '',
-        serverDiscord = ESX.Config and ESX.Config('serverDiscord') or '',
-        serverBackground = ESX.Config and ESX.Config('backgroundBanner') or ''
+        serverName = getRuntimeConfig('serverName', 'Null'),
+        serverColor = getRuntimeConfig('hexcolor', '#BEEE11'),
+        serverLuaColor = getRuntimeConfig('serverColor', '~b~'),
+        serverIcon = getRuntimeConfig('serverCHAR', ''),
+        serverDiscord = getRuntimeConfig('serverDiscord', ''),
+        serverBackground = getRuntimeBanner()
     })
     
     cb('ok')

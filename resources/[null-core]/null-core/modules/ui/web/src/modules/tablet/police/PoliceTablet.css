@@ -910,3 +910,445 @@
   .police-group-slot, .police-empty-icon, .police-modal, .police-modal-edit,
   .police-preview-label, .police-nav-indicator { animation: none !important; }
 }
+
+/* ==========================================================================
+   POLICE TABLET REWORK — flat dispatch workspace
+   ========================================================================== */
+:root {
+  --police-global-accent: var(--accent, #BEEE11);
+}
+
+.police-overlay,
+.police-modal-overlay {
+  background: rgba(3, 5, 5, 0.76);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.police-container {
+  background: #0b0d0c;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.64);
+}
+
+.police-sidebar {
+  width: 260px;
+  background: #0e1110;
+  border-right: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.police-brand-hero {
+  padding: 22px 18px 20px;
+  background: #0e1110 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.police-brand-hero::before,
+.police-brand-shine {
+  display: none;
+}
+
+.police-brand-logo {
+  border-radius: 0;
+  filter: none;
+}
+
+.police-brand-text h1,
+.police-page-header h2,
+.police-penal-hero h2,
+.police-radio-hero h2 {
+  color: #f4f7f2;
+}
+
+.police-brand-text p,
+.police-page-header p,
+.police-penal-hero p,
+.police-radio-hero p {
+  color: rgba(230, 236, 229, 0.52);
+}
+
+.police-agent-card {
+  margin: 12px;
+  padding: 12px 14px;
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: #111513;
+}
+
+.police-agent-avatar {
+  border-radius: 0;
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+  color: var(--police-accent, var(--police-global-accent));
+}
+
+.police-nav {
+  padding: 8px;
+  gap: 3px;
+}
+
+.police-nav-item {
+  margin: 0;
+  padding: 11px 12px;
+  border-radius: 0;
+  border: 1px solid transparent;
+  color: rgba(232, 238, 231, 0.60);
+  transition: background .15s, color .15s, border-color .15s;
+}
+
+.police-nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f4f7f2;
+  transform: none;
+}
+
+.police-nav-item.active {
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+  border-color: var(--police-accent-30, rgba(190, 238, 17, 0.30));
+  color: #f4f7f2;
+}
+
+.police-nav-item.active > svg:first-of-type {
+  color: var(--police-accent, var(--police-global-accent));
+}
+
+.police-nav-indicator {
+  display: none;
+}
+
+.police-close-btn {
+  margin: 10px 12px;
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.police-close-btn:hover {
+  background: rgba(255, 80, 80, 0.12);
+  border-color: rgba(255, 80, 80, 0.35);
+  color: #ff9d9d;
+}
+
+.police-main {
+  background: #0b0d0c;
+}
+
+.police-page-header {
+  padding: 22px 26px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.police-input,
+.police-search input,
+.police-field input,
+.police-field textarea,
+.police-modal-right input,
+.police-modal-right textarea,
+.police-penal-row input,
+.police-penal-add input,
+.police-modal-form input {
+  border-radius: 0;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: #141816;
+}
+
+.police-input:focus,
+.police-search input:focus,
+.police-field input:focus,
+.police-field textarea:focus,
+.police-modal-right input:focus,
+.police-modal-right textarea:focus,
+.police-penal-row input:focus,
+.police-penal-add input:focus,
+.police-modal-form input:focus {
+  border-color: var(--police-accent, var(--police-global-accent));
+  box-shadow: 0 0 0 2px var(--police-accent-10, rgba(190, 238, 17, 0.10));
+}
+
+.police-search {
+  border-radius: 0;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: #141816;
+}
+
+.police-color {
+  border-radius: 0;
+}
+
+.police-btn,
+.police-icon-btn,
+.police-link {
+  border-radius: 0;
+}
+
+.police-btn {
+  min-height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: none;
+}
+
+.police-btn-primary {
+  background: var(--police-accent, var(--police-global-accent));
+  border-color: var(--police-accent, var(--police-global-accent));
+  color: #0b0d0c;
+  font-weight: 700;
+}
+
+.police-btn-primary:hover {
+  background: var(--police-accent-70w, #e8f3c4);
+}
+
+.police-btn-secondary,
+.police-btn-ghost {
+  background: #151917;
+}
+
+.police-btn-secondary:hover,
+.police-btn-ghost:hover {
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+  border-color: var(--police-accent-40, rgba(190, 238, 17, 0.40));
+  color: #f4f7f2;
+}
+
+.police-btn-danger,
+.police-icon-danger {
+  background: rgba(255, 80, 80, 0.08);
+  border-color: rgba(255, 96, 96, 0.28);
+  color: #ff9b9b;
+}
+
+.police-btn-danger:hover,
+.police-icon-danger:hover {
+  background: rgba(255, 80, 80, 0.15);
+}
+
+.police-icon-btn {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: #151917;
+}
+
+.police-icon-btn:hover {
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+  color: var(--police-accent, var(--police-global-accent));
+}
+
+.police-board {
+  margin: 18px 24px 24px;
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0f1311;
+  background-image: none;
+}
+
+.police-empty-board {
+  color: rgba(230, 236, 229, 0.40);
+}
+
+.police-empty-board svg {
+  color: var(--police-accent, var(--police-global-accent));
+  opacity: 0.60;
+}
+
+.police-empty-board h3 {
+  color: rgba(242, 247, 240, 0.72);
+}
+
+.police-card,
+.police-group {
+  border-radius: 0;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: #111513;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.34);
+}
+
+.police-card.mine {
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.34), 0 0 0 1px var(--police-accent, var(--police-global-accent));
+}
+
+.police-card-header,
+.police-group-header {
+  border-radius: 0;
+}
+
+.police-card-body {
+  padding: 10px;
+}
+
+.police-group {
+  border-top-width: 2px;
+}
+
+.police-group-count,
+.police-group-delete,
+.police-group-empty,
+.police-group-slot {
+  border-radius: 0;
+}
+
+.police-group-count {
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.police-group-delete {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.police-group-empty {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.police-group-slot {
+  border-left: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.police-results,
+.police-section,
+.police-radio-grid {
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.police-result-card,
+.police-detail-card,
+.police-mini-card,
+.police-casier-item,
+.police-casier-offenses li,
+.police-radio-card,
+.police-penal-card {
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: #111513;
+}
+
+.police-result-card:hover,
+.police-detail-card:hover,
+.police-mini-card:hover,
+.police-radio-card:hover,
+.police-penal-card:hover {
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+  border-color: var(--police-accent-30, rgba(190, 238, 17, 0.30));
+  transform: none;
+}
+
+.police-result-avatar,
+.police-detail-card-icon {
+  border-radius: 0;
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+  color: var(--police-accent, var(--police-global-accent));
+}
+
+.police-result-info code,
+.police-tag,
+.police-radio-tag,
+.police-radio-filters,
+.police-radio-filters button,
+.police-preview-label em {
+  border-radius: 0;
+}
+
+.police-tag-money {
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+  color: var(--police-accent, var(--police-global-accent));
+}
+
+.police-tag-jail {
+  background: rgba(255, 80, 80, 0.10);
+  color: #ff9b9b;
+}
+
+.police-casier-offenses li,
+.police-selected,
+.police-selected-row,
+.police-modal-totals,
+.police-penal-newcat,
+.police-penal-empty-cats {
+  border-radius: 0;
+}
+
+.police-casier-notes {
+  border-left: 0;
+  border-top: 1px solid var(--police-accent-30, rgba(190, 238, 17, 0.30));
+  border-radius: 0;
+}
+
+.police-modal,
+.police-modal-edit {
+  border-radius: 0;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: #0f1311;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.64);
+}
+
+.police-modal-cat.active {
+  background: var(--police-accent, var(--police-global-accent));
+  color: #0b0d0c;
+  border-color: var(--police-accent, var(--police-global-accent));
+}
+
+.police-offense-row {
+  border-radius: 0;
+  border-color: rgba(255, 255, 255, 0.10);
+  background: #141816;
+}
+
+.police-offense-row:hover {
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+}
+
+.police-toggle,
+.police-toggle-dot {
+  border-radius: 0;
+}
+
+.police-toggle.on {
+  background: var(--police-accent, var(--police-global-accent));
+}
+
+.police-toggle-dot {
+  background: #f4f7f2;
+}
+
+.police-radio-filters {
+  background: #141816;
+  padding: 3px;
+}
+
+.police-radio-filters button.active {
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+  color: var(--police-accent, var(--police-global-accent));
+}
+
+.police-radio-tag {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.police-radio-card.urgent {
+  background: rgba(255, 80, 80, 0.07);
+  border-color: rgba(255, 96, 96, 0.24);
+}
+
+.police-radio-card.urgent::before {
+  border-radius: 0;
+}
+
+.police-penal-cat {
+  border-radius: 0;
+}
+
+.police-penal-cat.active {
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+  border-color: var(--police-accent-30, rgba(190, 238, 17, 0.30));
+  color: #f4f7f2;
+}
+
+.police-eyebrow,
+.police-preview-label span {
+  color: rgba(230, 236, 229, 0.52);
+}
+
+.police-preview-label em {
+  color: var(--police-accent, var(--police-global-accent));
+  background: var(--police-accent-10, rgba(190, 238, 17, 0.10));
+}

@@ -12,6 +12,8 @@ window.LOADING_CONFIG = {
     serverName: 'Null\'s V1',
     serverSubtitle: 'ROLEPLAY SERIOUS',
     serverLogo: 'img/logo.png',
+    // Bannière par défaut (override par `backgroundBanner` / `bannerUrl` côté serveur)
+    backgroundBanner: 'img/background.png',
 
     // Astuce affichée au-dessus de la barre de progression
     tip: 'Astuce: Rejoignez le Discord pour suivre les mises à jour et le règlement.',

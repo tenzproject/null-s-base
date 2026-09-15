@@ -268,3 +268,98 @@
   margin-top: 4px;
   display: block;
 }
+
+/* Interaction HUD — clear flat prompt with a strong action anchor. */
+.interaction-3d-content {
+  min-width: 200px;
+  padding: 10px 12px;
+  gap: 12px;
+  border: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  border-left: 2px solid var(--accent, #BEEE11);
+  border-radius: 0;
+  background: var(--bg-primary, rgba(20, 22, 26, 0.94));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
+}
+
+.interaction-3d-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 0;
+  background: var(--accent, #BEEE11);
+  box-shadow: 0 0 16px var(--accent-glow, rgba(190, 238, 17, 0.34));
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.interaction-3d-dot::before,
+.interaction-3d-dot::after {
+  border-radius: 0;
+}
+
+.interaction-3d-key {
+  min-width: 30px;
+  padding: 6px 9px;
+  border: 1px solid var(--accent, #BEEE11);
+  border-radius: 0;
+  background: var(--accent, #BEEE11);
+  color: #101308;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.interaction-3d-text {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+.interaction-3d-content.multi {
+  min-width: 240px;
+  border: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  border-left: 2px solid var(--accent, #BEEE11);
+  border-radius: 0;
+  background: var(--bg-primary-full, #0d0f10);
+}
+
+.interaction-3d-title {
+  padding: 9px 12px;
+  border-bottom-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: var(--surface-2, rgba(255, 255, 255, 0.07));
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.interaction-3d-lines {
+  gap: 0;
+  padding: 5px 10px;
+}
+
+.interaction-3d-line {
+  padding: 8px 2px;
+  border-bottom-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  font-size: 12px;
+}
+
+.interaction-3d-line:hover {
+  background: var(--accent-hover, rgba(190, 238, 17, 0.1));
+}
+
+.line-left {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+.line-right {
+  color: var(--accent, #BEEE11);
+}
+
+.line-key {
+  padding: 3px 7px;
+  border-radius: 0;
+  background: var(--accent-hover, rgba(190, 238, 17, 0.1));
+  color: var(--accent, #BEEE11);
+}
+
+.line-right.boolean-true::before {
+  color: var(--accent, #BEEE11);
+}

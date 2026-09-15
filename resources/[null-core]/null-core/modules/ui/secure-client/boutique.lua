@@ -19,6 +19,15 @@ local SHOWROOM_HEADING = 47.98029708862305
 local CAM_POS = vec3(-294.54629516602, 1651.7911376953, -159.02914428711)
 local CAM_ROT = vec3(-5.62162017822265, 0.0, -133.0)
 
+local function getRuntimeBanner()
+    local banner = GetConvar('backgroundBanner', '')
+    if banner == '' then banner = GetConvar('bannerUrl', '') end
+    if banner == '' and ESX and ESX.Config then
+        banner = ESX.Config('backgroundBanner') or ESX.Config('bannerUrl') or ''
+    end
+    return banner
+end
+
 function Boutique.Open()
     if Boutique.isOpen then 
         return 
@@ -43,7 +52,7 @@ function Boutique.Open()
         dailyItems = {},
         boutiqueLink = "",
         nightMarket = { active = false },
-        serverBackground = (ESX.Config and ESX.Config('backgroundBanner')) or GetConvar('backgroundBanner', '') or ''
+        serverBackground = getRuntimeBanner()
     })
 
     -- Request items and daily shop from server
@@ -57,7 +66,7 @@ function Boutique.Open()
             dailyItems = data.dailyItems,
             boutiqueLink = data.boutiqueLink,
             nightMarket = data.nightMarket,
-            serverBackground = (ESX.Config and ESX.Config('backgroundBanner')) or GetConvar('backgroundBanner', '') or ''
+            serverBackground = getRuntimeBanner()
         })
     end)
 end

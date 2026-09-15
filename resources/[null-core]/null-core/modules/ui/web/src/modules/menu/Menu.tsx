@@ -84,6 +84,7 @@ export default function Menu({
   maxVisibleItems = 10,
   primaryColor = '#c0c0c0',
   serverLuaColor = '~b~',
+  serverBackground = '',
   previewMode = false,
   previewPosition = null,
   hudEditorOpen = false,
@@ -246,6 +247,7 @@ export default function Menu({
           title={displayTitle} 
           subtitle={displaySubtitle} 
           pageInfo={`${selectableIndex} / ${selectableItems.length}`}
+          serverBackground={serverBackground}
         />
 
         {/* Items Container */}

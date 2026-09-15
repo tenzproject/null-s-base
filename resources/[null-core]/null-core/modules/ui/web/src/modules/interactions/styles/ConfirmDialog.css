@@ -67,7 +67,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: url('/assets/img/banniere.png') center / cover no-repeat;
+  background: var(--server-banner, url('/assets/img/banniere.png')) center / cover no-repeat;
   z-index: -2;
 }
 

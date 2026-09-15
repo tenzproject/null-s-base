@@ -55,7 +55,8 @@ const nuiCallback = async (event: string, data: Record<string, any> = {}) => {
 // ============================================================================
 
 const Tutorial: React.FC<TutorialProps> = ({ visible, onClose, primaryColor, serverConfig }) => {
-  const tutorialAccentVars = useMemo(() => generateAccentVars('--tutorial-accent', primaryColor), [primaryColor]);
+  const accentColor = primaryColor || '#BEEE11';
+  const tutorialAccentVars = useMemo(() => generateAccentVars('--tutorial-accent', accentColor), [accentColor]);
   const [currentStep, setCurrentStep] = useState<string>('welcome');
   const [path, setPath] = useState<TutorialPath>(null);
   const [hiding, setHiding] = useState(false);
@@ -164,7 +165,7 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose, primaryColor, ser
                 {serverConfig.serverIcon ? (
                   <img src={serverConfig.serverIcon} alt="" className="tutorial-welcome-logo" />
                 ) : (
-                  <div className="tutorial-welcome-logo-fallback" style={{ background: primaryColor }}>
+                  <div className="tutorial-welcome-logo-fallback" style={{ background: accentColor }}>
                     <Sparkles size={32} />
                   </div>
                 )}
@@ -1142,7 +1143,7 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose, primaryColor, ser
                   key={step.id}
                   className={`tutorial-sidebar-step ${status}`}
                 >
-                  {status === 'active' && <div className="tutorial-sidebar-indicator" style={{ background: primaryColor }} />}
+                  {status === 'active' && <div className="tutorial-sidebar-indicator" style={{ background: accentColor }} />}
                   <div className="tutorial-sidebar-step-icon">
                     {status === 'completed' ? <CheckCircle2 size={16} /> : step.icon}
                   </div>

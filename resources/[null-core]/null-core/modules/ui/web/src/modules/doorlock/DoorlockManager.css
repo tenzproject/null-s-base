@@ -276,3 +276,207 @@
   background: var(--dlm-accent-20, rgba(74,144,226,0.2));
   border: 1px solid var(--dlm-accent-40, rgba(74,144,226,0.4));
 }
+
+/* ============================================================================
+   Doorlock manager — flat professional rework
+   ========================================================================== */
+
+.dlm-overlay {
+  background: rgba(4, 6, 7, 0.72);
+}
+
+.dlm-panel {
+  border-radius: 0;
+  border-color: var(--border-strong, rgba(235, 238, 245, 0.24));
+  background: var(--bg-primary-full, #0d0f10);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.68);
+}
+
+.dlm-header {
+  position: relative;
+  border-bottom-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: var(--surface-1, rgba(20, 22, 26, 0.94));
+}
+
+.dlm-header::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--dlm-accent, var(--accent, #BEEE11));
+  content: '';
+}
+
+.dlm-header-icon,
+.dlm-section-title,
+.dlm-sel-icon {
+  color: var(--dlm-accent, var(--accent, #BEEE11));
+}
+
+.dlm-title {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+.dlm-subtitle,
+.dlm-row-id,
+.dlm-hint {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.dlm-back,
+.dlm-close,
+.dlm-icon-btn,
+.dlm-btn-ghost,
+.dlm-mini-btn {
+  border-radius: 0;
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: transparent;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.dlm-back:hover,
+.dlm-close:hover,
+.dlm-icon-btn:hover,
+.dlm-btn-ghost:hover,
+.dlm-mini-btn:hover {
+  border-color: var(--dlm-accent, var(--accent, #BEEE11));
+  background: var(--dlm-accent-10, var(--accent-hover, rgba(190, 238, 17, 0.1)));
+  color: var(--dlm-accent, var(--accent, #BEEE11));
+}
+
+.dlm-list {
+  padding: 10px 12px;
+  gap: 0;
+}
+
+.dlm-list::-webkit-scrollbar,
+.dlm-form::-webkit-scrollbar {
+  width: 4px;
+}
+
+.dlm-list::-webkit-scrollbar-thumb,
+.dlm-form::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: var(--dlm-accent-40, rgba(190, 238, 17, 0.4));
+}
+
+.dlm-row {
+  padding: 12px 8px;
+  border: 0;
+  border-bottom: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  border-radius: 0;
+  background: transparent;
+}
+
+.dlm-row:hover {
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: var(--surface-3, rgba(255, 255, 255, 0.07));
+}
+
+.dlm-row-status,
+.dlm-tag,
+.dlm-door-chip,
+.dlm-sel-card,
+.dlm-sel-count,
+.dlm-kbd {
+  border-radius: 0;
+}
+
+.dlm-row-status {
+  border: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  background: transparent !important;
+}
+
+.dlm-row-status.locked {
+  border-color: rgba(255, 80, 80, 0.35);
+  color: var(--danger, #ff5050);
+}
+
+.dlm-row-status.unlocked {
+  border-color: var(--dlm-accent-35, rgba(190, 238, 17, 0.35));
+  color: var(--dlm-accent, var(--accent, #BEEE11));
+}
+
+.dlm-row-label {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+.dlm-tag {
+  border: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.dlm-footer {
+  border-top-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.dlm-btn-primary {
+  border: 1px solid var(--dlm-accent, var(--accent, #BEEE11));
+  border-radius: 0;
+  background: var(--dlm-accent, var(--accent, #BEEE11));
+  color: #101308;
+  box-shadow: none;
+}
+
+.dlm-btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.dlm-form {
+  gap: 10px;
+  padding: 14px;
+}
+
+.dlm-section {
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.dlm-section-title {
+  letter-spacing: 0.08em;
+}
+
+.dlm-field input,
+.dlm-field select,
+.dlm-job-row input {
+  border-radius: 0;
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: var(--surface-2, rgba(255, 255, 255, 0.07));
+}
+
+.dlm-field input:focus,
+.dlm-field select:focus,
+.dlm-job-row input:focus {
+  border-color: var(--dlm-accent, var(--accent, #BEEE11));
+  box-shadow: 0 0 0 1px var(--dlm-accent-10, rgba(190, 238, 17, 0.1));
+}
+
+.dlm-mini-btn {
+  border-color: var(--dlm-accent-30, rgba(190, 238, 17, 0.3));
+  color: var(--dlm-accent, var(--accent, #BEEE11));
+}
+
+.dlm-door-chip {
+  border-color: var(--dlm-accent-30, rgba(190, 238, 17, 0.3));
+  background: var(--dlm-accent-10, rgba(190, 238, 17, 0.1));
+}
+
+.dlm-selection .dlm-sel-card {
+  border-radius: 0;
+  border-color: var(--dlm-accent-40, rgba(190, 238, 17, 0.4));
+  background: var(--bg-primary-full, #0d0f10);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.58);
+}
+
+.dlm-kbd {
+  background: var(--dlm-accent, var(--accent, #BEEE11));
+  color: #101308;
+}
+
+.dlm-sel-count {
+  border-color: var(--dlm-accent-40, rgba(190, 238, 17, 0.4));
+  background: var(--dlm-accent-10, rgba(190, 238, 17, 0.1));
+  color: var(--dlm-accent, var(--accent, #BEEE11));
+}

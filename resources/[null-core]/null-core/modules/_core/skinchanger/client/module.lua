@@ -141,11 +141,14 @@ function LoadDefaultModel(malePed, cb)
 
 		SetModelAsNoLongerNeeded(characterModel)
 
+		-- Le modèle vient d'être remplacé : modelLoaded applique maintenant le
+		-- skin en attente. Le callback doit être appelé APRÈS cette application,
+		-- sinon le loading débloque le joueur avec le ped encore vierge.
+		TriggerEvent('Null:skinchanger:modelLoaded')
+
 		if cb ~= nil then
 			cb()
 		end
-
-		TriggerEvent('Null:skinchanger:modelLoaded')
 	end)
 end
 

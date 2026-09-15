@@ -1352,3 +1352,278 @@
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.2); }
 }
+
+/* ============================================================================
+   Auto-école — flat storefront rework
+   Same visual language as Ammu-Nation / Supérette. Layout and interactions
+   remain unchanged; only the visual skin is overridden here.
+   ========================================================================== */
+
+.ds-overlay.visible {
+  background: rgba(4, 6, 7, 0.74);
+}
+
+.ds-container {
+  border: 1px solid var(--border-strong, rgba(235, 238, 245, 0.24));
+  border-radius: 0;
+  background: var(--bg-primary-full, #0d0f10);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.68);
+}
+
+.ds-sidebar {
+  background: rgba(255, 255, 255, 0.018);
+  border-right-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.ds-brand-hero {
+  border-bottom-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  border-radius: 0;
+}
+
+.ds-brand-hero::before,
+.ds-brand-shine {
+  opacity: 0.18;
+}
+
+.ds-brand-logo,
+.ds-brand-logo-fallback,
+.ds-money-item,
+.ds-sidebar-item,
+.ds-close-btn,
+.ds-stage-card,
+.ds-stage-card-cta,
+.ds-welcome-license,
+.ds-welcome-license-badge,
+.ds-payment-modal,
+.ds-payment-btn,
+.ds-payment-cancel,
+.ds-license-overview,
+.ds-license-status-badge,
+.ds-theory-option,
+.ds-theory-validate,
+.ds-result-btn {
+  border-radius: 0 !important;
+}
+
+.ds-brand-logo-fallback {
+  border: 1px solid var(--border-strong, rgba(235, 238, 245, 0.24));
+  background: var(--surface-2, rgba(255, 255, 255, 0.07));
+}
+
+.ds-money-section {
+  border-bottom-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.ds-money-item {
+  border: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  background: var(--surface-2, rgba(255, 255, 255, 0.07));
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+.ds-money-item svg,
+.ds-sidebar-item.active,
+.ds-sidebar-item:hover,
+.ds-sidebar-trophy {
+  color: var(--ds-accent, var(--accent, #BEEE11));
+}
+
+.ds-sidebar-nav {
+  padding: 10px 8px;
+}
+
+.ds-sidebar-item {
+  border: 1px solid transparent;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.ds-sidebar-item:hover,
+.ds-sidebar-item.active {
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: var(--surface-3, rgba(255, 255, 255, 0.07));
+}
+
+.ds-sidebar-indicator {
+  width: 3px;
+  border-radius: 0;
+  background: var(--ds-accent, var(--accent, #BEEE11)) !important;
+}
+
+.ds-sidebar-footer {
+  border-top-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.ds-close-btn {
+  border: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  background: transparent;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.ds-close-btn:hover {
+  border-color: var(--ds-accent, var(--accent, #BEEE11));
+  background: var(--ds-accent-10, var(--accent-hover, rgba(190, 238, 17, 0.1)));
+  color: var(--ds-accent, var(--accent, #BEEE11));
+}
+
+.ds-content {
+  background: var(--bg-primary-full, #0d0f10);
+}
+
+.ds-welcome,
+.ds-detail,
+.ds-theory,
+.ds-result {
+  background: transparent;
+}
+
+.ds-welcome-hero,
+.ds-welcome-section,
+.ds-detail-header,
+.ds-detail-cards,
+.ds-stage-card,
+.ds-license-overview,
+.ds-payment-modal {
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.ds-welcome-hero,
+.ds-welcome-section,
+.ds-detail-header,
+.ds-stage-card,
+.ds-license-overview {
+  border-radius: 0;
+}
+
+.ds-welcome-hero,
+.ds-detail-header {
+  border-left: 2px solid var(--ds-accent, var(--accent, #BEEE11));
+}
+
+.ds-welcome-section-title,
+.ds-detail-header-info h2,
+.ds-stage-card-title,
+.ds-welcome-license-name,
+.ds-license-overview-value,
+.ds-result-title {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+.ds-welcome-section-meta,
+.ds-stage-description,
+.ds-welcome-license-desc,
+.ds-stage-stat-label,
+.ds-license-overview-label {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.ds-welcome-license,
+.ds-stage-card,
+.ds-theory-option {
+  border: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  background: rgba(255, 255, 255, 0.025);
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.ds-welcome-license:hover,
+.ds-stage-card:hover,
+.ds-theory-option:hover,
+.ds-theory-option.selected {
+  border-color: var(--ds-accent-40, rgba(190, 238, 17, 0.4));
+  background: var(--ds-accent-10, rgba(190, 238, 17, 0.1));
+}
+
+.ds-welcome-license:hover,
+.ds-stage-card:hover {
+  transform: translateY(-2px);
+}
+
+.ds-welcome-license-icon,
+.ds-stage-card-icon,
+.ds-welcome-process-icon,
+.ds-detail-trophy {
+  border-radius: 0;
+  background: var(--ds-accent-10, rgba(190, 238, 17, 0.1));
+  color: var(--ds-accent, var(--accent, #BEEE11));
+}
+
+.ds-welcome-license-badge,
+.ds-license-status-badge {
+  border: 1px solid var(--ds-accent-30, rgba(190, 238, 17, 0.3));
+  background: var(--ds-accent-10, rgba(190, 238, 17, 0.1));
+  color: var(--ds-accent, var(--accent, #BEEE11));
+}
+
+.ds-stage-card-cta,
+.ds-theory-validate,
+.ds-result-btn,
+.ds-payment-btn {
+  border: 1px solid var(--ds-accent, var(--accent, #BEEE11));
+  background: var(--ds-accent, var(--accent, #BEEE11));
+  color: #101308;
+  box-shadow: none;
+}
+
+.ds-stage-card-cta:hover:not(:disabled),
+.ds-theory-validate:hover:not(:disabled),
+.ds-result-btn:hover:not(:disabled),
+.ds-payment-btn:hover:not(:disabled) {
+  background: var(--ds-accent-70w, var(--ds-accent, var(--accent, #BEEE11)));
+  box-shadow: none;
+}
+
+.ds-stage-price-block,
+.ds-payment-amount,
+.ds-payment-options,
+.ds-theory-question {
+  border-radius: 0;
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: var(--surface-2, rgba(255, 255, 255, 0.07));
+}
+
+.ds-license-overview-divider {
+  background: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.ds-payment-overlay {
+  background: rgba(4, 6, 7, 0.72);
+}
+
+.ds-payment-cancel {
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: transparent;
+}
+
+.ds-payment-cancel:hover {
+  background: var(--surface-3, rgba(255, 255, 255, 0.07));
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+/* Final geometry cleanup: remove remaining legacy radii in every visible
+   auto-école block, including the welcome stats and process strip. */
+.ds-container [class*="ds-"] {
+  border-radius: 0 !important;
+}
+
+.ds-stage-card-foot {
+  align-items: center;
+}
+
+.ds-stage-price-block {
+  min-width: 96px;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border: 1px solid var(--ds-accent-30, rgba(190, 238, 17, 0.3));
+  background: var(--ds-accent-10, rgba(190, 238, 17, 0.1));
+  text-align: center;
+}
+
+.ds-stage-price-label,
+.ds-stage-price-value {
+  width: 100%;
+  text-align: center;
+}
+
+.ds-stage-price-value {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}

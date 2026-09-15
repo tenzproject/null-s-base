@@ -2,6 +2,7 @@ interface MenuHeaderProps {
   title?: string
   subtitle: string
   pageInfo?: string
+  serverBackground?: string
 }
 
 // Parse GTA color codes
@@ -47,7 +48,9 @@ const parseGTAColors = (text: string): JSX.Element[] => {
   return elements
 }
  
-const MenuHeader = ({ subtitle, pageInfo }: MenuHeaderProps) => {
+const MenuHeader = ({ subtitle, pageInfo, serverBackground }: MenuHeaderProps) => {
+  const banner = serverBackground?.trim() || './assets/img/banniere.png';
+
   return (
     <div>
       {/* Bannière PNG */}
@@ -61,7 +64,7 @@ const MenuHeader = ({ subtitle, pageInfo }: MenuHeaderProps) => {
         }}
       >
         <img 
-          src="./assets/img/banniere.png" 
+          src={banner}
           alt="Banner" 
           className="h-full object-contain"
           style={{ maxWidth: '100%' }}

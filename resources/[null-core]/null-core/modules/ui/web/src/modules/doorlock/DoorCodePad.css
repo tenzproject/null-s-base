@@ -107,3 +107,59 @@
   box-shadow: 0 4px 12px var(--dcp-accent-40, rgba(74,144,226,0.4));
 }
 .dcp-key-confirm:hover { filter: brightness(1.1); background: var(--dcp-accent, #4A90E2); }
+
+/* Code pad — same flat doorlock control language. */
+.dcp-overlay {
+  background: rgba(4, 6, 7, 0.72);
+}
+
+.dcp-pad {
+  border-radius: 0;
+  border-color: var(--border-strong, rgba(235, 238, 245, 0.24));
+  background: var(--bg-primary-full, #0d0f10);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.68);
+}
+
+.dcp-header {
+  border-bottom-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.dcp-header-icon,
+.dcp-key-confirm {
+  border-radius: 0;
+  border-color: var(--dcp-accent, var(--accent, #BEEE11));
+  background: var(--dcp-accent, var(--accent, #BEEE11));
+  color: #101308;
+  box-shadow: none;
+}
+
+.dcp-close,
+.dcp-key {
+  border-radius: 0;
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.dcp-close {
+  background: transparent;
+}
+
+.dcp-close:hover,
+.dcp-key:hover {
+  border-color: var(--dcp-accent, var(--accent, #BEEE11));
+  background: var(--dcp-accent-10, rgba(190, 238, 17, 0.1));
+}
+
+.dcp-dot {
+  border-radius: 0;
+}
+
+.dcp-dot.filled {
+  border-radius: 0;
+  background: var(--dcp-accent, var(--accent, #BEEE11));
+  box-shadow: 0 0 8px var(--dcp-accent-50, rgba(190, 238, 17, 0.5));
+}
+
+.dcp-key:active {
+  transform: translateY(1px);
+  background: var(--dcp-accent-20, rgba(190, 238, 17, 0.2));
+}

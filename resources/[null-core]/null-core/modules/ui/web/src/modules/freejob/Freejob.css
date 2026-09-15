@@ -552,3 +552,252 @@
   from { opacity: 1; transform: translateX(0); }
   to { opacity: 0; transform: translateX(30px); }
 }
+
+/* ============================================================================
+   Professional flat rework
+   Kept at the end so it skins the existing module without changing its API.
+   ============================================================================ */
+
+.fj-tablet,
+.fjinfo {
+  border-radius: 0;
+  border-color: var(--border-strong, rgba(235, 238, 245, 0.24));
+  background: var(--bg-primary-full, rgb(14, 14, 16));
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.62);
+}
+
+.fj-tablet-header,
+.fjinfo-header {
+  position: relative;
+  border-bottom-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.fj-tablet-header::before,
+.fjinfo-header::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--fj-accent, var(--accent, #BEEE11));
+  content: '';
+}
+
+.fj-tablet-header-text h1,
+.fjinfo-header h2 {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+  font-weight: 700;
+}
+
+.fj-tablet-header-text p,
+.fj-tablet-footer,
+.fjinfo-line-text {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.fj-tablet-close,
+.fjinfo-close {
+  border-radius: 0;
+  border-color: var(--border-strong, rgba(235, 238, 245, 0.24));
+  background: transparent;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.fj-tablet-close:hover,
+.fjinfo-close:hover {
+  border-color: var(--fj-accent, var(--accent, #BEEE11));
+  background: var(--fj-accent-10, var(--accent-hover, rgba(190, 238, 17, 0.1)));
+  color: var(--fj-accent, var(--accent, #BEEE11));
+}
+
+.fj-tablet-list {
+  padding: 12px;
+  gap: 8px;
+}
+
+.fj-tablet-list::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: var(--fj-accent-40, rgba(190, 238, 17, 0.4));
+}
+
+.fj-tablet-loading {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fj-tablet-card {
+  position: relative;
+  min-height: 80px;
+  overflow: hidden;
+  border-radius: 0;
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: rgba(255, 255, 255, 0.025);
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.fj-tablet-card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: transparent;
+  content: '';
+  transition: background-color 160ms ease;
+}
+
+.fj-tablet-card-image {
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.fj-tablet-card-image img {
+  display: block;
+  filter: saturate(0.82);
+  transition: filter 160ms ease, transform 220ms ease;
+}
+
+.fj-tablet-card:hover,
+.fj-tablet-card.fj-selected {
+  border-color: var(--fj-accent-40, rgba(190, 238, 17, 0.4));
+  background: var(--fj-accent-10, rgba(190, 238, 17, 0.1));
+}
+
+.fj-tablet-card:hover {
+  transform: translateX(3px);
+}
+
+.fj-tablet-card:hover::before,
+.fj-tablet-card.fj-selected::before {
+  background: var(--fj-accent, var(--accent, #BEEE11));
+}
+
+.fj-tablet-card:hover .fj-tablet-card-image img {
+  filter: saturate(1);
+  transform: scale(1.03);
+}
+
+.fj-tablet-card-info h3 {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+  font-weight: 700;
+}
+
+.fj-tablet-card-info p {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.fj-tablet-card-tag {
+  border: 1px solid var(--border-color, rgba(235, 238, 245, 0.14));
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.fj-tablet-card-arrow {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.fj-tablet-card:hover .fj-tablet-card-arrow {
+  color: var(--fj-accent, var(--accent, #BEEE11));
+}
+
+.fj-tablet-footer {
+  border-top-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  font-size: 10px;
+  letter-spacing: 0.03em;
+}
+
+.fjhud {
+  border-radius: 0;
+  border-color: var(--border-strong, rgba(235, 238, 245, 0.24));
+  border-left: 3px solid var(--fj-accent, var(--accent, #BEEE11));
+  background: var(--bg-primary, rgba(20, 22, 26, 0.94));
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
+}
+
+.fjhud-header {
+  border-bottom-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.fjhud-icon {
+  border-radius: 0;
+  border-color: var(--fj-accent-30, rgba(190, 238, 17, 0.3));
+  background: var(--fj-accent-10, rgba(190, 238, 17, 0.1));
+  color: var(--fj-accent, var(--accent, #BEEE11));
+}
+
+.fjhud-title,
+.fjhud-stat-value {
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+.fjhud-stat {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.fjhud-stat-reward .fjhud-stat-value {
+  color: var(--fj-accent, var(--accent, #BEEE11));
+}
+
+.fjhud-progress-bar {
+  background: var(--fj-accent, var(--accent, #BEEE11));
+}
+
+.fjhud-progress {
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.fjhud-progress-bar {
+  border-radius: 0;
+}
+
+.fjmarker-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 0;
+  background: var(--accent, #BEEE11);
+  box-shadow: 0 0 14px var(--accent-glow, rgba(190, 238, 17, 0.34));
+  transform: rotate(45deg);
+}
+
+.fjmarker-pulse {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--accent, #BEEE11);
+  border-radius: 0;
+  background: transparent;
+  transform: rotate(45deg);
+}
+
+.fjmarker-label,
+.fjmarker-key {
+  border-radius: 0;
+  border-color: var(--border-strong, rgba(235, 238, 245, 0.24));
+  background: var(--bg-primary-full, rgba(18, 20, 24, 0.94));
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+.fjmarker-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.fjinfo {
+  border-radius: 0;
+  border-color: var(--border-strong, rgba(235, 238, 245, 0.24));
+  background: var(--bg-primary-full, rgb(14, 14, 16));
+}
+
+.fjinfo-line {
+  border-radius: 0;
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.fjinfo-line-key {
+  border-radius: 0;
+  border-color: var(--fj-accent-30, rgba(190, 238, 17, 0.3));
+  background: var(--fj-accent-10, rgba(190, 238, 17, 0.1));
+  color: var(--fj-accent, var(--accent, #BEEE11));
+}

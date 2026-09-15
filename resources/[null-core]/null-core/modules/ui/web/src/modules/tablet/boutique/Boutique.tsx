@@ -35,7 +35,9 @@ const Boutique: React.FC<BoutiqueProps> = ({ visible, onClose, primaryColor, ini
   const [serverBackground, setServerBackground] = useState<string>(serverConfig.serverBackground || '');
 
   useEffect(() => {
-    if (serverConfig.serverBackground) setServerBackground(serverConfig.serverBackground);
+    // Synchronise aussi une valeur vide : le Panel Admin doit pouvoir retirer
+    // une ancienne bannière sans devoir fermer puis rouvrir la boutique.
+    setServerBackground(serverConfig.serverBackground || '');
   }, [serverConfig.serverBackground]);
 
   useEffect(() => {
@@ -94,7 +96,9 @@ const Boutique: React.FC<BoutiqueProps> = ({ visible, onClose, primaryColor, ini
     if (data.items) setItems(normalizeItems(data.items));
     if (data.dailyItems) setDailyItems(data.dailyItems);
     if (data.boutiqueLink) setBoutiqueLink(data.boutiqueLink);
-    if (data.serverBackground) setServerBackground(data.serverBackground);
+    if (Object.prototype.hasOwnProperty.call(data, 'serverBackground')) {
+      setServerBackground(data.serverBackground || '');
+    }
     if (data.nightMarket) {
       setNightMarketActive(data.nightMarket.active || false);
       setNightMarketCards((data.nightMarket.cards || []).map((c: any) => ({ ...c, revealed: false })));

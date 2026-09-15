@@ -416,3 +416,220 @@ body {
 .igp-grid-wrap::-webkit-scrollbar-thumb:hover {
   background: var(--text-tertiary);
 }
+
+/* ==========================================================================
+   NULL CORE MENU LIB — visual skin only
+   Dimensions, spacing, content and banner markup remain unchanged.
+   ========================================================================== */
+:root {
+  --primary: var(--accent, #BEEE11);
+  --primary-light: var(--accent, #BEEE11);
+  --menu-bg-dark: var(--bg-primary-full);
+  --menu-bg-darker: var(--bg-primary-full);
+  --menu-border: var(--border-color);
+  --menu-shadow: 0 18px 48px rgba(0, 0, 0, 0.48);
+}
+
+.rageui-menu-container > div[style*="width"] {
+  border: 1px solid var(--border-strong);
+  border-radius: 0 !important;
+  background: var(--bg-primary-full) !important;
+  box-shadow: var(--menu-shadow) !important;
+}
+
+/* Keep the existing banner image; only clean up its frame. */
+.rageui-menu-container > div[style*="width"] > div:first-child > div:first-child {
+  border-radius: 0 !important;
+  background: var(--surface-1, var(--bg-primary-full));
+  box-shadow: none !important;
+}
+
+.rageui-menu-container > div[style*="width"] [class~="bg-black/95"] {
+  border-bottom-color: var(--border-color) !important;
+  background: var(--surface-1, var(--bg-primary-full)) !important;
+  box-shadow: inset 0 -1px 0 var(--accent);
+}
+
+.rageui-menu-container > div[style*="width"] [class~="text-white"] {
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+}
+
+.rageui-menu-container > div[style*="width"] [class~="text-white/60"] {
+  color: var(--accent) !important;
+}
+
+.rageui-menu-container > div[style*="width"] > [class~="bg-theme-primary"] {
+  border-radius: 0 !important;
+  background: var(--bg-primary-full) !important;
+  box-shadow: none !important;
+}
+
+.rageui-menu-container .isolate {
+  color: var(--text-secondary);
+  transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+.rageui-menu-container .isolate[style*="var(--bg-tertiary)"],
+.rageui-menu-container .isolate:hover {
+  background: var(--accent-hover) !important;
+  color: var(--text-primary);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.rageui-menu-container .isolate > span[aria-hidden] {
+  border-radius: 0 !important;
+  background: var(--accent) !important;
+  box-shadow: none !important;
+}
+
+.rageui-menu-container .isolate > div:last-child > div[class*="border"] {
+  border-radius: 0 !important;
+  border-color: var(--border-strong) !important;
+  background: var(--surface-3, rgba(255,255,255,0.06));
+  color: var(--text-secondary);
+  box-shadow: none;
+}
+
+.rageui-menu-container .isolate > div:last-child > div[class*="border"][style*="background-color"] {
+  border-color: var(--accent) !important;
+  background: var(--accent) !important;
+  color: var(--bg-primary-full);
+}
+
+.rageui-menu-container .isolate > div:last-child > div[class*="border-2"][style*="transparent"] {
+  border-color: var(--border-strong) !important;
+  background: var(--surface-3) !important;
+}
+
+.rageui-menu-container .isolate > div:last-child > div[class*="border"] svg {
+  color: inherit !important;
+}
+
+.rageui-menu-container [class~="bg-theme-tertiary"] {
+  background: var(--surface-3) !important;
+}
+
+.rageui-menu-container [class~="text-primary"] {
+  color: var(--accent) !important;
+}
+
+.rageui-menu-container [class~="bg-theme-primary"][class~="px-3"] {
+  border: 1px solid var(--border-color);
+  border-radius: 0 !important;
+  background: var(--surface-1) !important;
+  color: var(--text-secondary);
+}
+
+.rageui-menu-container [class~="bg-theme-primary"][class~="px-4"] {
+  border: 1px solid var(--border-color);
+  border-radius: 0 !important;
+  background: var(--surface-1) !important;
+}
+
+/* Item grid panel in the same library. */
+.igp-panel {
+  border-color: var(--border-strong);
+  border-radius: 0 !important;
+  background: var(--bg-primary-full);
+  box-shadow: var(--menu-shadow);
+}
+
+.igp-header,
+.igp-search-wrap,
+.igp-footer {
+  border-color: var(--border-color);
+  background: var(--surface-1);
+}
+
+.igp-title,
+.igp-cell-label {
+  color: var(--text-primary);
+}
+
+.igp-subtitle,
+.igp-search:focus,
+.igp-cell:hover {
+  border-color: var(--accent) !important;
+}
+
+.igp-close,
+.igp-search,
+.igp-search-clear,
+.igp-cell {
+  border-radius: 0 !important;
+  border-color: var(--border-color);
+  background: var(--surface-3);
+}
+
+.igp-close:hover,
+.igp-search-clear:hover,
+.igp-cell:hover {
+  background: var(--accent-hover);
+}
+
+.igp-close:hover svg,
+.igp-subtitle {
+  color: var(--accent);
+}
+
+/* Hold/selected controls use the global accent instead of the old server tint. */
+.rageui-menu-container .menu-control {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.rageui-menu-container .menu-control-button {
+  border-color: var(--border-strong) !important;
+  background: var(--surface-3, rgba(255,255,255,0.06)) !important;
+  color: var(--text-secondary) !important;
+}
+
+.rageui-menu-container .menu-control-button:hover,
+.rageui-menu-container .menu-control-button.menu-control-selected {
+  border-color: var(--accent) !important;
+  background: var(--accent) !important;
+  color: var(--bg-primary-full) !important;
+}
+
+.rageui-menu-container .menu-control-checkbox {
+  border-color: var(--border-strong) !important;
+  background: var(--surface-3, rgba(255,255,255,0.06)) !important;
+}
+
+.rageui-menu-container .menu-control-checkbox.menu-control-checked,
+.rageui-menu-container .menu-control-checkbox.menu-control-selected.menu-control-checked {
+  border-color: var(--accent) !important;
+  background: var(--accent) !important;
+  color: var(--bg-primary-full) !important;
+}
+
+.rageui-menu-container .menu-control-checkbox svg {
+  color: var(--bg-primary-full) !important;
+}
+
+/* Do not paint an empty information slot. */
+.rageui-menu-container > div[style*="width"] + div > [class~="bg-theme-primary"]:has(.space-y-2:empty),
+.rageui-menu-container > div[style*="width"] + div > [class~="bg-theme-primary"]:has(.space-y-2 > :empty) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* The 300px info column is a layout wrapper, not a panel. */
+.rageui-menu-container > div[style*="300px"] {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.rageui-menu-container > div[style*="300px"] > [class~="bg-theme-primary"] {
+  background: var(--surface-1) !important;
+}
+
+.rageui-menu-container > div[style*="300px"] > [class~="bg-theme-primary"]:has(.space-y-2:empty),
+.rageui-menu-container > div[style*="300px"] > [class~="bg-theme-primary"]:has(.space-y-2 > :empty) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}

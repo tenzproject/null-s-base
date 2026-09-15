@@ -26,7 +26,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
   return (
     <div
       onClick={handleCardClick}
-      className="rounded-xl overflow-hidden transition-all cursor-pointer group flex flex-col"
+      className="hud-editor-module-card rounded-xl overflow-hidden transition-all cursor-pointer group flex flex-col"
       style={{
         backgroundColor: 'var(--bg-secondary)',
         border: '1px solid transparent',

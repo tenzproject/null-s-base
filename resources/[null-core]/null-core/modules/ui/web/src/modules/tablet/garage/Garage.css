@@ -1053,3 +1053,414 @@
     transform: translateX(-50%) translateY(0);
   }
 }
+
+/* ==========================================================================\n+   GARAGE REWORK — flat professional treatment\n+   ========================================================================== */
+:root {
+  --garage-global-accent: var(--accent, #BEEE11);
+}
+
+.garageui-overlay {
+  background: rgba(3, 5, 5, 0.76);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.garageui-container {
+  background: #0b0d0c;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.64);
+}
+
+.garageui-container,
+.garageui-container * {
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.garageui-brand-hero,
+.garageui-sidebar {
+  background: #0e1110;
+}
+
+.garageui-brand-hero {
+  padding: 20px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.garageui-brand-hero-inner {
+  gap: 12px;
+}
+
+.garageui-brand-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 0;
+  border: 1px solid var(--garage-accent-30, rgba(190, 238, 17, 0.30));
+  background: #151916;
+}
+
+.garageui-brand-hero-text h1,
+.garageui-content-header-info h2,
+.garageui-detail-title,
+.garageui-vehicle-name {
+  color: #f4f7f2;
+}
+
+.garageui-brand-hero-text p,
+.garageui-content-header-info p,
+.garageui-vehicle-model,
+.garageui-vehicle-plate {
+  color: rgba(230, 236, 229, 0.52);
+}
+
+.garageui-stats-section {
+  gap: 6px;
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.garageui-stat-item,
+.garageui-vehicle-count,
+.garageui-close-btn {
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.garageui-stat-item {
+  padding: 9px 10px;
+}
+
+.garageui-stat-value[style] {
+  color: var(--garage-global-accent) !important;
+}
+
+.garageui-sidebar-nav {
+  padding: 10px 8px;
+  gap: 3px;
+}
+
+.garageui-sidebar-item {
+  border-radius: 0;
+  border: 1px solid transparent;
+  padding: 11px 12px;
+  color: rgba(232, 238, 231, 0.62);
+}
+
+.garageui-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f1f4ef;
+}
+
+.garageui-sidebar-item.active {
+  background: var(--garage-accent-10, rgba(190, 238, 17, 0.10));
+  border-color: var(--garage-accent-30, rgba(190, 238, 17, 0.30));
+  color: #f4f7f2;
+}
+
+.garageui-sidebar-indicator {
+  left: -1px;
+  width: 2px;
+  height: 22px;
+  border-radius: 0;
+}
+
+.garageui-sidebar-footer {
+  padding: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.garageui-close-btn {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.garageui-close-btn:hover {
+  background: rgba(255, 80, 80, 0.12);
+  border-color: rgba(255, 80, 80, 0.35);
+  color: #ff9d9d;
+}
+
+.garageui-content {
+  background: #0b0d0c;
+  padding: 24px 26px;
+  gap: 18px;
+}
+
+.garageui-content-header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.garageui-content-header-info h2 {
+  font-size: 21px;
+  letter-spacing: -0.3px;
+}
+
+.garageui-header-actions {
+  gap: 8px;
+}
+
+.garageui-search,
+.garageui-sort select {
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #141816;
+}
+
+.garageui-search {
+  min-width: 220px;
+  padding: 9px 12px;
+}
+
+.garageui-search:focus-within,
+.garageui-sort select:focus {
+  border-color: var(--garage-accent, var(--garage-global-accent));
+  box-shadow: 0 0 0 2px var(--garage-accent-10, rgba(190, 238, 17, 0.10));
+}
+
+.garageui-sort select {
+  padding: 9px 26px 9px 12px;
+}
+
+.garageui-main-layout {
+  gap: 18px;
+}
+
+.garageui-vehicle-grid {
+  gap: 10px;
+}
+
+.garageui-vehicle-card,
+.garageui-detail-panel,
+.garageui-store-card {
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #111513;
+}
+
+.garageui-vehicle-card:hover {
+  border-color: var(--garage-accent-50, rgba(190, 238, 17, 0.50));
+  transform: translateY(-1px);
+}
+
+.garageui-vehicle-card.selected {
+  background: var(--garage-accent-10, rgba(190, 238, 17, 0.10));
+  border-color: var(--garage-accent, var(--garage-global-accent));
+  box-shadow: none;
+}
+
+.garageui-vehicle-image {
+  height: 118px;
+  background: #0d100f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.garageui-vehicle-badges {
+  top: 8px;
+  left: 8px;
+  right: 8px;
+}
+
+.garageui-badge {
+  border-radius: 0;
+  border: 1px solid currentColor;
+  padding: 4px 7px;
+  background: rgba(8, 10, 9, 0.88);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.garageui-badge-in {
+  color: var(--garage-global-accent);
+  background: var(--garage-accent-10, rgba(190, 238, 17, 0.10));
+}
+
+.garageui-badge-out {
+  color: #9cc8ff;
+  background: rgba(70, 130, 210, 0.12);
+}
+
+.garageui-badge-impound {
+  color: #ff9b9b;
+  background: rgba(220, 65, 65, 0.12);
+}
+
+.garageui-badge-boutique {
+  color: #f2c66d;
+  background: rgba(170, 110, 20, 0.12);
+}
+
+.garageui-vehicle-info {
+  padding: 11px 12px 12px;
+}
+
+.garageui-vehicle-plate {
+  margin-top: 6px;
+  color: var(--garage-accent-70w, #e8f3c4);
+}
+
+.garage-card-placeholder,
+.garageui-card-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--garage-accent-30, rgba(190, 238, 17, 0.30));
+}
+
+.garageui-detail-panel {
+  background: #0f1311;
+}
+
+.garageui-detail {
+  padding: 18px;
+}
+
+.garageui-detail-image {
+  height: 150px;
+  margin-bottom: 14px;
+  border-radius: 0;
+  background: #0b0e0c;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.garageui-detail-type-badge,
+.garageui-detail-boutique {
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 5px 9px;
+}
+
+.garageui-detail-type-badge {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.garageui-detail-boutique {
+  background: rgba(170, 110, 20, 0.12);
+}
+
+.garageui-detail-name-section {
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.garageui-rename-input {
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #171b18;
+}
+
+.garageui-detail-infos {
+  gap: 0;
+  margin-bottom: 15px;
+}
+
+.garageui-detail-info-row {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.garageui-detail-info-row svg {
+  color: var(--garage-accent, var(--garage-global-accent));
+}
+
+.garageui-detail-info-value {
+  color: #f0f4ee;
+}
+
+.garageui-detail-actions {
+  gap: 7px;
+}
+
+.garageui-btn {
+  min-height: 38px;
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: none;
+}
+
+.garageui-btn-accent {
+  color: #0b0d0c;
+  background: var(--garage-accent, var(--garage-global-accent)) !important;
+  border-color: var(--garage-accent, var(--garage-global-accent));
+  font-weight: 700;
+}
+
+.garageui-btn-accent:hover {
+  filter: brightness(1.08);
+  transform: none;
+}
+
+.garageui-btn-outline {
+  background: #151917;
+  color: rgba(238, 244, 236, 0.72);
+}
+
+.garageui-btn-outline:hover {
+  background: var(--garage-accent-10, rgba(190, 238, 17, 0.10));
+  border-color: var(--garage-accent-50, rgba(190, 238, 17, 0.50));
+  color: #f4f7f2;
+}
+
+.garageui-btn-ghost {
+  background: transparent;
+}
+
+.garageui-btn-warning {
+  color: #ffadad;
+  border-color: rgba(255, 96, 96, 0.24);
+  background: rgba(255, 80, 80, 0.07);
+}
+
+.garageui-store-card {
+  gap: 14px;
+  padding: 34px;
+}
+
+.garageui-store-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 0;
+  border: 1px solid var(--garage-accent-30, rgba(190, 238, 17, 0.30));
+  background: var(--garage-accent-10, rgba(190, 238, 17, 0.10)) !important;
+}
+
+.garageui-store-warning {
+  border-radius: 0;
+  background: rgba(255, 80, 80, 0.08);
+  border: 1px solid rgba(255, 96, 96, 0.24);
+}
+
+.garageui-detail-empty,
+.garageui-empty {
+  opacity: 0.30;
+  color: rgba(230, 236, 229, 0.72);
+}
+
+.garageui-notification {
+  border-radius: 0;
+  border: 1px solid var(--garage-accent-50, rgba(190, 238, 17, 0.50));
+  background: #111613;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34);
+}
+
+.garageui-notification.success {
+  background: var(--garage-accent-10, rgba(190, 238, 17, 0.10));
+  border-color: var(--garage-accent-50, rgba(190, 238, 17, 0.50));
+}
+
+.garageui-notification.success svg {
+  color: var(--garage-accent, var(--garage-global-accent));
+}
+
+.garageui-notification.error {
+  background: rgba(255, 80, 80, 0.10);
+  border-color: rgba(255, 96, 96, 0.34);
+}
+
+.garageui-notification.error svg {
+  color: #ff8080;
+}

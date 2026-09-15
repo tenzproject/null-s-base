@@ -46,7 +46,7 @@ const Workspace: React.FC<WorkspaceProps> = ({
   serverConfig,
 }) => {
   return (
-    <div className="fixed inset-0 z-[10000]">
+    <div className="hud-editor-workspace fixed inset-0 z-[10000]">
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/60" />
 

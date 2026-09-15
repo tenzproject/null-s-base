@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { hudPositionManager } from '../../utils/hudPositionManager';
 import { getAnchorTransform } from '../../utils/anchorPositioning';
+import './Chat.css';
 
 function GetParentResourceName(): string {
   return 'null-core';
@@ -247,7 +248,7 @@ const Chat: React.FC<ChatProps> = ({ hudEditorOpen, primaryColor, previewMode = 
     return (
       <div
         key={index}
-        className="mb-0.5 text-[0.85rem] leading-[1.3] break-words text-white"
+        className="chat-message mb-0.5 text-[0.85rem] leading-[1.3] break-words text-white"
         style={{
           fontFamily: 'Outfit, sans-serif',
         }}
@@ -369,18 +370,22 @@ const Chat: React.FC<ChatProps> = ({ hudEditorOpen, primaryColor, previewMode = 
 
   return (
     <div
-      className={`fixed z-[100] ${previewMode ? '' : 'w-[38%] max-w-[600px]'}`}
+      className={`chat-root fixed z-[100] ${previewMode ? '' : 'w-[38%] max-w-[600px]'}`}
       style={{
         ...positionStyle,
         pointerEvents: previewMode ? 'none' : (inputVisible ? 'auto' : 'none'),
+        '--chat-accent': primaryColor,
+        '--chat-accent-muted': `${primaryColor}45`,
+        '--chat-accent-faint': `${primaryColor}18`,
+        '--chat-accent-scroll': `${primaryColor}70`,
         ...(previewMode ? { position: 'relative', left: 0, top: 0, width: '38vw', maxWidth: '600px' } : {})
-      }}
+      } as React.CSSProperties}
     >
-      {/* Messages Container - No background, minimalist */}
+      {/* Messages stay detached from the world behind the HUD. */}
       {(showMessages || inputVisible) && (
         <div
           ref={messagesRef}
-          className="chat-scrollbar max-h-[22vh] overflow-y-auto overflow-x-hidden mb-2 pr-2 transition-opacity duration-300"
+          className="chat-messages chat-scrollbar max-h-[22vh] overflow-y-auto overflow-x-hidden mb-2 pr-2 transition-opacity duration-300"
           style={{
             opacity: showMessages ? 1 : 0,
           }}
@@ -393,10 +398,7 @@ const Chat: React.FC<ChatProps> = ({ hudEditorOpen, primaryColor, previewMode = 
       {inputVisible && (
         <div>
           <div
-            className="flex items-center bg-black/40 rounded-md px-2.5 py-1.5 shadow-lg"
-            style={{
-              border: `1px solid ${primaryColor}30`,
-            }}
+            className="chat-input-shell flex items-center px-2.5 py-1.5 shadow-lg"
             onClick={() => {
               if (inputRef.current) {
                 inputRef.current.focus();
@@ -404,12 +406,9 @@ const Chat: React.FC<ChatProps> = ({ hudEditorOpen, primaryColor, previewMode = 
             }}
           >
             <span
-              className="text-xl mr-2 font-bold"
-              style={{
-                color: primaryColor,
-              }}
+              className="chat-prompt-mark text-xl mr-2 font-bold"
             >
-              ➤
+              /
             </span>
             <textarea
               ref={inputRef}
@@ -417,7 +416,7 @@ const Chat: React.FC<ChatProps> = ({ hudEditorOpen, primaryColor, previewMode = 
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Message ou /commande..."
-              className="flex-1 bg-transparent border-none outline-none text-white text-sm resize-none min-h-[24px] max-h-[120px] overflow-auto"
+              className="chat-input flex-1 bg-transparent border-none outline-none text-white text-sm resize-none min-h-[24px] max-h-[120px] overflow-auto"
               style={{
                 fontFamily: 'Outfit, sans-serif',
               }}
@@ -430,29 +429,26 @@ const Chat: React.FC<ChatProps> = ({ hudEditorOpen, primaryColor, previewMode = 
           {/* Suggestions */}
           {filteredSuggestions.length > 0 && (
             <div
-              className="mt-1 bg-black/70 rounded-md p-1.5"
-              style={{
-                border: `1px solid ${primaryColor}20`,
-              }}
+              className="chat-suggestions mt-1 p-1.5"
             >
               {filteredSuggestions.map((suggestion, index) => (
                 <div
                   key={index}
-                  className="px-2 py-1.5 rounded bg-white/5"
+                  className="chat-suggestion px-2 py-1.5"
                   style={{
                     marginBottom: index < filteredSuggestions.length - 1 ? '4px' : 0,
                   }}
                 >
-                  <div className="text-[0.85rem] text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>
-                    <span className="font-bold" style={{ color: primaryColor }}>{suggestion.name}</span>
+                  <div className="chat-suggestion-title text-[0.85rem] text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                    <span className="chat-suggestion-command font-bold">{suggestion.name}</span>
                     {suggestion.params && suggestion.params.map((param, i) => (
-                      <span key={i} className="text-gray-400 ml-1">
+                        <span key={i} className="chat-suggestion-param text-gray-400 ml-1">
                         [{param.name}]
                       </span>
                     ))}
                   </div>
                   {suggestion.help && (
-                    <div className="text-xs text-gray-400 mt-0.5" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                    <div className="chat-suggestion-help text-xs text-gray-400 mt-0.5" style={{ fontFamily: 'Outfit, sans-serif' }}>
                       {suggestion.help}
                     </div>
                   )}
@@ -463,21 +459,6 @@ const Chat: React.FC<ChatProps> = ({ hudEditorOpen, primaryColor, previewMode = 
         </div>
       )}
 
-      <style>{`
-        .chat-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .chat-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .chat-scrollbar::-webkit-scrollbar-thumb {
-          background: ${primaryColor}40;
-          border-radius: 2px;
-        }
-        .chat-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: ${primaryColor}60;
-        }
-      `}</style>
     </div>
   );
 };

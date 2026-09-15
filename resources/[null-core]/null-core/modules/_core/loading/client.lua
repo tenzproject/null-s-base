@@ -23,7 +23,8 @@
 ]]
 
 LoadingConfig = {
-    enterPhase   = true,
+    -- Spawn direct après le chargement : aucune phase d'entrée/cinématique.
+    enterPhase   = false,
     fallbackModel = `mp_m_freemode_01`,
     fallbackSpawn = vector3(-269.4, -955.66, 31.22),
     spawnWatchdog = 20000,  -- watchdog AVANT la phase enter uniquement
@@ -355,30 +356,12 @@ local function StartFirstSpawnSequence()
     TriggerEvent('null:player:loading')
     logDbg(('hadLoadscreenAtStart = %s'):format(tostring(hadLoadscreenAtStart)))
 
-    -- Restart de ressource en jeu : pas de loadscreen → on saute la phase Enter.
-    if not hadLoadscreenAtStart then
-        local ped = PlayerPedId()
-        RobustGroundLoad(ped, ESX.PositionBeforeEnterCam)
-        SetEntityVisible(ped, true)
-        SetEntityCollision(ped, true, true)
-        SetEntityInvincible(ped, false)
-        FreezeEntityPosition(ped, false)
-        DisplayRadar(true)
-        null.DisplayHud(true, 999)
-        loadMapType(mapConfig and mapConfig.mapType or "square")
-        ShutdownLoadingScreenNui()
-        ShutdownLoadingScreen()
-        DoScreenFadeIn(0)
-        setState(STATE.SPAWNED)
-        TriggerEvent('null:player:spawned', true)
-        return
-    end
-
     PushNui({
         type = 'INIT_CORE',
         serverName = GetConvar('serverName', 'Null V4'),
         serverCHAR = GetConvar('serverCHAR', 'img/logo.png'),
-        hexcolor   = GetConvar('hexcolor', '#44a5ff'),
+        hexcolor   = GetConvar('hexcolor', '#BEEE11'),
+        serverBackground = GetConvar('backgroundBanner', GetConvar('bannerUrl', '')),
     })
     SetNuiFocus(false, false)
 
@@ -412,11 +395,27 @@ local function StartFirstSpawnSequence()
         return
     end
 
-    TriggerEvent('null:player:loadCharacter', playerSkin)
+    -- Le skinchanger peut remplacer le ped lorsqu'il charge le modèle de
+    -- freemode. On attend son callback avant de relâcher le joueur, sinon il
+    -- apparaît avec le modèle fallback, sans tenue, ou reste figé.
+    local skinApplied = false
+    TriggerEvent('null:player:loadCharacter', playerSkin, function()
+        skinApplied = true
+    end)
+
+    local skinDeadline = GetGameTimer() + 12000
+    while not skinApplied and GetGameTimer() < skinDeadline do
+        Wait(0)
+    end
+    if not skinApplied then
+        logDbg('^3skin callback timeout, releasing spawn with the current ped^7')
+    end
 
     if not LoadingConfig.enterPhase then
+        -- Toujours relire le ped après le changement de modèle.
         local ped = PlayerPedId()
         RobustGroundLoad(ped, ESX.PositionBeforeEnterCam)
+        SetPlayerControl(PlayerId(), true, false)
         SetEntityVisible(ped, true)
         SetEntityCollision(ped, true, true)
         SetEntityInvincible(ped, false)

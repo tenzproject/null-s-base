@@ -8,7 +8,6 @@ import {
 const IdCard = BadgeCheck;
 import { cacheImg } from '@/shared/cacheVersion';
 import { generateAccentVars } from '@/utils/accentColors';
-import WaveBackground from '@/components/WaveBackground';
 import type {
   PoliceTabletProps, PoliceTabletData, DispatchState, DispatchCard, DispatchGroup,
   PenalCode, PenalOffense, PlayerSummary, PlayerDetails, OwnedVehicle, OwnedProperty,
@@ -86,7 +85,7 @@ const PoliceTablet: React.FC<PoliceTabletProps> = ({ visible, onClose, primaryCo
     return () => window.removeEventListener('keydown', onKey);
   }, [visible, handleClose]);
 
-  const accent = primaryColor || data?.brand.accentColor || '#1e40af';
+  const accent = primaryColor || data?.brand.accentColor || '#BEEE11';
   const brandBg = data?.brand.bgColor || '#0a0f1e';
   const accentVars = useMemo(() => generateAccentVars('--police-accent', accent), [accent]);
   const brandVars = useMemo(() => ({
@@ -102,8 +101,6 @@ const PoliceTablet: React.FC<PoliceTabletProps> = ({ visible, onClose, primaryCo
         className="police-container"
         style={{ ...accentVars, ...brandVars } as React.CSSProperties}
       >
-        <WaveBackground accentColor={accent} opacity={0.35} />
-
         {/* Sidebar */}
         <aside className="police-sidebar">
           <div className="police-brand-hero" style={{ background: `linear-gradient(160deg, ${brandBg} 0%, ${brandBg}dd 60%, rgba(0,0,0,0.4) 100%)` }}>

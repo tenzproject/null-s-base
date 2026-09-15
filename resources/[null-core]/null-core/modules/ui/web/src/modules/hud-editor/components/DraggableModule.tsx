@@ -463,7 +463,7 @@ const DraggableModule: React.FC<DraggableModuleProps> = ({
     >
       {/* Content wrapper with border */}
       <div
-        className="relative rounded-lg pointer-events-none"
+        className="hud-editor-draggable-frame relative rounded-lg pointer-events-none"
         style={{
           border: isDragging ? `3px dashed ${primaryColor}` : '3px dashed var(--text-tertiary)',
         }}
@@ -494,7 +494,7 @@ const DraggableModule: React.FC<DraggableModuleProps> = ({
 
       {/* Action icons - dynamically positioned based on Y position */}
       <div
-        className={`absolute right-0 flex gap-1 p-1 pointer-events-auto ${position.y < 10 ? '-bottom-9' : '-top-9'}`}
+        className={`hud-editor-module-actions absolute right-0 flex gap-1 p-1 pointer-events-auto ${position.y < 10 ? '-bottom-9' : '-top-9'}`}
         style={{ zIndex: 10004 }}
         onClick={(e) => e.stopPropagation()}
       >

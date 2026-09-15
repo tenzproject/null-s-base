@@ -69,5 +69,6 @@ export interface MenuProps {
   maxVisibleItems: number
   primaryColor?: string
   serverLuaColor?: string
+  serverBackground?: string
   transition?: 'forward' | 'back' | null
 }

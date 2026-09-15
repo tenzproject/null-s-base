@@ -2122,6 +2122,252 @@
 }
 
 /* ============================================================================
+   Illegal tablet — operational flat rework
+   ============================================================================ */
+
+.tablet-overlay {
+  background: rgba(4, 6, 7, 0.74);
+}
+
+.tablet-container {
+  border: 1px solid var(--border-strong, rgba(235, 238, 245, 0.24));
+  border-radius: 0;
+  background: var(--bg-primary-full, #0d0f10);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.68);
+}
+
+.tablet-sidebar,
+.tablet-create-group-sidebar {
+  background: rgba(255, 255, 255, 0.018);
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.tablet-sidebar-header {
+  position: relative;
+  border-bottom-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.tablet-sidebar-header::before,
+.tablet-content::before,
+.tablet-create-group::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--tablet-accent, var(--accent, #BEEE11));
+  content: '';
+  pointer-events: none;
+}
+
+.tablet-sidebar-icon,
+.tablet-home-gang-icon,
+.tablet-section-header-icon {
+  border-radius: 0;
+}
+
+.tablet-sidebar-item,
+.tablet-action-item,
+.tablet-quick-action-btn,
+.tablet-close-btn,
+.tablet-back-btn,
+.tablet-grade-btn,
+.tablet-add-grade-btn,
+.tablet-add-grade-cancel,
+.tablet-add-grade-confirm,
+.tablet-kick-btn,
+.tablet-bm-buy-btn,
+.tablet-mission-accept-btn,
+.tablet-mission-claim-btn,
+.tablet-create-group-submit,
+.tablet-crew-tool-btn {
+  border-radius: 0;
+}
+
+.tablet-sidebar-item {
+  border: 1px solid transparent;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.68));
+}
+
+.tablet-sidebar-item:hover,
+.tablet-sidebar-item.active {
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: var(--surface-3, rgba(255, 255, 255, 0.07));
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+.tablet-sidebar-badge,
+.tablet-home-level-badge,
+.tablet-home-color-swatch,
+.tablet-create-group-tier-dot {
+  border-radius: 0;
+}
+
+.tablet-sidebar-footer {
+  border-top-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.tablet-close-btn:hover,
+.tablet-back-btn:hover {
+  border-color: var(--tablet-accent, var(--accent, #BEEE11));
+  background: var(--tablet-accent-10, var(--accent-hover, rgba(190, 238, 17, 0.1)));
+  color: var(--tablet-accent, var(--accent, #BEEE11));
+}
+
+.tablet-content {
+  position: relative;
+  background: var(--bg-primary-full, #0d0f10);
+}
+
+.tablet-section-header,
+.tablet-home-tier-section,
+.tablet-home-group-stats,
+.tablet-home-unlocks,
+.tablet-members-quick-actions,
+.tablet-mission-card,
+.tablet-action-item,
+.tablet-territory-card,
+.tablet-rank-item,
+.tablet-create-group-tier-preview,
+.tablet-create-group-tiers-overview,
+.tablet-create-group-form,
+.tablet-blackmarket-warning,
+.tablet-bm-card {
+  border-radius: 0;
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.tablet-section-header {
+  border-bottom-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.tablet-action-item:hover,
+.tablet-mission-card:hover,
+.tablet-territory-card:hover,
+.tablet-rank-item.clickable:hover {
+  border-color: var(--tablet-accent-40, rgba(190, 238, 17, 0.4));
+  background: var(--tablet-accent-10, rgba(190, 238, 17, 0.1));
+}
+
+.tablet-action-icon,
+.tablet-bm-card-icon {
+  border-radius: 0;
+  background: var(--tablet-accent-10, rgba(190, 238, 17, 0.1));
+  color: var(--tablet-accent, var(--accent, #BEEE11));
+}
+
+.tablet-home-xp-bar,
+.tablet-home-group-stat-bar,
+.tablet-mission-progress-bar,
+.tablet-territory-progress-bar {
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.tablet-home-xp-fill,
+.tablet-home-group-stat-fill,
+.tablet-mission-progress-fill,
+.tablet-territory-progress-fill {
+  border-radius: 0;
+  background: var(--tablet-accent, var(--accent, #BEEE11)) !important;
+}
+
+.tablet-home-stat,
+.tablet-home-group-stat-item,
+.tablet-member-item,
+.tablet-rank-item,
+.tablet-create-group-tier-item,
+.tablet-perm-item {
+  border-radius: 0;
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.tablet-create-group-layout {
+  position: relative;
+}
+
+.tablet-create-group-sidebar {
+  border-right-color: var(--border-color, rgba(235, 238, 245, 0.14));
+}
+
+.tablet-create-group {
+  position: relative;
+  background: var(--bg-primary-full, #0d0f10);
+}
+
+.tablet-create-group-tier-preview,
+.tablet-create-group-tiers-overview,
+.tablet-create-group-form {
+  padding: 18px;
+}
+
+.tablet-create-group-tier-preview,
+.tablet-create-group-form {
+  border-left: 2px solid var(--tablet-accent, var(--accent, #BEEE11));
+}
+
+.tablet-create-group-tier-item.current {
+  border-color: var(--tablet-accent-40, rgba(190, 238, 17, 0.4));
+  background: var(--tablet-accent-10, rgba(190, 238, 17, 0.1));
+}
+
+.tablet-create-group-tier-item,
+.tablet-create-group-field input,
+.tablet-create-group-price {
+  border-radius: 0;
+}
+
+.tablet-create-group-field input {
+  border-color: var(--border-color, rgba(235, 238, 245, 0.14));
+  background: var(--surface-2, rgba(255, 255, 255, 0.07));
+}
+
+.tablet-create-group-field input:focus {
+  border-color: var(--tablet-accent, var(--accent, #BEEE11));
+  background: var(--surface-3, rgba(255, 255, 255, 0.07));
+  box-shadow: 0 0 0 1px var(--tablet-accent-10, rgba(190, 238, 17, 0.1));
+}
+
+.tablet-create-group-price {
+  border-color: var(--tablet-accent-30, rgba(190, 238, 17, 0.3));
+  background: var(--tablet-accent-10, rgba(190, 238, 17, 0.1));
+  color: var(--tablet-accent, var(--accent, #BEEE11));
+}
+
+.tablet-create-group-submit {
+  border: 1px solid var(--tablet-accent, var(--accent, #BEEE11));
+  background: var(--tablet-accent, var(--accent, #BEEE11));
+  color: #101308;
+  box-shadow: none;
+}
+
+.tablet-create-group-submit:hover:not(:disabled) {
+  background: var(--tablet-accent-70w, var(--tablet-accent, var(--accent, #BEEE11)));
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+.tablet-blackmarket-discount-badge,
+.tablet-home-max-level {
+  border-radius: 0;
+}
+
+/* Cleanup: keep the layout open; one accent line per component is enough. */
+.tablet-content::before,
+.tablet-create-group::before {
+  display: none;
+}
+
+.tablet-create-group-tier-preview,
+.tablet-create-group-form {
+  border-left: 0 !important;
+}
+
+.tablet-create-group-tier-badge {
+  border-left: 0 !important;
+  padding-left: 0;
+}
+
+/* ============================================================================
    BLACKMARKET
    ============================================================================ */
 

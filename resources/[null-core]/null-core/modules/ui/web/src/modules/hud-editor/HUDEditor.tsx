@@ -6,6 +6,7 @@ import { GlobalConfig } from './components/GlobalConfigPanel';
 import HUDTutorial, { TutorialPrompt } from './components/HUDTutorial';
 import { Position } from './types';
 import { resolveAllCollisionsOnDrop } from './utils/collisionOptimized';
+import './HUDEditor.css';
 
 function GetParentResourceName(): string {
   return 'null-core';

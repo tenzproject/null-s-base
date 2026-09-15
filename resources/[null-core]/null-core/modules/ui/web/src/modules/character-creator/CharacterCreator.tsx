@@ -90,7 +90,7 @@ const FEATURED_CATEGORIES: CreatorCategory[] = ['identity', 'heritage'];
 const STEP_ORDER: CreatorCategory[] = ['identity', 'heritage', 'hair', 'face', 'appearance', 'outfits'];
 
 const CharacterCreator: React.FC<CharacterCreatorProps> = ({ visible, onClose, primaryColor, serverConfig }) => {
-  const accent = primaryColor || '#646464';
+  const accent = primaryColor || '#BEEE11';
   const banner = serverConfig?.serverBackground || serverConfig?.serverIcon || '';
   const ccAccentVars = useMemo(() => generateAccentVars('--cc-accent', accent), [accent]);
   // Mêmes déclinaisons d'opacité que le ped-shop (--cc-brand-XX) pour
